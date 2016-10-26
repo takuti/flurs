@@ -10,5 +10,8 @@ setup(
     license='MIT',
     url='https://github.com/takuti/recoil',
     packages=['recoil'],
-    install_requires=[],
+    install_requires=[
+        'numpy',
+        'scipy',
+        'scikit_learn'],
 )
