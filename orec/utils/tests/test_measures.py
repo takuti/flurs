@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from recoil.utils import measures
+from orec.utils import measures
 
 
 class MeasuresTestCase(TestCase):

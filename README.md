@@ -1,4 +1,2 @@
-Recoil
+ORec: Online Recommender Systems
 ===
-
-**Reco**mmendation based on **i**mplicit online **l**earning
