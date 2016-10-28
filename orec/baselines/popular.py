@@ -1,17 +1,17 @@
-from .base import Base
+from orec.recommender import Recommender
 
 import numpy as np
 
 
-class Popular(Base):
+class Popular(Recommender):
 
     """Popularity (non-personalized) baseline
     """
 
     def __init__(self):
-        self._Base__clear()
+        self.clear()
 
-    def _Base__clear(self):
+    def clear(self):
         self.n_user = 0
         self.users = {}
 
@@ -20,7 +20,7 @@ class Popular(Base):
 
         self.freq = np.array([])
 
-    def _Base__check(self, d):
+    def check(self, d):
         u_index = d['u_index']
         is_new_user = u_index not in self.users
         if is_new_user:
@@ -36,9 +36,9 @@ class Popular(Base):
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         self.freq[d['i_index']] += 1
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         sorted_indices = np.argsort(self.freq[target_i_indices])[::-1]
         return target_i_indices[sorted_indices], self.freq[target_i_indices][sorted_indices]

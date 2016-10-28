@@ -1,5 +1,3 @@
-from abc import ABCMeta, abstractmethod
-
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
 handler = StreamHandler()
@@ -12,28 +10,23 @@ import time
 import numpy as np
 
 
-class Base:
+class Evaluator:
 
     """Base class for experimentation of the incremental models with positive-only feedback.
 
     """
-    __metaclass__ = ABCMeta
 
-    @abstractmethod
-    def __init__(self, n_item, **params):
+    def __init__(self, recommender):
         """Set/initialize parameters.
 
         Args:
-            n_item (int): Number of pre-defined items.
+            recommender (Recommender): Instance of a recommender.
 
         """
-        self.n_item = n_item
-
-        # set parameters
-        self.params = params
+        self.recommender = recommender
 
         # initialize models and user/item information
-        self.__clear()
+        recommender.clear()
 
     def set_can_repeat(self, can_repeat):
         self.can_repeat = can_repeat
@@ -50,24 +43,24 @@ class Base:
             n_epoch (int): Number of epochs for the batch training.
 
         """
-        self.__clear()
+        self.recommender.clear()
 
         # make initial status for batch training
         for d in train_samples:
-            self.__check(d)
-            self.users[d['u_index']]['observed'].add(d['i_index'])
+            self.recommender.check(d)
+            self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
 
         # for batch evaluation, temporarily save new users info
         for d in test_samples:
-            self.__check(d)
+            self.recommender.check(d)
 
         self.batch_update(train_samples, test_samples, n_epoch)
 
         # batch test samples are considered as a new observations;
         # the model is incrementally updated based on them before the incremental evaluation step
         for d in test_samples:
-            self.users[d['u_index']]['observed'].add(d['i_index'])
-            self.__update(d)
+            self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
+            self.recommender.update(d)
 
     def batch_update(self, train_samples, test_samples, n_epoch):
         """Batch update called by the fitting method.
@@ -87,7 +80,7 @@ class Base:
 
             # 20%: update models
             for d in train_samples:
-                self.__update(d, is_batch_train=True)
+                self.recommender.update(d, is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.batch_evaluate(test_samples)
@@ -105,19 +98,19 @@ class Base:
         """
         percentiles = np.zeros(len(test_samples))
 
-        all_items = set(range(self.n_item))
+        all_items = set(range(self.recommender.n_item))
         for i, d in enumerate(test_samples):
 
             # check if the data allows users to interact the same items repeatedly
             unobserved = all_items
             if not self.can_repeat:
                 # make recommendation for all unobserved items
-                unobserved -= self.users[d['u_index']]['observed']
+                unobserved -= self.recommender.users[d['u_index']]['observed']
                 # true item itself must be in the recommendation candidates
                 unobserved.add(d['i_index'])
 
             target_i_indices = np.asarray(list(unobserved))
-            recos, scores = self.__recommend(d, target_i_indices)
+            recos, scores = self.recommender.recommend(d, target_i_indices)
 
             pos = np.where(recos == d['i_index'])[0][0]
             percentiles[i] = pos / (len(recos) - 1) * 100
@@ -135,97 +128,31 @@ class Base:
 
         """
         for i, d in enumerate(test_samples):
-            self.__check(d)
+            self.recommender.check(d)
 
             u_index = d['u_index']
             i_index = d['i_index']
 
             # target items (all or unobserved depending on a detaset)
-            unobserved = set(range(self.n_item))
+            unobserved = set(range(self.recommender.n_item))
             if not self.can_repeat:
-                unobserved -= self.users[u_index]['observed']
+                unobserved -= self.recommender.users[u_index]['observed']
                 # * item i interacted by user u must be in the recommendation candidate
                 unobserved.add(i_index)
             target_i_indices = np.asarray(list(unobserved))
 
             # make top-{at} recommendation for the 1001 items
             start = time.clock()
-            recos, scores = self.__recommend(d, target_i_indices)
+            recos, scores = self.recommender.recommend(d, target_i_indices)
             recommend_time = (time.clock() - start)
 
             rank = np.where(recos == i_index)[0][0]
 
             # Step 2: update the model with the observed event
-            self.users[u_index]['observed'].add(i_index)
+            self.recommender.users[u_index]['observed'].add(i_index)
             start = time.clock()
-            self.__update(d)
+            self.recommender.update(d)
             update_time = (time.clock() - start)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
-
-    @abstractmethod
-    def __clear(self):
-        """Initialize model parameters and user/item info.
-
-        """
-        self.n_user = 0
-        self.users = {}
-        pass
-
-    @abstractmethod
-    def __check(self, d):
-        """Check if user/item is new.
-
-        For new users/items, append their information into the dictionaries.
-
-        """
-        u_index = d['u_index']
-
-        if u_index not in self.users:
-            self.users[u_index] = {'observed': set()}
-            self.n_user += 1
-
-        pass
-
-    @abstractmethod
-    def __update(self, d, is_batch_train):
-        """Update model parameters based on d, a sample represented as a dictionary.
-
-        Args:
-            d (dict): A dictionary which has data of a sample.
-
-        """
-        pass
-
-    @abstractmethod
-    def __recommend(self, d, target_i_indices):
-        """Recommend items for a user represented as a dictionary d.
-
-        First, scores are computed.
-        Next, `self.__scores2recos()` is called to convert the scores into a recommendation list.
-
-        Args:
-            d (dict): A dictionary which has data of a sample.
-            target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
-
-        Returns:
-            (numpy array, numpy array) : (Sorted list of items, Sorted scores).
-
-        """
-        return
-
-    def __scores2recos(self, scores, target_i_indices):
-        """Get recommendation list for a user u_index based on scores.
-
-        Args:
-            scores (numpy array; (n_target_items,)):
-                Scores for the target items. Smaller score indicates a promising item.
-            target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
-
-        Returns:
-            (numpy array, numpy array) : (Sorted list of items, Sorted scores).
-
-        """
-        sorted_indices = np.argsort(scores)
-        return target_i_indices[sorted_indices], scores[sorted_indices]

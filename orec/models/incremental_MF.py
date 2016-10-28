@@ -1,9 +1,9 @@
-from .base import Base
+from orec.recommender import Recommender
 
 import numpy as np
 
 
-class IncrementalMF(Base):
+class IncrementalMF(Recommender):
 
     """Incremental Matrix Factorization
     """
@@ -17,9 +17,9 @@ class IncrementalMF(Base):
         self.l2_reg_i = l2_reg
         self.learn_rate = learn_rate
 
-        self._Base__clear()
+        self.clear()
 
-    def _Base__clear(self):
+    def clear(self):
         self.n_user = 0
         self.users = {}
 
@@ -28,7 +28,7 @@ class IncrementalMF(Base):
 
         self.Q = np.array([])
 
-    def _Base__check(self, d):
+    def check(self, d):
         u_index = d['u_index']
         is_new_user = u_index not in self.users
         if is_new_user:
@@ -45,7 +45,7 @@ class IncrementalMF(Base):
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
@@ -67,8 +67,8 @@ class IncrementalMF(Base):
         self.users[u_index]['vec'] = next_u_vec
         self.Q[i_index] = next_i_vec
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         pred = np.dot(self.users[d['u_index']]['vec'], self.Q[target_i_indices, :].T)
         scores = np.abs(1. - pred.flatten())
 
-        return self._Base__scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, target_i_indices)

@@ -1,24 +1,24 @@
-from .base import Base
+from orec.recommender import Recommender
 
 import numpy as np
 
 
-class Random(Base):
+class Random(Recommender):
 
     """Random baseline
     """
 
     def __init__(self):
-        self._Base__clear()
+        self.clear()
 
-    def _Base__clear(self):
+    def clear(self):
         self.n_user = 0
         self.users = {}
 
         self.n_item = 0
         self.items = {}
 
-    def _Base__check(self, d):
+    def check(self, d):
         u_index = d['u_index']
         is_new_user = u_index not in self.users
         if is_new_user:
@@ -33,9 +33,9 @@ class Random(Base):
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         return
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         scores = np.random.rand(len(target_i_indices))
-        return self._Base__scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, target_i_indices)

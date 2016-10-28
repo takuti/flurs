@@ -1,4 +1,4 @@
-from .base import Base
+from orec.recommender import Recommender
 
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
@@ -13,7 +13,7 @@ import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class IncrementalFMs(Base):
+class IncrementalFMs(Recommender):
 
     """Incremental Factorization Machines
     """
@@ -32,9 +32,9 @@ class IncrementalFMs(Base):
         self.l2_reg_V = np.ones(k) * l2_reg_V
         self.learn_rate = learn_rate
 
-        self._Base__clear()
+        self.clear()
 
-    def _Base__clear(self):
+    def clear(self):
         self.n_user = 0
         self.users = {}
 
@@ -53,7 +53,7 @@ class IncrementalFMs(Base):
         self.prev_w = self.w.copy()
         self.prev_V = self.V.copy()
 
-    def _Base__check(self, d):
+    def check(self, d):
         u_index = d['u_index']
         is_new_user = u_index not in self.users
         if is_new_user:
@@ -100,7 +100,7 @@ class IncrementalFMs(Base):
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
@@ -156,7 +156,7 @@ class IncrementalFMs(Base):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -191,4 +191,4 @@ class IncrementalFMs(Base):
 
         scores = np.abs(1. - np.ravel(pred))
 
-        return self._Base__scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, target_i_indices)

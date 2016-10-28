@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from .base import Base
+from orec.recommender import Recommender
 
 import numpy as np
 import numpy.linalg as ln
@@ -155,7 +155,7 @@ class TensorSketchProjection(BaseProjection):
         return sketch1, sketch2
 
 
-class OnlineSketch(Base):
+class OnlineSketch(Recommender):
 
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """
@@ -182,9 +182,9 @@ class OnlineSketch(Base):
         constructor = globals()[proj]
         self.proj = constructor(self.k, self.p)
 
-        self._Base__clear()
+        self.clear()
 
-    def _Base__clear(self):
+    def clear(self):
         self.n_user = 0
         self.users = {}
 
@@ -193,7 +193,7 @@ class OnlineSketch(Base):
 
         self.i_mat = sp.csr_matrix([])
 
-    def _Base__check(self, d):
+    def check(self, d):
 
         u_index = d['u_index']
         is_new_user = u_index not in self.users
@@ -215,7 +215,7 @@ class OnlineSketch(Base):
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         y = np.concatenate((d['user'], d['others'], d['item']))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
@@ -244,7 +244,7 @@ class OnlineSketch(Base):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -267,7 +267,7 @@ class OnlineSketch(Base):
 
         scores = ln.norm(A, axis=0, ord=2)
 
-        return self._Base__scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, target_i_indices)
 
 
 class OnlineRandomSketch(OnlineSketch):
@@ -276,7 +276,7 @@ class OnlineRandomSketch(OnlineSketch):
     [WIP] many matrix multiplications are computational heavy
     """
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         y = np.concatenate((d['user'], d['others'], d['item']))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
@@ -320,7 +320,7 @@ class OnlineSparseSketch(OnlineSketch):
     """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices
     """
 
-    def _Base__update(self, d, is_batch_train=False):
+    def update(self, d, is_batch_train=False):
         y = np.concatenate((d['user'], d['others'], d['item']))
         y = self.proj.reduce(np.array([y]).T)
         y = preprocessing.normalize(y, norm='l2', axis=0)  # (k, 1)

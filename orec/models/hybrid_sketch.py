@@ -12,23 +12,23 @@ class HybridSketch(OnlineSketch):
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """
 
-    def _Base__clear(self):
-        super()._Base__clear()
+    def clear(self):
+        super().clear()
         self.freq = np.array([])
 
-    def _Base__check(self, d):
-        is_new_user, is_new_item = super()._Base__check(d)
+    def check(self, d):
+        is_new_user, is_new_item = super().check(d)
 
         if is_new_item:
             self.freq = np.append(self.freq, 0)
 
         return is_new_user, is_new_item
 
-    def _Base__update(self, d, is_batch_train=False):
-        super()._Base__update(d, is_batch_train)
+    def update(self, d, is_batch_train=False):
+        super().update(d, is_batch_train)
         self.freq[d['i_index']] += 1
 
-    def _Base__recommend(self, d, target_i_indices):
+    def recommend(self, d, target_i_indices):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -52,7 +52,7 @@ class HybridSketch(OnlineSketch):
         scores = ln.norm(A, axis=0, ord=2)
 
         if min(scores) < 0.05:
-            return self._Base__scores2recos(scores, target_i_indices)
+            return self.scores2recos(scores, target_i_indices)
         else:
             sorted_indices = np.argsort(self.freq[target_i_indices])[::-1]
             return target_i_indices[sorted_indices], self.freq[target_i_indices][sorted_indices]
