@@ -19,28 +19,17 @@ class Recommender:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self, n_item, **params):
+    def __init__(self, **params):
         """Set/initialize parameters.
 
-        Args:
-            n_item (int): Number of pre-defined items.
-
         """
-        self.n_item = n_item
-
-        # set parameters
-        self.params = params
-
-        # initialize models and user/item information
-        self.__clear()
+        pass
 
     @abstractmethod
     def clear(self):
         """Initialize model parameters and user/item info.
 
         """
-        self.n_user = 0
-        self.users = {}
         pass
 
     @abstractmethod
@@ -50,12 +39,6 @@ class Recommender:
         For new users/items, append their information into the dictionaries.
 
         """
-        u_index = d['u_index']
-
-        if u_index not in self.users:
-            self.users[u_index] = {'observed': set()}
-            self.n_user += 1
-
         pass
 
     @abstractmethod
