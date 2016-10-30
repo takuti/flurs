@@ -1,11 +1,11 @@
-from orec.recommender import Recommender
+from orec.recommender.recommender import Recommender
 
 import numpy as np
 
 
-class Popular(Recommender):
+class Random(Recommender):
 
-    """Popularity (non-personalized) baseline
+    """Random baseline
     """
 
     def __init__(self):
@@ -18,8 +18,6 @@ class Popular(Recommender):
         self.n_item = 0
         self.items = {}
 
-        self.freq = np.array([])
-
     def check(self, u, i, u_feature, i_feature):
         is_new_user = u not in self.users
         if is_new_user:
@@ -30,13 +28,12 @@ class Popular(Recommender):
         if is_new_item:
             self.items[i] = {}
             self.n_item += 1
-            self.freq = np.append(self.freq, 0)
 
         return is_new_user, is_new_item
 
     def update(self, u, i, r, context=np.array([]), is_batch_train=False):
-        self.freq[i] += 1
+        return
 
     def recommend(self, u, target_i_indices, context=np.array([])):
-        sorted_indices = np.argsort(self.freq[target_i_indices])[::-1]
-        return target_i_indices[sorted_indices], self.freq[target_i_indices][sorted_indices]
+        scores = np.random.rand(len(target_i_indices))
+        return self.scores2recos(scores, target_i_indices)

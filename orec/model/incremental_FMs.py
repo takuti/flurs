@@ -1,4 +1,4 @@
-from orec.recommender import Recommender
+from orec.recommender.recommender import Recommender
 
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)

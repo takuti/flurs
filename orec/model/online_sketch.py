@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from orec.recommender import Recommender
+from orec.recommender.recommender import Recommender
 
 import numpy as np
 import numpy.linalg as ln
