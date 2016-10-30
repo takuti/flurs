@@ -39,7 +39,7 @@ class Recommender:
         For new users/items, append their information into the dictionaries.
 
         """
-        pass
+        return
 
     @abstractmethod
     def update(self, d, is_batch_train):
