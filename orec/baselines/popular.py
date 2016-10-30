@@ -20,25 +20,23 @@ class Popular(Recommender):
 
         self.freq = np.array([])
 
-    def check(self, d):
-        u_index = d['u_index']
-        is_new_user = u_index not in self.users
+    def check(self, u, i, u_feature, i_feature):
+        is_new_user = u not in self.users
         if is_new_user:
-            self.users[u_index] = {'observed': set()}
+            self.users[u] = {'observed': set()}
             self.n_user += 1
 
-        i_index = d['i_index']
-        is_new_item = i_index not in self.items
+        is_new_item = i not in self.items
         if is_new_item:
-            self.items[i_index] = {}
+            self.items[i] = {}
             self.n_item += 1
             self.freq = np.append(self.freq, 0)
 
         return is_new_user, is_new_item
 
-    def update(self, d, is_batch_train=False):
-        self.freq[d['i_index']] += 1
+    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+        self.freq[i] += 1
 
-    def recommend(self, d, target_i_indices):
+    def recommend(self, u, target_i_indices, context=np.array([])):
         sorted_indices = np.argsort(self.freq[target_i_indices])[::-1]
         return target_i_indices[sorted_indices], self.freq[target_i_indices][sorted_indices]

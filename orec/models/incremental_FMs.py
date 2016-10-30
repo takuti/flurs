@@ -53,9 +53,8 @@ class IncrementalFMs(Recommender):
         self.prev_w = self.w.copy()
         self.prev_V = self.V.copy()
 
-    def check(self, d):
-        u_index = d['u_index']
-        is_new_user = u_index not in self.users
+    def check(self, u, i, u_feature, i_feature):
+        is_new_user = u not in self.users
         if is_new_user:
             # insert new user's row for the parameters
             self.w = np.concatenate((self.w[:self.n_user], np.array([0.]), self.w[self.n_user:]))
@@ -65,13 +64,12 @@ class IncrementalFMs(Recommender):
             self.V = np.concatenate((self.V[:self.n_user], rand_row, self.V[self.n_user:]))
             self.prev_V = np.concatenate((self.prev_V[:self.n_user], rand_row, self.prev_V[self.n_user:]))
 
-            self.users[u_index] = {'observed': set()}
+            self.users[u] = {'observed': set(), 'feature': u_feature}
 
             self.n_user += 1
             self.p += 1
 
-        i_index = d['i_index']
-        is_new_item = i_index not in self.items
+        is_new_item = i not in self.items
         if is_new_item:
             # insert new item's row for the parameters
             h = self.n_user + self.n_item
@@ -83,9 +81,9 @@ class IncrementalFMs(Recommender):
             self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
 
             # update the item matrix for all items
-            i = np.concatenate((np.zeros(self.n_item + 1), d['item']))
-            i[i_index] = 1.
-            sp_i_vec = sp.csr_matrix(np.array([i]).T)
+            i_vec = np.concatenate((np.zeros(self.n_item + 1), i_feature))
+            i_vec[i] = 1.
+            sp_i_vec = sp.csr_matrix(np.array([i_vec]).T)
 
             if self.i_mat.size == 0:
                 self.i_mat = sp_i_vec
@@ -93,31 +91,31 @@ class IncrementalFMs(Recommender):
                 self.i_mat = sp.vstack((self.i_mat[:self.n_item], np.zeros((1, self.n_item)), self.i_mat[self.n_item:]))
                 self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
 
-            self.items[i_index] = {}
+            self.items[i] = {'feature': i_feature}
 
             self.n_item += 1
             self.p += 1
 
         return is_new_user, is_new_item
 
-    def update(self, d, is_batch_train=False):
+    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
 
         # create user/item ID vector
         x = np.zeros(self.n_user + self.n_item)
-        x[d['u_index']] = x[self.n_user + d['i_index']] = 1.
+        x[u] = x[self.n_user + i] = 1.
 
         # append contextual variables
-        x = np.concatenate((x, d['user'], d['others'], d['item']))
+        x = np.concatenate((x, self.users[u]['feature'], context, self.items[i]['feature']))
 
         x_vec = np.array([x]).T  # p x 1
         interaction = np.sum(np.dot(self.V.T, x_vec) ** 2 - np.dot(self.V.T ** 2, x_vec ** 2)) / 2.
         pred = self.w0 + np.inner(self.w, x) + interaction
 
         # compute current error
-        err = d['y'] - pred
+        err = r - pred
 
         # update regularization parameters
         coeff = 4. * self.learn_rate * err * self.learn_rate
@@ -156,7 +154,7 @@ class IncrementalFMs(Recommender):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def recommend(self, d, target_i_indices):
+    def recommend(self, u, target_i_indices, context=np.array([])):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -164,8 +162,8 @@ class IncrementalFMs(Recommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user + n_user_context, n_item) for the target user
-        u = np.concatenate((np.zeros(self.n_user), d['user'], d['others']))
-        u[d['u_index']] = 1.
+        u = np.concatenate((np.zeros(self.n_user), self.users[u]['feature'], context))
+        u[u] = 1.
         u_vec = np.array([u]).T
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 

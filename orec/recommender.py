@@ -33,33 +33,42 @@ class Recommender:
         pass
 
     @abstractmethod
-    def check(self, d):
+    def check(self, u, i, u_feature, i_feature):
         """Check if user/item is new.
 
         For new users/items, append their information into the dictionaries.
+
+        Args:
+            u (int): User index.
+            i (int): Item index.
+
+        Returns:
+            (boolean, boolean) : (whether user is new, whether item is new)
 
         """
         return
 
     @abstractmethod
-    def update(self, d, is_batch_train):
+    def update(self, u, i, r, context, is_batch_train):
         """Update model parameters based on d, a sample represented as a dictionary.
 
         Args:
-            d (dict): A dictionary which has data of a sample.
+            u (int): User index.
+            i (int): Item index.
+            r (float): Observed true value.
 
         """
         pass
 
     @abstractmethod
-    def recommend(self, d, target_i_indices):
+    def recommend(self, u, target_i_indices, context):
         """Recommend items for a user represented as a dictionary d.
 
         First, scores are computed.
         Next, `self.__scores2recos()` is called to convert the scores into a recommendation list.
 
         Args:
-            d (dict): A dictionary which has data of a sample.
+            u (int): Target user index.
             target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
 
         Returns:
