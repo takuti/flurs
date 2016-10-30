@@ -1,4 +1,4 @@
-from orec.recommender.recommender import Recommender
+from orec.recommender.feature_recommender import FeatureRecommender
 
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
@@ -13,7 +13,7 @@ import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class IncrementalFMs(Recommender):
+class IncrementalFMs(FeatureRecommender):
 
     """Incremental Factorization Machines
     """
@@ -98,7 +98,7 @@ class IncrementalFMs(Recommender):
 
         return is_new_user, is_new_item
 
-    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+    def update(self, u, i, r, context, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
@@ -154,7 +154,7 @@ class IncrementalFMs(Recommender):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def recommend(self, u, target_i_indices, context=np.array([])):
+    def recommend(self, u, target_i_indices, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]

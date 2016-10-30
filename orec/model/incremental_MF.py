@@ -28,7 +28,7 @@ class IncrementalMF(Recommender):
 
         self.Q = np.array([])
 
-    def check(self, u, i, u_feature, i_feature):
+    def check(self, u, i):
         is_new_user = u not in self.users
         if is_new_user:
             self.users[u] = {'vec': np.random.normal(0., 0.1, self.k), 'observed': set()}
@@ -43,7 +43,7 @@ class IncrementalMF(Recommender):
 
         return is_new_user, is_new_item
 
-    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+    def update(self, u, i, r, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
@@ -62,7 +62,7 @@ class IncrementalMF(Recommender):
         self.users[u]['vec'] = next_u_vec
         self.Q[i] = next_i_vec
 
-    def recommend(self, u, target_i_indices, context):
+    def recommend(self, u, target_i_indices):
         pred = np.dot(self.users[u]['vec'], self.Q[target_i_indices, :].T)
         scores = np.abs(1. - pred.flatten())
 

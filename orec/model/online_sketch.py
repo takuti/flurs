@@ -1,4 +1,4 @@
-from orec.recommender.recommender import Recommender
+from orec.recommender.feature_recommender import FeatureRecommender
 # from orec.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
 
 import numpy as np
@@ -8,7 +8,7 @@ from sklearn import preprocessing
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class OnlineSketch(Recommender):
+class OnlineSketch(FeatureRecommender):
 
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """
@@ -66,7 +66,7 @@ class OnlineSketch(Recommender):
 
         return is_new_user, is_new_item
 
-    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+    def update(self, u, i, r, context, is_batch_train=False):
         y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
@@ -95,7 +95,7 @@ class OnlineSketch(Recommender):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def recommend(self, u, target_i_indices, context=np.array([])):
+    def recommend(self, u, target_i_indices, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -127,7 +127,7 @@ class OnlineRandomSketch(OnlineSketch):
     [WIP] many matrix multiplications are computational heavy
     """
 
-    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+    def update(self, u, i, r, context, is_batch_train=False):
         y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
@@ -171,7 +171,7 @@ class OnlineSparseSketch(OnlineSketch):
     """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices
     """
 
-    def update(self, u, i, r, context=np.array([]), is_batch_train=False):
+    def update(self, u, i, r, context, is_batch_train=False):
         y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
         y = self.proj.reduce(np.array([y]).T)
         y = preprocessing.normalize(y, norm='l2', axis=0)  # (k, 1)
