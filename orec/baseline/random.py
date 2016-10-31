@@ -25,7 +25,7 @@ class Random(recommender.Recommender):
         super().add_item(i)
 
     def update(self, u, i, r, is_batch_train=False):
-        return
+        pass
 
     def recommend(self, u, target_i_indices):
         scores = np.random.rand(len(target_i_indices))
