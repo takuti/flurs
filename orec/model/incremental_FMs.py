@@ -1,4 +1,4 @@
-from orec.recommender.feature_recommender import FeatureRecommender
+from orec.recommender import feature_recommender
 
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
@@ -13,7 +13,7 @@ import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class IncrementalFMs(FeatureRecommender):
+class IncrementalFMs(feature_recommender.FeatureRecommender):
 
     """Incremental Factorization Machines
     """

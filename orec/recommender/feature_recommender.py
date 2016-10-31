@@ -1,4 +1,4 @@
-from orec.recommender.recommender import Recommender
+from orec.recommender import recommender
 
 from abc import ABCMeta, abstractmethod
 
@@ -11,7 +11,7 @@ logger.setLevel(DEBUG)
 logger.addHandler(handler)
 
 
-class FeatureRecommender(Recommender):
+class FeatureRecommender(recommender.Recommender):
 
     """Base class for experimentation of the incremental models with positive-only feedback.
 

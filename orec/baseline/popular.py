@@ -1,9 +1,9 @@
-from orec.recommender.recommender import Recommender
+from orec.recommender import recommender
 
 import numpy as np
 
 
-class Popular(Recommender):
+class Popular(recommender.Recommender):
 
     """Popularity (non-personalized) baseline
     """

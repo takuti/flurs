@@ -1,4 +1,4 @@
-from orec.recommender.feature_recommender import FeatureRecommender
+from orec.recommender import feature_recommender
 # from orec.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
 
 import numpy as np
@@ -8,7 +8,7 @@ from sklearn import preprocessing
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class OnlineSketch(FeatureRecommender):
+class OnlineSketch(feature_recommender.FeatureRecommender):
 
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """

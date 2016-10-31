@@ -1,9 +1,9 @@
-from orec.recommender.recommender import Recommender
+from orec.recommender import recommender
 
 import numpy as np
 
 
-class Random(Recommender):
+class Random(recommender.Recommender):
 
     """Random baseline
     """
