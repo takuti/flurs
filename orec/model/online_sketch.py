@@ -46,25 +46,17 @@ class OnlineSketch(FeatureRecommender):
 
         self.i_mat = sp.csr_matrix([])
 
-    def check(self, u, i, u_feature, i_feature):
+    def add_user(self, u, feature):
+        super().add_user(u, feature)
 
-        is_new_user = u not in self.users
-        if is_new_user:
-            self.users[u] = {'observed': set(), 'feature': u_feature}
-            self.n_user += 1
+    def add_item(self, i, feature):
+        super().add_item(i, feature)
 
-        is_new_item = i not in self.items
-        if is_new_item:
-            self.items[i] = {'feature': i_feature}
-            self.n_item += 1
-
-            i_vec = sp.csr_matrix(np.array([i_feature]).T)
-            if self.i_mat.size == 0:
-                self.i_mat = i_vec
-            else:
-                self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
-
-        return is_new_user, is_new_item
+        i_vec = sp.csr_matrix(np.array([feature]).T)
+        if self.i_mat.size == 0:
+            self.i_mat = i_vec
+        else:
+            self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
 
     def update(self, u, i, r, context, is_batch_train=False):
         y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))

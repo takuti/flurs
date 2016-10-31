@@ -53,50 +53,47 @@ class IncrementalFMs(FeatureRecommender):
         self.prev_w = self.w.copy()
         self.prev_V = self.V.copy()
 
-    def check(self, u, i, u_feature, i_feature):
-        is_new_user = u not in self.users
-        if is_new_user:
-            # insert new user's row for the parameters
-            self.w = np.concatenate((self.w[:self.n_user], np.array([0.]), self.w[self.n_user:]))
-            self.prev_w = np.concatenate((self.prev_w[:self.n_user], np.array([0.]), self.prev_w[self.n_user:]))
+    def add_user(self, u, feature):
+        super().add_user(u, feature)
 
-            rand_row = np.random.normal(0., 0.1, (1, self.k))
-            self.V = np.concatenate((self.V[:self.n_user], rand_row, self.V[self.n_user:]))
-            self.prev_V = np.concatenate((self.prev_V[:self.n_user], rand_row, self.prev_V[self.n_user:]))
+        n_user = self.n_user - 1
 
-            self.users[u] = {'observed': set(), 'feature': u_feature}
+        # insert new user's row for the parameters
+        self.w = np.concatenate((self.w[:n_user], np.array([0.]), self.w[n_user:]))
+        self.prev_w = np.concatenate((self.prev_w[:n_user], np.array([0.]), self.prev_w[n_user:]))
 
-            self.n_user += 1
-            self.p += 1
+        rand_row = np.random.normal(0., 0.1, (1, self.k))
+        self.V = np.concatenate((self.V[:n_user], rand_row, self.V[n_user:]))
+        self.prev_V = np.concatenate((self.prev_V[:n_user], rand_row, self.prev_V[n_user:]))
 
-        is_new_item = i not in self.items
-        if is_new_item:
-            # insert new item's row for the parameters
-            h = self.n_user + self.n_item
-            self.w = np.concatenate((self.w[:h], np.array([0.]), self.w[h:]))
-            self.prev_w = np.concatenate((self.prev_w[:h], np.array([0.]), self.prev_w[h:]))
+        self.p += 1
 
-            rand_row = np.random.normal(0., 0.1, (1, self.k))
-            self.V = np.concatenate((self.V[:h], rand_row, self.V[h:]))
-            self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
+    def add_item(self, i, feature):
+        super().add_item(i, feature)
 
-            # update the item matrix for all items
-            i_vec = np.concatenate((np.zeros(self.n_item + 1), i_feature))
-            i_vec[i] = 1.
-            sp_i_vec = sp.csr_matrix(np.array([i_vec]).T)
+        n_item = self.n_item - 1
 
-            if self.i_mat.size == 0:
-                self.i_mat = sp_i_vec
-            else:
-                self.i_mat = sp.vstack((self.i_mat[:self.n_item], np.zeros((1, self.n_item)), self.i_mat[self.n_item:]))
-                self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
+        # insert new item's row for the parameters
+        h = self.n_user + n_item
+        self.w = np.concatenate((self.w[:h], np.array([0.]), self.w[h:]))
+        self.prev_w = np.concatenate((self.prev_w[:h], np.array([0.]), self.prev_w[h:]))
 
-            self.items[i] = {'feature': i_feature}
+        rand_row = np.random.normal(0., 0.1, (1, self.k))
+        self.V = np.concatenate((self.V[:h], rand_row, self.V[h:]))
+        self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
 
-            self.n_item += 1
-            self.p += 1
+        # update the item matrix for all items
+        i_vec = np.concatenate((np.zeros(n_item + 1), feature))
+        i_vec[i] = 1.
+        sp_i_vec = sp.csr_matrix(np.array([i_vec]).T)
 
-        return is_new_user, is_new_item
+        if self.i_mat.size == 0:
+            self.i_mat = sp_i_vec
+        else:
+            self.i_mat = sp.vstack((self.i_mat[:n_item], np.zeros((1, n_item)), self.i_mat[n_item:]))
+            self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
+
+        self.p += 1
 
     def update(self, u, i, r, context, is_batch_train=False):
         # static baseline; w/o updating the model

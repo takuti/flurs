@@ -28,20 +28,14 @@ class IncrementalMF(Recommender):
 
         self.Q = np.array([])
 
-    def check(self, u, i):
-        is_new_user = u not in self.users
-        if is_new_user:
-            self.users[u] = {'vec': np.random.normal(0., 0.1, self.k), 'observed': set()}
-            self.n_user += 1
+    def add_user(self, u):
+        super().add_user(u)
+        self.users[u]['vec'] = np.random.normal(0., 0.1, self.k)
 
-        is_new_item = i not in self.items
-        if is_new_item:
-            self.items[i] = {}
-            self.n_item += 1
-            i = np.random.normal(0., 0.1, (1, self.k))
-            self.Q = i if self.Q.size == 0 else np.concatenate((self.Q, i))
-
-        return is_new_user, is_new_item
+    def add_item(self, i):
+        super().add_item(i)
+        i = np.random.normal(0., 0.1, (1, self.k))
+        self.Q = i if self.Q.size == 0 else np.concatenate((self.Q, i))
 
     def update(self, u, i, r, is_batch_train=False):
         # static baseline; w/o updating the model

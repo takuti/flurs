@@ -20,19 +20,12 @@ class Popular(Recommender):
 
         self.freq = np.array([])
 
-    def check(self, u, i):
-        is_new_user = u not in self.users
-        if is_new_user:
-            self.users[u] = {'observed': set()}
-            self.n_user += 1
+    def add_user(self, u):
+        super().add_user(u)
 
-        is_new_item = i not in self.items
-        if is_new_item:
-            self.items[i] = {}
-            self.n_item += 1
-            self.freq = np.append(self.freq, 0)
-
-        return is_new_user, is_new_item
+    def add_item(self, i):
+        super().add_item()
+        self.freq = np.append(self.freq, 0)
 
     def update(self, u, i, r, is_batch_train=False):
         self.freq[i] += 1

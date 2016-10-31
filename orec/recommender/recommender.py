@@ -32,21 +32,51 @@ class Recommender:
         """
         pass
 
-    @abstractmethod
-    def check(self, u, i):
-        """Check if user/item is new.
-
-        For new users/items, append their information into the dictionaries.
+    def is_new_user(self, u):
+        """Check if user is new.
 
         Args:
             u (int): User index.
+
+        Returns:
+            boolean: whether user is new
+
+        """
+        return u not in self.users
+
+    @abstractmethod
+    def add_user(self, u):
+        """For new users, append their information into the dictionaries.
+
+        Args:
+            u (int): User index.
+
+        """
+        self.users[u] = {'observed': set()}
+        self.n_user += 1
+
+    def is_new_item(self, i):
+        """Check if item is new.
+
+        Args:
             i (int): Item index.
 
         Returns:
-            (boolean, boolean) : (whether user is new, whether item is new)
+            boolean: whether item is new
 
         """
-        return
+        return i not in self.items
+
+    @abstractmethod
+    def add_item(self, i):
+        """For new items, append their information into the dictionaries.
+
+        Args:
+            i (int): Item index.
+
+        """
+        self.items[i] = {}
+        self.n_item += 1
 
     @abstractmethod
     def update(self, u, i, r, is_batch_train):

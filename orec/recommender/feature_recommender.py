@@ -19,22 +19,28 @@ class FeatureRecommender(Recommender):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def check(self, u, i, u_feature, i_feature):
-        """Check if user/item is new.
-
-        For new users/items, append their information into the dictionaries.
+    def add_user(self, u, feature):
+        """For new users, append their information into the dictionaries.
 
         Args:
             u (int): User index.
-            i (int): Item index.
-            u_feature (numpy 1d array): Feature vector for user.
-            i_feature (numpy 1d array): Feature vector for item.
-
-        Returns:
-            (boolean, boolean) : (whether user is new, whether item is new)
+            feature (numpy 1d array): Feature vector for user.
 
         """
-        return
+        self.users[u] = {'observed': set(), 'feature': feature}
+        self.n_user += 1
+
+    @abstractmethod
+    def add_item(self, i, feature):
+        """For new items, append their information into the dictionaries.
+
+        Args:
+            i (int): Item index.
+            feature (numpy 1d array): Feature vector for item.
+
+        """
+        self.items[i] = {'feature': feature}
+        self.n_item += 1
 
     @abstractmethod
     def update(self, u, i, r, context, is_batch_train):
