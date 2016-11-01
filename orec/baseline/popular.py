@@ -9,15 +9,9 @@ class Popular(recommender.Recommender):
     """
 
     def __init__(self):
-        self.clear()
+        super().__init__()
 
-    def clear(self):
-        self.n_user = 0
-        self.users = {}
-
-        self.n_item = 0
-        self.items = {}
-
+    def init_model(self):
         self.freq = np.array([])
 
     def add_user(self, u):

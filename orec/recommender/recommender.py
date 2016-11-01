@@ -10,16 +10,25 @@ class Recommender:
     """
     __metaclass__ = ABCMeta
 
-    @abstractmethod
-    def __init__(self, **params):
-        """Set/initialize parameters.
+    def __init__(self):
+        # number of observed users
+        self.n_user = 0
 
-        """
-        pass
+        # store user data
+        self.users = {}
+
+        # number of observed items
+        self.n_item = 0
+
+        # store item data
+        self.items = {}
+
+        # initialize model parameters
+        self.init_model()
 
     @abstractmethod
-    def clear(self):
-        """Initialize model parameters and user/item info.
+    def init_model(self):
+        """Initialize model parameters.
 
         """
         pass

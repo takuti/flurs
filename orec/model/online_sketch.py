@@ -14,6 +14,7 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
     """
 
     def __init__(self, contexts, k=40, ell=-1, r=-1, proj='Raw'):
+        super().__init__()
 
         self.contexts = contexts
         self.p = np.sum(list(contexts.values()))
@@ -35,15 +36,7 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
         constructor = globals()[proj]
         self.proj = constructor(self.k, self.p)
 
-        self.clear()
-
-    def clear(self):
-        self.n_user = 0
-        self.users = {}
-
-        self.n_item = 0
-        self.items = {}
-
+    def init_model(self):
         self.i_mat = sp.csr_matrix([])
 
     def add_user(self, u, feature):
