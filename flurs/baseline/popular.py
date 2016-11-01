@@ -1,4 +1,4 @@
-from orec.recommender import recommender
+from flurs.recommender import recommender
 
 import numpy as np
 

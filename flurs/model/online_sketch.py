@@ -1,5 +1,5 @@
-from orec.recommender import feature_recommender
-# from orec.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
+from flurs.recommender import feature_recommender
+# from flurs.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
 
 import numpy as np
 import numpy.linalg as ln

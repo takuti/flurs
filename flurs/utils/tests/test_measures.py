@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from orec.utils import measures
+from flurs.utils import measures
 
 
 class MeasuresTestCase(TestCase):

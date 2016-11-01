@@ -1,4 +1,4 @@
-from orec.recommender import feature_recommender
+from flurs.recommender import feature_recommender
 
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)

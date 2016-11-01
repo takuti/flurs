@@ -2,14 +2,14 @@ from setuptools import setup
 
 
 setup(
-    name='orec',
+    name='flurs',
     version='0.0.1',
-    description='A library for top-k online recommendation from implicit feedback',
+    description='A library for streaming recommender systems',
     author='Takuya Kitazawa',
     author_email='k.takuti@gmail.com',
     license='MIT',
-    url='https://github.com/takuti/orec',
-    packages=['orec'],
+    url='https://github.com/takuti/flurs',
+    packages=['flurs'],
     install_requires=[
         'numpy',
         'scipy',
