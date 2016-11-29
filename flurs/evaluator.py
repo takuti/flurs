@@ -26,7 +26,7 @@ class Evaluator:
         self.recommender = recommender
 
         # initialize models and user/item information
-        recommender.clear()
+        recommender.init_model()
 
     def set_can_repeat(self, can_repeat):
         self.can_repeat = can_repeat
@@ -43,7 +43,7 @@ class Evaluator:
             n_epoch (int): Number of epochs for the batch training.
 
         """
-        self.recommender.clear()
+        self.recommender.init_model()
 
         # make initial status for batch training
         for d in train_samples:
