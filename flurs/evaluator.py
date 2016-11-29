@@ -47,12 +47,14 @@ class Evaluator:
 
         # make initial status for batch training
         for d in train_samples:
-            self.recommender.check(d)
+            self.recommender.valudate_user(d['u_index'], d['user'])
+            self.recommender.valudate_item(d['i_index'], d['item'])
             self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
 
         # for batch evaluation, temporarily save new users info
         for d in test_samples:
-            self.recommender.check(d)
+            self.recommender.valudate_user(d['u_index'], d['user'])
+            self.recommender.valudate_item(d['i_index'], d['item'])
 
         self.batch_update(train_samples, test_samples, n_epoch)
 
@@ -128,7 +130,8 @@ class Evaluator:
 
         """
         for i, d in enumerate(test_samples):
-            self.recommender.check(d)
+            self.recommender.valudate_user(d['u_index'], d['user'])
+            self.recommender.valudate_item(d['i_index'], d['item'])
 
             u_index = d['u_index']
             i_index = d['i_index']
