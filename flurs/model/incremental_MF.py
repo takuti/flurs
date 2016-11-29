@@ -9,8 +9,6 @@ class IncrementalMF(recommender.Recommender):
     """
 
     def __init__(self, is_static=False, k=40, l2_reg=.01, learn_rate=.003):
-        super().__init__()
-
         # if True, parameters will not be updated in evaluation
         self.is_static = is_static
 
@@ -18,6 +16,8 @@ class IncrementalMF(recommender.Recommender):
         self.l2_reg_u = l2_reg
         self.l2_reg_i = l2_reg
         self.learn_rate = learn_rate
+
+        super().__init__()
 
     def init_model(self):
         self.Q = np.array([])

@@ -20,8 +20,6 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
 
     def __init__(
             self, contexts, is_static=False, k=40, l2_reg_w0=2., l2_reg_w=8., l2_reg_V=16., learn_rate=.004):
-        super().__init__()
-
         self.contexts = contexts
         self.p = np.sum(list(contexts.values()))
 
@@ -32,6 +30,8 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
         self.l2_reg_w = l2_reg_w
         self.l2_reg_V = np.ones(k) * l2_reg_V
         self.learn_rate = learn_rate
+
+        super().__init__()
 
     def init_model(self):
         self.i_mat = sp.csr_matrix([])
