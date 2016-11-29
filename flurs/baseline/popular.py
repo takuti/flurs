@@ -18,7 +18,7 @@ class Popular(recommender.Recommender):
         super().add_user(u)
 
     def add_item(self, i):
-        super().add_item()
+        super().add_item(i)
         self.freq = np.append(self.freq, 0)
 
     def update(self, u, i, r, is_batch_train=False):
