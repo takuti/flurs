@@ -116,7 +116,7 @@ class Recommender:
         """
         return
 
-    def __scores2recos(self, scores, target_i_indices):
+    def scores2recos(self, scores, target_i_indices):
         """Get recommendation list for a user u_index based on scores.
 
         Args:
