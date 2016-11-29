@@ -9,7 +9,11 @@ setup(
     author_email='k.takuti@gmail.com',
     license='MIT',
     url='https://github.com/takuti/flurs',
-    packages=['flurs'],
+    packages=['flurs',
+              'flurs.recommender',
+              'flurs.baseline',
+              'flurs.model',
+              'flurs.utils'],
     install_requires=[
         'numpy',
         'scipy',
