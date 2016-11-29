@@ -22,6 +22,10 @@ class FeatureRecommender(recommender.Recommender):
         self.users[u] = {'observed': set(), 'feature': feature}
         self.n_user += 1
 
+    def valudate_user(self, u, feature):
+        if self.is_new_user(u):
+            self.add_user(u, feature)
+
     @abstractmethod
     def add_item(self, i, feature):
         """For new items, append their information into the dictionaries.
@@ -33,6 +37,10 @@ class FeatureRecommender(recommender.Recommender):
         """
         self.items[i] = {'feature': feature}
         self.n_item += 1
+
+    def valudate_item(self, i, feature):
+        if self.is_new_item(i):
+            self.add_item(i, feature)
 
     @abstractmethod
     def update(self, u, i, r, context, is_batch_train):

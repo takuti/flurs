@@ -56,6 +56,10 @@ class Recommender:
         self.users[u] = {'observed': set()}
         self.n_user += 1
 
+    def valudate_user(self, u, feature):
+        if self.is_new_user(u):
+            self.add_user(u)
+
     def is_new_item(self, i):
         """Check if item is new.
 
@@ -78,6 +82,10 @@ class Recommender:
         """
         self.items[i] = {}
         self.n_item += 1
+
+    def valudate_item(self, i, feature):
+        if self.is_new_item(i):
+            self.add_item(i)
 
     @abstractmethod
     def update(self, u, i, r, is_batch_train):
