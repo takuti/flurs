@@ -62,7 +62,7 @@ class Evaluator:
         # the model is incrementally updated based on them before the incremental evaluation step
         for d in test_samples:
             self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
-            self.recommender.update(d)
+            self.recommender.update(d['u_index'], d['i_index'], d['y'])
 
     def batch_update(self, train_samples, test_samples, n_epoch):
         """Batch update called by the fitting method.
@@ -82,7 +82,7 @@ class Evaluator:
 
             # 20%: update models
             for d in train_samples:
-                self.recommender.update(d, is_batch_train=True)
+                self.recommender.update(d['u_index'], d['i_index'], d['y'], is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.batch_evaluate(test_samples)
@@ -154,7 +154,7 @@ class Evaluator:
             # Step 2: update the model with the observed event
             self.recommender.users[u_index]['observed'].add(i_index)
             start = time.clock()
-            self.recommender.update(d)
+            self.recommender.update(d['u_index'], d['i_index'], d['y'])
             update_time = (time.clock() - start)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
