@@ -112,7 +112,7 @@ class Evaluator:
                 unobserved.add(d['i_index'])
 
             target_i_indices = np.asarray(list(unobserved))
-            recos, scores = self.recommender.recommend(d, target_i_indices)
+            recos, scores = self.recommender.recommend(d['u_index'], target_i_indices)
 
             pos = np.where(recos == d['i_index'])[0][0]
             percentiles[i] = pos / (len(recos) - 1) * 100
@@ -146,7 +146,7 @@ class Evaluator:
 
             # make top-{at} recommendation for the 1001 items
             start = time.clock()
-            recos, scores = self.recommender.recommend(d, target_i_indices)
+            recos, scores = self.recommender.recommend(d['u_index'], target_i_indices)
             recommend_time = (time.clock() - start)
 
             rank = np.where(recos == i_index)[0][0]
