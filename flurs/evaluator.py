@@ -9,6 +9,8 @@ logger.addHandler(handler)
 import time
 import numpy as np
 
+from flurs.recommender import feature_recommender
+
 
 class Evaluator:
 
@@ -24,12 +26,27 @@ class Evaluator:
 
         """
         self.recommender = recommender
+        self.is_feature_recommender = issubclass(recommender.__class__, feature_recommender.FeatureRecommender)
 
         # initialize models and user/item information
         recommender.init_model()
 
     def set_can_repeat(self, can_repeat):
         self.can_repeat = can_repeat
+
+    def update(self, d, is_batch_train=False):
+        if self.is_feature_recommender:
+            self.recommender.update(d['u_index'], d['i_index'], d['y'], d['others'],
+                                    is_batch_train=is_batch_train)
+        else:
+            self.recommender.update(d['u_index'], d['i_index'], d['y'],
+                                    is_batch_train=is_batch_train)
+
+    def recommend(self, d, target_i_indices):
+        if self.is_feature_recommender:
+            return self.recommender.recommend(d['u_index'], target_i_indices, d['others'])
+        else:
+            return self.recommender.recommend(d['u_index'], target_i_indices)
 
     def fit(self, train_samples, test_samples, n_epoch=1):
         """Train a model using the first 30% positive samples to avoid cold-start.
@@ -62,7 +79,7 @@ class Evaluator:
         # the model is incrementally updated based on them before the incremental evaluation step
         for d in test_samples:
             self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
-            self.recommender.update(d['u_index'], d['i_index'], d['y'])
+            self.update(d)
 
     def batch_update(self, train_samples, test_samples, n_epoch):
         """Batch update called by the fitting method.
@@ -82,7 +99,7 @@ class Evaluator:
 
             # 20%: update models
             for d in train_samples:
-                self.recommender.update(d['u_index'], d['i_index'], d['y'], is_batch_train=True)
+                self.update(d, is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.batch_evaluate(test_samples)
@@ -112,7 +129,7 @@ class Evaluator:
                 unobserved.add(d['i_index'])
 
             target_i_indices = np.asarray(list(unobserved))
-            recos, scores = self.recommender.recommend(d['u_index'], target_i_indices)
+            recos, scores = self.recommend(d, target_i_indices)
 
             pos = np.where(recos == d['i_index'])[0][0]
             percentiles[i] = pos / (len(recos) - 1) * 100
@@ -146,7 +163,7 @@ class Evaluator:
 
             # make top-{at} recommendation for the 1001 items
             start = time.clock()
-            recos, scores = self.recommender.recommend(d['u_index'], target_i_indices)
+            recos, scores = self.recommend(d, target_i_indices)
             recommend_time = (time.clock() - start)
 
             rank = np.where(recos == i_index)[0][0]
@@ -154,7 +171,7 @@ class Evaluator:
             # Step 2: update the model with the observed event
             self.recommender.users[u_index]['observed'].add(i_index)
             start = time.clock()
-            self.recommender.update(d['u_index'], d['i_index'], d['y'])
+            self.update(d)
             update_time = (time.clock() - start)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
