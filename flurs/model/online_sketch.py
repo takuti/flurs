@@ -7,6 +7,11 @@ import scipy.sparse as sp
 from sklearn import preprocessing
 from sklearn.utils.extmath import safe_sparse_dot
 
+from flurs.utils.projections import Raw
+from flurs.utils.projections import RandomProjection
+from flurs.utils.projections import RandomMaclaurinProjection
+from flurs.utils.projections import TensorSketchProjection
+
 
 class OnlineSketch(feature_recommender.FeatureRecommender):
 
@@ -31,8 +36,14 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
         self.r = int(np.ceil(self.ell / 2)) if r < 1 else np.min(r, self.ell)
 
         # initialize projection instance which is specified by `proj` argument
-        constructor = globals()[proj]
-        self.proj = constructor(self.k, self.p)
+        if proj == 'Raw':
+            self.proj = Raw(self.k, self.p)
+        elif proj == 'RandomProjection':
+            self.proj = RandomProjection(self.k, self.p)
+        elif proj == 'RandomMaclaurinProjection':
+            self.proj = RandomMaclaurinProjection(self.k, self.p)
+        elif proj == 'TensorSketchProjection':
+            self.proj = TensorSketchProjection(self.k, self.p)
 
         super().__init__()
 
