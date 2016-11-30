@@ -1,5 +1,9 @@
 from flurs.recommender import feature_recommender
 
+import numpy as np
+import scipy.sparse as sp
+from sklearn.utils.extmath import safe_sparse_dot
+
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
 handler = StreamHandler()
@@ -7,10 +11,6 @@ handler.setFormatter(Formatter('[%(process)d] %(message)s'))
 handler.setLevel(DEBUG)
 logger.setLevel(DEBUG)
 logger.addHandler(handler)
-
-import numpy as np
-import scipy.sparse as sp
-from sklearn.utils.extmath import safe_sparse_dot
 
 
 class IncrementalFMs(feature_recommender.FeatureRecommender):

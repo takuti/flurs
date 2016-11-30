@@ -52,13 +52,13 @@ class Raw(BaseProjection):
 
     def __init__(self, k, p):
         # k == p
-        self.I = np.identity(p)
+        self.E = np.identity(p)
 
     def insert_proj_col(self, offset):
         pass
 
     def reduce(self, Y):
-        return safe_sparse_dot(self.I, Y)
+        return safe_sparse_dot(self.E, Y)
 
 
 class RandomProjection(BaseProjection):

@@ -1,16 +1,15 @@
 from flurs.recommender import feature_recommender
-# from flurs.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
+
+from flurs.utils.projections import Raw
+from flurs.utils.projections import RandomProjection
+from flurs.utils.projections import RandomMaclaurinProjection
+from flurs.utils.projections import TensorSketchProjection
 
 import numpy as np
 import numpy.linalg as ln
 import scipy.sparse as sp
 from sklearn import preprocessing
 from sklearn.utils.extmath import safe_sparse_dot
-
-from flurs.utils.projections import Raw
-from flurs.utils.projections import RandomProjection
-from flurs.utils.projections import RandomMaclaurinProjection
-from flurs.utils.projections import TensorSketchProjection
 
 
 class OnlineSketch(feature_recommender.FeatureRecommender):
@@ -136,9 +135,9 @@ class OnlineRandomSketch(OnlineSketch):
         j = zero_cols[0] if zero_cols.size != 0 else self.ell - 1  # left-most all-zero column in B
         self.E[:, j] = y
 
-        O = np.random.normal(0., 0.1, (self.k, 100 * self.ell))
+        Gaussian = np.random.normal(0., 0.1, (self.k, 100 * self.ell))
         MM = np.dot(self.E, self.E.T)
-        Q, R = ln.qr(np.dot(MM, O))
+        Q, R = ln.qr(np.dot(MM, Gaussian))
 
         # eig() returns eigen values/vectors with unsorted order
         s, A = ln.eig(np.dot(np.dot(Q.T, MM), Q))
@@ -216,8 +215,8 @@ class OnlineSparseSketch(OnlineSketch):
 
         # shrink step in the Frequent Directions algorithm
         # (shrink singular values based on the squared smallest singular value)
-        l = s_ell[-1] ** 2
-        s_ell = np.sqrt(s_ell ** 2 - l)
+        lambda_ell = s_ell[-1] ** 2
+        s_ell = np.sqrt(s_ell ** 2 - lambda_ell)
 
         return np.dot(H_ell, np.diag(s_ell))
 
@@ -242,8 +241,8 @@ class OnlineSparseSketch(OnlineSketch):
 
         # shrink step in the Frequent Directions algorithm
         # (shrink singular values based on the squared smallest singular value)
-        l = s_ell[-1] ** 2
-        s_ell = np.sqrt(s_ell ** 2 - l)
+        lambda_ell = s_ell[-1] ** 2
+        s_ell = np.sqrt(s_ell ** 2 - lambda_ell)
 
         return np.dot(H_ell, np.diag(s_ell))
 

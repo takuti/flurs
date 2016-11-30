@@ -1,3 +1,8 @@
+from flurs.recommender import feature_recommender
+
+import time
+import numpy as np
+
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
 handler = StreamHandler()
@@ -5,11 +10,6 @@ handler.setFormatter(Formatter('[%(process)d] %(message)s'))
 handler.setLevel(DEBUG)
 logger.setLevel(DEBUG)
 logger.addHandler(handler)
-
-import time
-import numpy as np
-
-from flurs.recommender import feature_recommender
 
 
 class Evaluator:
