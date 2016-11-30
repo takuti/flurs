@@ -25,28 +25,14 @@ class Evaluator:
             recommender (Recommender): Instance of a recommender.
 
         """
-        self.recommender = recommender
-        self.is_feature_recommender = issubclass(recommender.__class__, feature_recommender.FeatureRecommender)
+        self.rec = recommender
+        self.is_feature_rec = issubclass(recommender.__class__, feature_recommender.FeatureRecommender)
 
         # initialize models and user/item information
-        recommender.init_model()
+        self.rec.init_model()
 
     def set_can_repeat(self, can_repeat):
         self.can_repeat = can_repeat
-
-    def update(self, d, is_batch_train=False):
-        if self.is_feature_recommender:
-            self.recommender.update(d['u_index'], d['i_index'], d['y'], d['others'],
-                                    is_batch_train=is_batch_train)
-        else:
-            self.recommender.update(d['u_index'], d['i_index'], d['y'],
-                                    is_batch_train=is_batch_train)
-
-    def recommend(self, d, target_i_indices):
-        if self.is_feature_recommender:
-            return self.recommender.recommend(d['u_index'], target_i_indices, d['others'])
-        else:
-            return self.recommender.recommend(d['u_index'], target_i_indices)
 
     def fit(self, train_samples, test_samples, n_epoch=1):
         """Train a model using the first 30% positive samples to avoid cold-start.
@@ -60,26 +46,24 @@ class Evaluator:
             n_epoch (int): Number of epochs for the batch training.
 
         """
-        self.recommender.init_model()
+        self.rec.init_model()
 
         # make initial status for batch training
         for d in train_samples:
-            self.recommender.valudate_user(d['u_index'], d['user'])
-            self.recommender.valudate_item(d['i_index'], d['item'])
-            self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
+            self.__validate(d)
+            self.rec.users[d['u_index']]['observed'].add(d['i_index'])
 
         # for batch evaluation, temporarily save new users info
         for d in test_samples:
-            self.recommender.valudate_user(d['u_index'], d['user'])
-            self.recommender.valudate_item(d['i_index'], d['item'])
+            self.__validate(d)
 
         self.batch_update(train_samples, test_samples, n_epoch)
 
         # batch test samples are considered as a new observations;
         # the model is incrementally updated based on them before the incremental evaluation step
         for d in test_samples:
-            self.recommender.users[d['u_index']]['observed'].add(d['i_index'])
-            self.update(d)
+            self.rec.users[d['u_index']]['observed'].add(d['i_index'])
+            self.__update(d)
 
     def batch_update(self, train_samples, test_samples, n_epoch):
         """Batch update called by the fitting method.
@@ -99,7 +83,7 @@ class Evaluator:
 
             # 20%: update models
             for d in train_samples:
-                self.update(d, is_batch_train=True)
+                self.__update(d, is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.batch_evaluate(test_samples)
@@ -117,19 +101,19 @@ class Evaluator:
         """
         percentiles = np.zeros(len(test_samples))
 
-        all_items = set(range(self.recommender.n_item))
+        all_items = set(range(self.rec.n_item))
         for i, d in enumerate(test_samples):
 
             # check if the data allows users to interact the same items repeatedly
             unobserved = all_items
             if not self.can_repeat:
                 # make recommendation for all unobserved items
-                unobserved -= self.recommender.users[d['u_index']]['observed']
+                unobserved -= self.rec.users[d['u_index']]['observed']
                 # true item itself must be in the recommendation candidates
                 unobserved.add(d['i_index'])
 
             target_i_indices = np.asarray(list(unobserved))
-            recos, scores = self.recommend(d, target_i_indices)
+            recos, scores = self.__recommend(d, target_i_indices)
 
             pos = np.where(recos == d['i_index'])[0][0]
             percentiles[i] = pos / (len(recos) - 1) * 100
@@ -147,32 +131,71 @@ class Evaluator:
 
         """
         for i, d in enumerate(test_samples):
-            self.recommender.valudate_user(d['u_index'], d['user'])
-            self.recommender.valudate_item(d['i_index'], d['item'])
+            self.__validate(d)
 
             u_index = d['u_index']
             i_index = d['i_index']
 
             # target items (all or unobserved depending on a detaset)
-            unobserved = set(range(self.recommender.n_item))
+            unobserved = set(range(self.rec.n_item))
             if not self.can_repeat:
-                unobserved -= self.recommender.users[u_index]['observed']
+                unobserved -= self.rec.users[u_index]['observed']
                 # * item i interacted by user u must be in the recommendation candidate
                 unobserved.add(i_index)
             target_i_indices = np.asarray(list(unobserved))
 
             # make top-{at} recommendation for the 1001 items
             start = time.clock()
-            recos, scores = self.recommend(d, target_i_indices)
+            recos, scores = self.__recommend(d, target_i_indices)
             recommend_time = (time.clock() - start)
 
             rank = np.where(recos == i_index)[0][0]
 
             # Step 2: update the model with the observed event
-            self.recommender.users[u_index]['observed'].add(i_index)
+            self.rec.users[u_index]['observed'].add(i_index)
             start = time.clock()
-            self.update(d)
+            self.__update(d)
             update_time = (time.clock() - start)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
+
+    def __update(self, d, is_batch_train=False):
+        if self.is_feature_rec:
+            self.rec.update(d['u_index'], d['i_index'], d['y'], d['others'],
+                            is_batch_train=is_batch_train)
+        else:
+            self.rec.update(d['u_index'], d['i_index'], d['y'],
+                            is_batch_train=is_batch_train)
+
+    def __recommend(self, d, target_i_indices):
+        if self.is_feature_rec:
+            return self.rec.recommend(d['u_index'], target_i_indices, d['others'])
+        else:
+            return self.rec.recommend(d['u_index'], target_i_indices)
+
+    def __validate(self, d):
+        self.__validate_user(d)
+        self.__validate_item(d)
+
+    def __validate_user(self, d):
+        u_index = d['u_index']
+
+        if not self.rec.is_new_user(u_index):
+            return
+
+        if self.is_feature_rec:
+            self.rec.add_user(u_index, d['user'])
+        else:
+            self.rec.add_user(u_index)
+
+    def __validate_item(self, d):
+        i_index = d['i_index']
+
+        if not self.rec.is_new_item(i_index):
+            return
+
+        if self.is_feature_rec:
+            self.rec.add_item(i_index, d['item'])
+        else:
+            self.rec.add_item(i_index)
