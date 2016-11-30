@@ -152,9 +152,9 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user + n_user_context, n_item) for the target user
-        u = np.concatenate((np.zeros(self.n_user), self.users[u]['feature'], context))
-        u[u] = 1.
-        u_vec = np.array([u]).T
+        u_vec = np.concatenate((np.zeros(self.n_user), self.users[u]['feature'], context))
+        u_vec[u] = 1.
+        u_vec = np.array([u_vec]).T
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 
         # stack them into (p, n_item) matrix
