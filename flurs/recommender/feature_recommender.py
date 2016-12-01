@@ -22,6 +22,9 @@ class FeatureRecommender(recommender.Recommender):
         self.users[u] = {'observed': set(), 'feature': feature}
         self.n_user += 1
 
+    def update_user_feature(self, u, feature):
+        self.users[u]['feature'] = feature
+
     @abstractmethod
     def add_item(self, i, feature):
         """For new items, append their information into the dictionaries.
@@ -33,6 +36,9 @@ class FeatureRecommender(recommender.Recommender):
         """
         self.items[i] = {'feature': feature}
         self.n_item += 1
+
+    def update_item_feature(self, i, feature):
+        self.items[i]['feature'] = feature
 
     @abstractmethod
     def update(self, u, i, r, context, is_batch_train):

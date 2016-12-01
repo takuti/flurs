@@ -162,6 +162,8 @@ class Evaluator:
 
     def __update(self, d, is_batch_train=False):
         if self.is_feature_rec:
+            self.rec.update_user_feature(d['u_index'], d['user'])
+            self.rec.update_item_feature(d['i_index'], d['item'])
             self.rec.update(d['u_index'], d['i_index'], d['y'], d['others'],
                             is_batch_train=is_batch_train)
         else:
@@ -170,6 +172,8 @@ class Evaluator:
 
     def __recommend(self, d, target_i_indices):
         if self.is_feature_rec:
+            self.rec.update_user_feature(d['u_index'], d['user'])
+            self.rec.update_item_feature(d['i_index'], d['item'])
             return self.rec.recommend(d['u_index'], target_i_indices, d['others'])
         else:
             return self.rec.recommend(d['u_index'], target_i_indices)
