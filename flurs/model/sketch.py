@@ -18,6 +18,8 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
     """
 
     def __init__(self, contexts, k=40, ell=-1, r=-1, proj='Raw'):
+        super().__init__()
+
         self.contexts = contexts
         self.p = np.sum(list(contexts.values()))
 
@@ -44,7 +46,7 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
         elif proj == 'TensorSketchProjection':
             self.proj = TensorSketchProjection(self.k, self.p)
 
-        super().__init__()
+        self.init_model()
 
     def init_model(self):
         self.i_mat = sp.csr_matrix([])

@@ -23,9 +23,6 @@ class Recommender:
         # store item data
         self.items = {}
 
-        # initialize model parameters
-        self.init_model()
-
     @abstractmethod
     def init_model(self):
         """Initialize model parameters.
