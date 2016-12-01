@@ -98,8 +98,8 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user_context, n_item) for the target user
-        u = np.concatenate((self.users[u]['feature'], context))
-        u_vec = np.array([u]).T
+        u_vec = np.concatenate((self.users[u]['feature'], context))
+        u_vec = np.array([u_vec]).T
 
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 
