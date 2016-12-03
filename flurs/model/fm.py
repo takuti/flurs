@@ -48,8 +48,8 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
         self.prev_w = self.w.copy()
         self.prev_V = self.V.copy()
 
-    def add_user(self, u, feature):
-        super().add_user(u, feature)
+    def add_user(self, user):
+        super().add_user(user)
 
         n_user = self.n_user - 1
 
@@ -63,8 +63,8 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
 
         self.p += 1
 
-    def add_item(self, i, feature):
-        super().add_item(i, feature)
+    def add_item(self, item):
+        super().add_item(item)
 
         n_item = self.n_item - 1
 
@@ -78,8 +78,8 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
         self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
 
         # update the item matrix for all items
-        i_vec = np.concatenate((np.zeros(n_item + 1), feature))
-        i_vec[i] = 1.
+        i_vec = np.concatenate((np.zeros(n_item + 1), item.feature))
+        i_vec[item.index] = 1.
         sp_i_vec = sp.csr_matrix(np.array([i_vec]).T)
 
         if self.i_mat.size == 0:
@@ -90,24 +90,24 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
 
         self.p += 1
 
-    def update(self, u, i, r, context, is_batch_train=False):
+    def update(self, e, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
 
         # create user/item ID vector
         x = np.zeros(self.n_user + self.n_item)
-        x[u] = x[self.n_user + i] = 1.
+        x[e.user.index] = x[self.n_user + e.item.index] = 1.
 
         # append contextual variables
-        x = np.concatenate((x, self.users[u]['feature'], context, self.items[i]['feature']))
+        x = np.concatenate((x, e.user.feature, e.context, e.item.feature))
 
         x_vec = np.array([x]).T  # p x 1
         interaction = np.sum(np.dot(self.V.T, x_vec) ** 2 - np.dot(self.V.T ** 2, x_vec ** 2)) / 2.
         pred = self.w0 + np.inner(self.w, x) + interaction
 
         # compute current error
-        err = r - pred
+        err = e.value - pred
 
         # update regularization parameters
         coeff = 4. * self.learn_rate * err * self.learn_rate
@@ -146,7 +146,7 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def recommend(self, u, target_i_indices, context):
+    def recommend(self, user, target_i_indices, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -154,8 +154,8 @@ class IncrementalFMs(feature_recommender.FeatureRecommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user + n_user_context, n_item) for the target user
-        u_vec = np.concatenate((np.zeros(self.n_user), self.users[u]['feature'], context))
-        u_vec[u] = 1.
+        u_vec = np.concatenate((np.zeros(self.n_user), user.feature, context))
+        u_vec[user.index] = 1.
         u_vec = np.array([u_vec]).T
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 

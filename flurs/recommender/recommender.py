@@ -43,14 +43,14 @@ class Recommender:
         return u not in self.users
 
     @abstractmethod
-    def add_user(self, u):
+    def add_user(self, user):
         """For new users, append their information into the dictionaries.
 
         Args:
-            u (int): User index.
+            user (User): User.
 
         """
-        self.users[u] = {'observed': set()}
+        self.users[user.index] = {'observed': set()}
         self.n_user += 1
 
     def is_new_item(self, i):
@@ -66,37 +66,35 @@ class Recommender:
         return i not in self.items
 
     @abstractmethod
-    def add_item(self, i):
+    def add_item(self, item):
         """For new items, append their information into the dictionaries.
 
         Args:
-            i (int): Item index.
+            item (Item): Item.
 
         """
-        self.items[i] = {}
+        self.items[item.index] = {}
         self.n_item += 1
 
     @abstractmethod
-    def update(self, u, i, r, is_batch_train):
+    def update(self, e, is_batch_train):
         """Update model parameters based on d, a sample represented as a dictionary.
 
         Args:
-            u (int): User index.
-            i (int): Item index.
-            r (float): Observed true value.
+            e (Event): Observed event.
 
         """
         pass
 
     @abstractmethod
-    def recommend(self, u, target_i_indices):
+    def recommend(self, user, target_i_indices):
         """Recommend items for a user represented as a dictionary d.
 
         First, scores are computed.
         Next, `self.__scores2recos()` is called to convert the scores into a recommendation list.
 
         Args:
-            u (int): Target user index.
+            user (User): Target user.
             target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
 
         Returns:

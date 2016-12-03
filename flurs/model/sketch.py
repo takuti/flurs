@@ -51,20 +51,20 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
     def init_model(self):
         self.i_mat = sp.csr_matrix([])
 
-    def add_user(self, u, feature):
-        super().add_user(u, feature)
+    def add_user(self, user):
+        super().add_user(user)
 
-    def add_item(self, i, feature):
-        super().add_item(i, feature)
+    def add_item(self, item):
+        super().add_item(item)
 
-        i_vec = sp.csr_matrix(np.array([feature]).T)
+        i_vec = sp.csr_matrix(np.array([item.feature]).T)
         if self.i_mat.size == 0:
             self.i_mat = i_vec
         else:
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
 
-    def update(self, u, i, r, context, is_batch_train=False):
-        y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
+    def update(self, e, is_batch_train=False):
+        y = np.concatenate((e.user.feature, e.context, e.item.feature))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -92,7 +92,7 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def recommend(self, u, target_i_indices, context):
+    def recommend(self, user, target_i_indices, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, target_i_indices]
@@ -100,7 +100,7 @@ class OnlineSketch(feature_recommender.FeatureRecommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user_context, n_item) for the target user
-        u_vec = np.concatenate((self.users[u]['feature'], context))
+        u_vec = np.concatenate((user.feature, context))
         u_vec = np.array([u_vec]).T
 
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
@@ -124,8 +124,8 @@ class OnlineRandomSketch(OnlineSketch):
     [WIP] many matrix multiplications are computational heavy
     """
 
-    def update(self, u, i, r, context, is_batch_train=False):
-        y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
+    def update(self, e, is_batch_train=False):
+        y = np.concatenate((e.user.feature, e.context, e.item.feature))
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -168,8 +168,8 @@ class OnlineSparseSketch(OnlineSketch):
     """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices
     """
 
-    def update(self, u, i, r, context, is_batch_train=False):
-        y = np.concatenate((self.users[u]['feature'], context, self.items[i]['feature']))
+    def update(self, e, is_batch_train=False):
+        y = np.concatenate((e.user.feature, e.context, e.item.feature))
         y = self.proj.reduce(np.array([y]).T)
         y = preprocessing.normalize(y, norm='l2', axis=0)  # (k, 1)
 

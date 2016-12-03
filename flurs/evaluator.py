@@ -63,7 +63,7 @@ class Evaluator:
         # the model is incrementally updated based on them before the incremental evaluation step
         for e in test_events:
             self.rec.users[e.user.index]['observed'].add(e.item.index)
-            self.__update(e)
+            self.rec.update(e)
 
     def batch_update(self, train_events, test_events, n_epoch):
         """Batch update called by the fitting method.
@@ -83,7 +83,7 @@ class Evaluator:
 
             # 20%: update models
             for e in train_events:
-                self.__update(e, is_batch_train=True)
+                self.rec.update(e, is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.batch_evaluate(test_events)
@@ -151,48 +151,26 @@ class Evaluator:
             # Step 2: update the model with the observed event
             self.rec.users[e.user.index]['observed'].add(e.item.index)
             start = time.clock()
-            self.__update(e)
+            self.rec.update(e)
             update_time = (time.clock() - start)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
 
-    def __update(self, e, is_batch_train=False):
-        if self.is_feature_rec:
-            self.rec.update_user_feature(e.user.index, e.user.feature)
-            self.rec.update_item_feature(e.user.index, e.item.feature)
-            self.rec.update(e.user.index, e.item.index, e.value, e.context,
-                            is_batch_train=is_batch_train)
-        else:
-            self.rec.update(e.user.index, e.item.index, e.value,
-                            is_batch_train=is_batch_train)
-
     def __recommend(self, e, target_i_indices):
         if self.is_feature_rec:
-            self.rec.update_user_feature(e.user.index, e.user.feature)
-            self.rec.update_item_feature(e.item.index, e.item.feature)
-            return self.rec.recommend(e.user.index, target_i_indices, e.context)
+            return self.rec.recommend(e.user, target_i_indices, e.context)
         else:
-            return self.rec.recommend(e.user.index, target_i_indices)
+            return self.rec.recommend(e.user, target_i_indices)
 
     def __validate(self, e):
         self.__validate_user(e)
         self.__validate_item(e)
 
     def __validate_user(self, e):
-        if not self.rec.is_new_user(e.user.index):
-            return
-
-        if self.is_feature_rec:
-            self.rec.add_user(e.user.index, e.context)
-        else:
-            self.rec.add_user(e.user.index)
+        if self.rec.is_new_user(e.user.index):
+            self.rec.add_user(e.user)
 
     def __validate_item(self, e):
-        if not self.rec.is_new_item(e.item.index):
-            return
-
-        if self.is_feature_rec:
-            self.rec.add_item(e.item.index, e.item.feature)
-        else:
-            self.rec.add_item(e.item.index)
+        if self.rec.is_new_item(e.item.index):
+            self.rec.add_item(e.item)
