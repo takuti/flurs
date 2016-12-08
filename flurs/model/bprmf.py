@@ -67,6 +67,6 @@ class BPRMF(recommender.Recommender):
     def recommend(self, user, target_i_indices):
         pred = np.dot(self.users[user.index]['vec'],
                       self.Q[target_i_indices, :].T)
-        scores = np.abs(1. - pred.flatten())
+        scores = -pred.flatten()
 
         return self.scores2recos(scores, target_i_indices)
