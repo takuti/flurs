@@ -103,17 +103,22 @@ class Recommender:
         """
         return
 
-    def scores2recos(self, scores, target_i_indices):
+    def scores2recos(self, scores, target_i_indices, rev=False):
         """Get recommendation list for a user u_index based on scores.
 
         Args:
             scores (numpy array; (n_target_items,)):
                 Scores for the target items. Smaller score indicates a promising item.
             target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
+            rev (bool): If true, return items in an descending order. A ascending order (i.e., smaller scores are more promising) is default.
 
         Returns:
             (numpy array, numpy array) : (Sorted list of items, Sorted scores).
 
         """
         sorted_indices = np.argsort(scores)
+
+        if rev:
+            sorted_indices = sorted_indices[::-1]
+
         return target_i_indices[sorted_indices], scores[sorted_indices]
