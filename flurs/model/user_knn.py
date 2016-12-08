@@ -86,7 +86,7 @@ class UserKNN(recommender.Recommender):
             self.users[ua]['mean'] = self.R[ua, ia] / self.users[ua]['count'] + (
                     self.users[ua]['count'] - 1) / self.users[ua]['count'] * prev_mean
         else:
-            self.users[ua]['mean'] = (self.R[ua, ia] - prev_r) / self.users[ua]['count'] + prev_mean
+            self.users[ua]['mean'] = (self.R[ua, ia] - prev_r) / (self.users[ua]['count'] - 1) + prev_mean
 
         d = self.users[ua]['mean'] - prev_mean
 
@@ -107,8 +107,8 @@ class UserKNN(recommender.Recommender):
                     f = ua_normalized ** 2
                     g = uy_normalized ** 2
                 else:
-                    e = d * uy_normalized
-                    f = d ** 2 + 2 * d * ua_normalized
+                    e = (self.R[ua, ia] - prev_r) * uy_normalized
+                    f = (self.R[ua, ia] - prev_r) ** 2 + 2 * (self.R[ua, ia] - prev_r) * ua_normalized
                     g = 0.
 
             for ih in range(self.n_item):
