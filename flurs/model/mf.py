@@ -3,7 +3,7 @@ from flurs.recommender import recommender
 import numpy as np
 
 
-class IncrementalMF(recommender.Recommender):
+class MatrixFactorization(recommender.Recommender):
 
     """Incremental Matrix Factorization
     """

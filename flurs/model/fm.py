@@ -13,7 +13,7 @@ logger.setLevel(DEBUG)
 logger.addHandler(handler)
 
 
-class IncrementalFMs(feature_recommender.FeatureRecommender):
+class FactorizationMachine(feature_recommender.FeatureRecommender):
 
     """Incremental Factorization Machines
     """
