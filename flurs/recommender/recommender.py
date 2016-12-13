@@ -87,6 +87,20 @@ class Recommender:
         pass
 
     @abstractmethod
+    def predict(self, user, item):
+        """Make prediction for a given user-item pair.
+
+        Args:
+            user (User): Target user.
+            item (Item): Target item.
+
+        Returns:
+            float: Predicted value for the given user-item pair.
+
+        """
+        pass
+
+    @abstractmethod
     def recommend(self, user, target_i_indices):
         """Recommend items for a user represented as a dictionary d.
 
