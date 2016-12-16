@@ -18,8 +18,15 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
     """Incremental Factorization Machines
     """
 
-    def __init__(
-            self, contexts, is_static=False, k=40, l2_reg_w0=2., l2_reg_w=8., l2_reg_V=16., learn_rate=.004):
+    def __init__(self,
+                 contexts,
+                 is_static=False,
+                 k=40,
+                 l2_reg_w0=2.,
+                 l2_reg_w=8.,
+                 l2_reg_V=16.,
+                 learn_rate=.004):
+
         super().__init__()
 
         self.contexts = contexts
@@ -54,12 +61,23 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
         n_user = self.n_user - 1
 
         # insert new user's row for the parameters
-        self.w = np.concatenate((self.w[:n_user], np.array([0.]), self.w[n_user:]))
-        self.prev_w = np.concatenate((self.prev_w[:n_user], np.array([0.]), self.prev_w[n_user:]))
+        self.w = np.concatenate((self.w[:n_user],
+                                 np.array([0.]),
+                                 self.w[n_user:]))
+
+        self.prev_w = np.concatenate((self.prev_w[:n_user],
+                                      np.array([0.]),
+                                      self.prev_w[n_user:]))
 
         rand_row = np.random.normal(0., 0.1, (1, self.k))
-        self.V = np.concatenate((self.V[:n_user], rand_row, self.V[n_user:]))
-        self.prev_V = np.concatenate((self.prev_V[:n_user], rand_row, self.prev_V[n_user:]))
+
+        self.V = np.concatenate((self.V[:n_user],
+                                 rand_row,
+                                 self.V[n_user:]))
+
+        self.prev_V = np.concatenate((self.prev_V[:n_user],
+                                      rand_row,
+                                      self.prev_V[n_user:]))
 
         self.p += 1
 
@@ -70,12 +88,24 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
 
         # insert new item's row for the parameters
         h = self.n_user + n_item
-        self.w = np.concatenate((self.w[:h], np.array([0.]), self.w[h:]))
-        self.prev_w = np.concatenate((self.prev_w[:h], np.array([0.]), self.prev_w[h:]))
+
+        self.w = np.concatenate((self.w[:h],
+                                 np.array([0.]),
+                                 self.w[h:]))
+
+        self.prev_w = np.concatenate((self.prev_w[:h],
+                                      np.array([0.]),
+                                      self.prev_w[h:]))
 
         rand_row = np.random.normal(0., 0.1, (1, self.k))
-        self.V = np.concatenate((self.V[:h], rand_row, self.V[h:]))
-        self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
+
+        self.V = np.concatenate((self.V[:h],
+                                 rand_row,
+                                 self.V[h:]))
+
+        self.prev_V = np.concatenate((self.prev_V[:h],
+                                      rand_row,
+                                      self.prev_V[h:]))
 
         # update the item matrix for all items
         i_vec = np.concatenate((np.zeros(n_item + 1), item.feature))
@@ -85,7 +115,9 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
         if self.i_mat.size == 0:
             self.i_mat = sp_i_vec
         else:
-            self.i_mat = sp.vstack((self.i_mat[:n_item], np.zeros((1, n_item)), self.i_mat[n_item:]))
+            self.i_mat = sp.vstack((self.i_mat[:n_item],
+                                    np.zeros((1, n_item)),
+                                    self.i_mat[n_item:]))
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
 
         self.p += 1
@@ -100,7 +132,10 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
         x[e.user.index] = x[self.n_user + e.item.index] = 1.
 
         # append contextual variables
-        x = np.concatenate((x, e.user.feature, e.context, e.item.feature))
+        x = np.concatenate((x,
+                            e.user.feature,
+                            e.context,
+                            e.item.feature))
 
         x_vec = np.array([x]).T  # p x 1
         interaction = np.sum(np.dot(self.V.T, x_vec) ** 2 - np.dot(self.V.T ** 2, x_vec ** 2)) / 2.
@@ -154,14 +189,19 @@ class FactorizationMachine(feature_recommender.FeatureRecommender):
         n_target = len(target_i_indices)
 
         # u_mat will be (n_user + n_user_context, n_item) for the target user
-        u_vec = np.concatenate((np.zeros(self.n_user), user.feature, context))
+        u_vec = np.concatenate((np.zeros(self.n_user),
+                                user.feature,
+                                context))
         u_vec[user.index] = 1.
         u_vec = np.array([u_vec]).T
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 
         # stack them into (p, n_item) matrix
         # rows are ordered by [user ID - item ID - user context - others - item context]
-        mat = sp.vstack((u_mat[:self.n_user], i_mat[:self.n_item], u_mat[self.n_user:], i_mat[self.n_item:]))
+        mat = sp.vstack((u_mat[:self.n_user],
+                         i_mat[:self.n_item],
+                         u_mat[self.n_user:],
+                         i_mat[self.n_item:]))
 
         # Matrix A and B should be dense (numpy array; rather than scipy CSR matrix) because V is dense.
         V = sp.csr_matrix(self.V)
