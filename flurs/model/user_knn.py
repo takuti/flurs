@@ -84,7 +84,7 @@ class UserKNN(Recommender):
         if is_new_submit:
             self.users[ua]['count'] += 1
             self.users[ua]['mean'] = self.R[ua, ia] / self.users[ua]['count'] + (
-                    self.users[ua]['count'] - 1) / self.users[ua]['count'] * prev_mean
+                self.users[ua]['count'] - 1) / self.users[ua]['count'] * prev_mean
         else:
             self.users[ua]['mean'] = (self.R[ua, ia] - prev_r) / (self.users[ua]['count'] - 1) + prev_mean
 
