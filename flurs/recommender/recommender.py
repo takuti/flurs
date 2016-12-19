@@ -87,15 +87,15 @@ class Recommender:
         pass
 
     @abstractmethod
-    def predict(self, user, item):
-        """Make prediction for a given user-item pair.
+    def predict(self, user, candidates):
+        """Make prediction for the pairs of given user and item candidates.
 
         Args:
             user (User): Target user.
-            item (Item): Target item.
+            candidates (numpy array; (# candidates, )): Target item' indices.
 
         Returns:
-            float: Predicted value for the given user-item pair.
+            numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
 
         """
         pass
