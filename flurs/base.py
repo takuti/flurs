@@ -87,8 +87,8 @@ class Recommender:
         pass
 
     @abstractmethod
-    def predict(self, user, candidates):
-        """Make prediction for the pairs of given user and item candidates.
+    def score(self, user, candidates):
+        """Compute scores for the pairs of given user and item candidates.
 
         Args:
             user (User): Target user.
