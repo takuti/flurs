@@ -1,4 +1,4 @@
-from flurs.recommender import feature_recommender
+from flurs.base import FeatureRecommender
 
 import numpy as np
 import scipy.sparse as sp
@@ -13,7 +13,7 @@ logger.setLevel(DEBUG)
 logger.addHandler(handler)
 
 
-class FactorizationMachine(feature_recommender.FeatureRecommender):
+class FactorizationMachine(FeatureRecommender):
 
     """Incremental Factorization Machines
     """

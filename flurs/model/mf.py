@@ -1,9 +1,9 @@
-from flurs.recommender import recommender
+from flurs.base import Recommender
 
 import numpy as np
 
 
-class MatrixFactorization(recommender.Recommender):
+class MatrixFactorization(Recommender):
 
     """Incremental Matrix Factorization
     """

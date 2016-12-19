@@ -1,4 +1,4 @@
-from flurs.recommender import feature_recommender
+from flurs.base import FeatureRecommender
 
 from flurs.utils.projections import Raw
 from flurs.utils.projections import RandomProjection
@@ -12,7 +12,7 @@ from sklearn import preprocessing
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class OnlineSketch(feature_recommender.FeatureRecommender):
+class OnlineSketch(FeatureRecommender):
 
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """

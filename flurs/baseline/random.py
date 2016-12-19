@@ -1,9 +1,9 @@
-from flurs.recommender import recommender
+from flurs.base import Recommender
 
 import numpy as np
 
 
-class Random(recommender.Recommender):
+class Random(Recommender):
 
     """Random baseline
     """
