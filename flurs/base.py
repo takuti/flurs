@@ -101,7 +101,7 @@ class Recommender:
         pass
 
     @abstractmethod
-    def recommend(self, user, target_i_indices):
+    def recommend(self, user, candidates):
         """Recommend items for a user represented as a dictionary d.
 
         First, scores are computed.
@@ -109,7 +109,7 @@ class Recommender:
 
         Args:
             user (User): Target user.
-            target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
+            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
 
         Returns:
             (numpy array, numpy array) : (Sorted list of items, Sorted scores).
@@ -117,13 +117,13 @@ class Recommender:
         """
         return
 
-    def scores2recos(self, scores, target_i_indices, rev=False):
+    def scores2recos(self, scores, candidates, rev=False):
         """Get recommendation list for a user u_index based on scores.
 
         Args:
             scores (numpy array; (n_target_items,)):
                 Scores for the target items. Smaller score indicates a promising item.
-            target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
+            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
             rev (bool): If true, return items in an descending order. A ascending order (i.e., smaller scores are more promising) is default.
 
         Returns:
@@ -135,7 +135,7 @@ class Recommender:
         if rev:
             sorted_indices = sorted_indices[::-1]
 
-        return target_i_indices[sorted_indices], scores[sorted_indices]
+        return candidates[sorted_indices], scores[sorted_indices]
 
 
 class FeatureRecommender(Recommender):
@@ -146,7 +146,7 @@ class FeatureRecommender(Recommender):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def recommend(self, user, target_i_indices, context):
+    def recommend(self, user, candidates, context):
         """Recommend items for a user represented as a dictionary d.
 
         First, scores are computed.
@@ -154,7 +154,7 @@ class FeatureRecommender(Recommender):
 
         Args:
             user (User): Target user.
-            target_i_indices (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
+            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
             context (numpy 1d array): Feature vector representing contextual information.
 
         Returns:

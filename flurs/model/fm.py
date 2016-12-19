@@ -181,12 +181,12 @@ class FactorizationMachine(FeatureRecommender):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def recommend(self, user, target_i_indices, context):
+    def recommend(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
-        i_mat = self.i_mat[:, target_i_indices]
+        i_mat = self.i_mat[:, candidates]
 
-        n_target = len(target_i_indices)
+        n_target = len(candidates)
 
         # u_mat will be (n_user + n_user_context, n_item) for the target user
         u_vec = np.concatenate((np.zeros(self.n_user),
@@ -221,4 +221,4 @@ class FactorizationMachine(FeatureRecommender):
 
         scores = np.abs(1. - np.ravel(pred))
 
-        return self.scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, candidates)

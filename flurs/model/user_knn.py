@@ -123,14 +123,14 @@ class UserKNN(Recommender):
 
         self.S[ua, :] = self.B[ua, :] / (np.sqrt(self.C[ua, :]) * np.sqrt(self.D[ua, :]))
 
-    def recommend(self, user, target_i_indices):
+    def recommend(self, user, candidates):
         ua = user.index
 
         # find k nearest neightbors
         top_uys = np.argsort(self.S[ua, :])[::-1][:self.k]
 
-        pred = np.ones(len(target_i_indices)) * self.users[ua]['mean']
-        for pi, ii in enumerate(target_i_indices):
+        pred = np.ones(len(candidates)) * self.users[ua]['mean']
+        for pi, ii in enumerate(candidates):
             denom = numer = 0.
             for uy in top_uys:
                 numer += ((self.R[uy, ii] - self.users[uy]['mean']) * self.S[ua, uy])
@@ -141,4 +141,4 @@ class UserKNN(Recommender):
         # but `scores2recos` sorts in an ascending order.
         scores = -np.abs(pred)
 
-        return self.scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, candidates)

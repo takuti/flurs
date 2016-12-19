@@ -112,8 +112,8 @@ class Evaluator:
                 # true item itself must be in the recommendation candidates
                 unobserved.add(e.item.index)
 
-            target_i_indices = np.asarray(list(unobserved))
-            recos, scores = self.__recommend(e, target_i_indices)
+            candidates = np.asarray(list(unobserved))
+            recos, scores = self.__recommend(e, candidates)
 
             pos = np.where(recos == e.item.index)[0][0]
             percentiles[i] = pos / (len(recos) - 1) * 100
@@ -139,11 +139,11 @@ class Evaluator:
                 unobserved -= self.rec.users[e.user.index]['observed']
                 # * item i interacted by user u must be in the recommendation candidate
                 unobserved.add(e.item.index)
-            target_i_indices = np.asarray(list(unobserved))
+            candidates = np.asarray(list(unobserved))
 
             # make top-{at} recommendation for the 1001 items
             start = time.clock()
-            recos, scores = self.__recommend(e, target_i_indices)
+            recos, scores = self.__recommend(e, candidates)
             recommend_time = (time.clock() - start)
 
             rank = np.where(recos == e.item.index)[0][0]
@@ -157,11 +157,11 @@ class Evaluator:
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
 
-    def __recommend(self, e, target_i_indices):
+    def __recommend(self, e, candidates):
         if self.is_feature_rec:
-            return self.rec.recommend(e.user, target_i_indices, e.context)
+            return self.rec.recommend(e.user, candidates, e.context)
         else:
-            return self.rec.recommend(e.user, target_i_indices)
+            return self.rec.recommend(e.user, candidates)
 
     def __validate(self, e):
         self.__validate_user(e)

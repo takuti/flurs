@@ -23,6 +23,6 @@ class Random(Recommender):
     def update(self, e, is_batch_train=False):
         pass
 
-    def recommend(self, user, target_i_indices):
-        scores = np.random.rand(len(target_i_indices))
-        return self.scores2recos(scores, target_i_indices)
+    def recommend(self, user, candidates):
+        scores = np.random.rand(len(candidates))
+        return self.scores2recos(scores, candidates)

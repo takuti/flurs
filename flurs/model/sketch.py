@@ -92,12 +92,12 @@ class OnlineSketch(FeatureRecommender):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def recommend(self, user, target_i_indices, context):
+    def recommend(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
-        i_mat = self.i_mat[:, target_i_indices]
+        i_mat = self.i_mat[:, candidates]
 
-        n_target = len(target_i_indices)
+        n_target = len(candidates)
 
         # u_mat will be (n_user_context, n_item) for the target user
         u_vec = np.concatenate((user.feature, context))
@@ -115,7 +115,7 @@ class OnlineSketch(FeatureRecommender):
 
         scores = ln.norm(A, axis=0, ord=2)
 
-        return self.scores2recos(scores, target_i_indices)
+        return self.scores2recos(scores, candidates)
 
 
 class OnlineRandomSketch(OnlineSketch):

@@ -24,6 +24,6 @@ class Popular(Recommender):
     def update(self, e, is_batch_train=False):
         self.freq[e.item.index] += 1
 
-    def recommend(self, user, target_i_indices):
-        sorted_indices = np.argsort(self.freq[target_i_indices])[::-1]
-        return target_i_indices[sorted_indices], self.freq[target_i_indices][sorted_indices]
+    def recommend(self, user, candidates):
+        sorted_indices = np.argsort(self.freq[candidates])[::-1]
+        return candidates[sorted_indices], self.freq[candidates][sorted_indices]
