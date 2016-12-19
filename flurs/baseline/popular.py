@@ -25,5 +25,4 @@ class Popular(Recommender):
         self.freq[e.item.index] += 1
 
     def recommend(self, user, candidates):
-        sorted_indices = np.argsort(self.freq[candidates])[::-1]
-        return candidates[sorted_indices], self.freq[candidates][sorted_indices]
+        return self.scores2recos(self.freq[candidates], candidates, rev=True)
