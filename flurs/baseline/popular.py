@@ -1,9 +1,9 @@
-from flurs.base import Recommender
+from flurs.base import BaseModel, RecommenderMixin
 
 import numpy as np
 
 
-class Popular(Recommender):
+class Popular(BaseModel, RecommenderMixin):
 
     """Popularity (non-personalized) baseline
     """
@@ -11,8 +11,11 @@ class Popular(Recommender):
     def __init__(self):
         super().__init__()
 
-    def init_model(self):
+    def init_params(self):
         self.freq = np.array([])
+
+    def update_params(self, ia):
+        self.freq[ia] += 1
 
     def add_user(self, user):
         super().add_user(user)
@@ -22,7 +25,7 @@ class Popular(Recommender):
         self.freq = np.append(self.freq, 0)
 
     def update(self, e, is_batch_train=False):
-        self.freq[e.item.index] += 1
+        self.update_params(e.item.index)
 
     def score(self, user, candidates):
         return self.freq[candidates]

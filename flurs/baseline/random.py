@@ -1,9 +1,9 @@
-from flurs.base import Recommender
+from flurs.base import BaseModel, RecommenderMixin
 
 import numpy as np
 
 
-class Random(Recommender):
+class Random(BaseModel, RecommenderMixin):
 
     """Random baseline
     """
@@ -11,7 +11,10 @@ class Random(Recommender):
     def __init__(self):
         super().__init__()
 
-    def init_model(self):
+    def init_params(self):
+        pass
+
+    def update_params(self):
         pass
 
     def add_user(self, user):
