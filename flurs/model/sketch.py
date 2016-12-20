@@ -1,4 +1,4 @@
-from flurs.base import FeatureRecommender
+from flurs.base import BaseModel
 
 from flurs.utils.projections import Raw
 from flurs.utils.projections import RandomProjection
@@ -9,10 +9,9 @@ import numpy as np
 import numpy.linalg as ln
 import scipy.sparse as sp
 from sklearn import preprocessing
-from sklearn.utils.extmath import safe_sparse_dot
 
 
-class OnlineSketch(FeatureRecommender):
+class OnlineSketch(BaseModel):
 
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """
@@ -46,25 +45,12 @@ class OnlineSketch(FeatureRecommender):
         elif proj == 'TensorSketchProjection':
             self.proj = TensorSketchProjection(self.k, self.p)
 
-        self.init_model()
+        self.init_params()
 
-    def init_model(self):
+    def init_params(self):
         self.i_mat = sp.csr_matrix([])
 
-    def add_user(self, user):
-        super().add_user(user)
-
-    def add_item(self, item):
-        super().add_item(item)
-
-        i_vec = sp.csr_matrix(np.array([item.feature]).T)
-        if self.i_mat.size == 0:
-            self.i_mat = i_vec
-        else:
-            self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
-
-    def update(self, e, is_batch_train=False):
-        y = np.concatenate((e.user.feature, e.context, e.item.feature))
+    def update_params(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -92,33 +78,6 @@ class OnlineSketch(FeatureRecommender):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def score(self, user, candidates, context):
-        # i_mat is (n_item_context, n_item) for all possible items
-        # extract only target items
-        i_mat = self.i_mat[:, candidates]
-
-        n_target = len(candidates)
-
-        # u_mat will be (n_user_context, n_item) for the target user
-        u_vec = np.concatenate((user.feature, context))
-        u_vec = np.array([u_vec]).T
-
-        u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
-
-        # stack them into (p, n_item) matrix
-        Y = sp.vstack((u_mat, i_mat))
-        Y = self.proj.reduce(Y)
-        Y = sp.csr_matrix(preprocessing.normalize(Y, norm='l2', axis=0))
-
-        X = np.identity(self.k) - np.dot(self.U_r, self.U_r.T)
-        A = safe_sparse_dot(X, Y, dense_output=True)
-
-        return ln.norm(A, axis=0, ord=2)
-
-    def recommend(self, user, candidates, context):
-        scores = self.score(user, candidates, context)
-        return self.scores2recos(scores, candidates)
-
 
 class OnlineRandomSketch(OnlineSketch):
 
@@ -126,8 +85,7 @@ class OnlineRandomSketch(OnlineSketch):
     [WIP] many matrix multiplications are computational heavy
     """
 
-    def update(self, e, is_batch_train=False):
-        y = np.concatenate((e.user.feature, e.context, e.item.feature))
+    def update_params(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -170,8 +128,7 @@ class OnlineSparseSketch(OnlineSketch):
     """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices
     """
 
-    def update(self, e, is_batch_train=False):
-        y = np.concatenate((e.user.feature, e.context, e.item.feature))
+    def update_params(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = preprocessing.normalize(y, norm='l2', axis=0)  # (k, 1)
 

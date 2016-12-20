@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 
 
-class Recommender:
+class BaseModel:
 
     """Base class for experimentation of the incremental models with positive-only feedback.
 
@@ -24,11 +24,29 @@ class Recommender:
         self.items = {}
 
     @abstractmethod
-    def init_model(self):
+    def init_params(self):
         """Initialize model parameters.
 
         """
         pass
+
+    @abstractmethod
+    def update_params(self, *args):
+        """Update model parameters based on d, a sample represented as a dictionary.
+
+        Args:
+            e (Event): Observed event.
+
+        """
+        pass
+
+
+class RecommenderMixin:
+
+    """Base class for experimentation of the incremental models with positive-only feedback.
+
+    """
+    __metaclass__ = ABCMeta
 
     def is_new_user(self, u):
         """Check if user is new.
@@ -138,7 +156,7 @@ class Recommender:
         return candidates[sorted_indices], scores[sorted_indices]
 
 
-class FeatureRecommender(Recommender):
+class FeatureRecommenderMixin(RecommenderMixin):
 
     """Base class for experimentation of the incremental models with positive-only feedback.
 

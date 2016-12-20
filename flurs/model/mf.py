@@ -1,9 +1,9 @@
-from flurs.base import Recommender
+from flurs.base import BaseModel
 
 import numpy as np
 
 
-class MatrixFactorization(Recommender):
+class MatrixFactorization(BaseModel):
 
     """Incremental Matrix Factorization
     """
@@ -19,32 +19,16 @@ class MatrixFactorization(Recommender):
         self.l2_reg_i = l2_reg
         self.learn_rate = learn_rate
 
-        self.init_model()
+        self.init_params()
 
-    def init_model(self):
+    def init_params(self):
         self.Q = np.array([])
 
-    def add_user(self, user):
-        super().add_user(user)
-        self.users[user.index]['vec'] = np.random.normal(0., 0.1, self.k)
+    def update_params(self, ua, ia, value):
+        u_vec = self.users[ua]['vec']
+        i_vec = self.Q[ia]
 
-    def add_item(self, item):
-        super().add_item(item)
-        i_vec = np.random.normal(0., 0.1, (1, self.k))
-        if self.Q.size == 0:
-            self.Q = i_vec
-        else:
-            self.Q = np.concatenate((self.Q, i_vec))
-
-    def update(self, e, is_batch_train=False):
-        # static baseline; w/o updating the model
-        if not is_batch_train and self.is_static:
-            return
-
-        u_vec = self.users[e.user.index]['vec']
-        i_vec = self.Q[e.item.index]
-
-        err = e.value - np.inner(u_vec, i_vec)
+        err = value - np.inner(u_vec, i_vec)
 
         grad = -2. * (err * i_vec - self.l2_reg_u * u_vec)
         next_u_vec = u_vec - self.learn_rate * grad
@@ -52,14 +36,5 @@ class MatrixFactorization(Recommender):
         grad = -2. * (err * u_vec - self.l2_reg_i * i_vec)
         next_i_vec = i_vec - self.learn_rate * grad
 
-        self.users[e.user.index]['vec'] = next_u_vec
-        self.Q[e.item.index] = next_i_vec
-
-    def score(self, user, candidates):
-        pred = np.dot(self.users[user.index]['vec'],
-                      self.Q[candidates, :].T)
-        return np.abs(1. - pred.flatten())
-
-    def recommend(self, user, candidates):
-        scores = self.score(user, candidates)
-        return self.scores2recos(scores, candidates)
+        self.users[ua]['vec'] = next_u_vec
+        self.Q[ia] = next_i_vec
