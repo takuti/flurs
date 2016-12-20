@@ -55,9 +55,11 @@ class MatrixFactorization(Recommender):
         self.users[e.user.index]['vec'] = next_u_vec
         self.Q[e.item.index] = next_i_vec
 
-    def recommend(self, user, candidates):
+    def score(self, user, candidates):
         pred = np.dot(self.users[user.index]['vec'],
                       self.Q[candidates, :].T)
-        scores = np.abs(1. - pred.flatten())
+        return np.abs(1. - pred.flatten())
 
+    def recommend(self, user, candidates):
+        scores = self.score(user, candidates)
         return self.scores2recos(scores, candidates)

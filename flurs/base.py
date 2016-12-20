@@ -146,6 +146,21 @@ class FeatureRecommender(Recommender):
     __metaclass__ = ABCMeta
 
     @abstractmethod
+    def score(self, user, candidates, context):
+        """Compute scores for the pairs of given user and item candidates.
+
+        Args:
+            user (User): Target user.
+            candidates (numpy array; (# candidates, )): Target item' indices.
+            context (numpy 1d array): Feature vector representing contextual information.
+
+        Returns:
+            numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
+
+        """
+        pass
+
+    @abstractmethod
     def recommend(self, user, candidates, context):
         """Recommend items for a user represented as a dictionary d.
 

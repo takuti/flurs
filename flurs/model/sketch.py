@@ -92,7 +92,7 @@ class OnlineSketch(FeatureRecommender):
 
         self.B = np.dot(U_ell, np.diag(s_ell))
 
-    def recommend(self, user, candidates, context):
+    def score(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, candidates]
@@ -113,8 +113,10 @@ class OnlineSketch(FeatureRecommender):
         X = np.identity(self.k) - np.dot(self.U_r, self.U_r.T)
         A = safe_sparse_dot(X, Y, dense_output=True)
 
-        scores = ln.norm(A, axis=0, ord=2)
+        return ln.norm(A, axis=0, ord=2)
 
+    def recommend(self, user, candidates, context):
+        scores = self.score(user, candidates, context)
         return self.scores2recos(scores, candidates)
 
 

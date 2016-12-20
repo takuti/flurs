@@ -64,9 +64,11 @@ class BPRMF(Recommender):
         self.Q[e.item.index] = next_i_vec
         self.Q[j] = next_j_vec
 
-    def recommend(self, user, candidates):
+    def score(self, user, candidates):
         pred = np.dot(self.users[user.index]['vec'],
                       self.Q[candidates, :].T)
-        scores = pred.flatten()
+        return pred.flatten()
 
+    def recommend(self, user, candidates):
+        scores = self.score(user, candidates)
         return self.scores2recos(scores, candidates, rev=True)

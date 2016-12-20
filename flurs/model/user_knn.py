@@ -123,7 +123,7 @@ class UserKNN(Recommender):
 
         self.S[ua, :] = self.B[ua, :] / (np.sqrt(self.C[ua, :]) * np.sqrt(self.D[ua, :]))
 
-    def recommend(self, user, candidates):
+    def score(self, user, candidates):
         ua = user.index
 
         # find k nearest neightbors
@@ -139,6 +139,8 @@ class UserKNN(Recommender):
 
         # Larger pred is more promising,
         # but `scores2recos` sorts in an ascending order.
-        scores = -np.abs(pred)
+        return -np.abs(pred)
 
+    def recommend(self, user, candidates):
+        scores = self.score(user, candidates)
         return self.scores2recos(scores, candidates)

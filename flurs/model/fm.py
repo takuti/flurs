@@ -181,7 +181,7 @@ class FactorizationMachine(FeatureRecommender):
             g = err * x[pi] * (prod - x[pi] * self.prev_V[pi])
             self.V[pi] = self.prev_V[pi] + 2. * self.learn_rate * (g - self.l2_reg_V * self.prev_V[pi])
 
-    def recommend(self, user, candidates, context):
+    def score(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, candidates]
@@ -219,6 +219,8 @@ class FactorizationMachine(FeatureRecommender):
 
         pred = self.w0 + safe_sparse_dot(self.w, mat, dense_output=True) + interaction
 
-        scores = np.abs(1. - np.ravel(pred))
+        return np.abs(1. - np.ravel(pred))
 
+    def recommend(self, user, candidates, context):
+        scores = self.score(user, candidates, context)
         return self.scores2recos(scores, candidates)

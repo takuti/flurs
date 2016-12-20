@@ -24,5 +24,9 @@ class Popular(Recommender):
     def update(self, e, is_batch_train=False):
         self.freq[e.item.index] += 1
 
+    def score(self, user, candidates):
+        return self.freq[candidates]
+
     def recommend(self, user, candidates):
-        return self.scores2recos(self.freq[candidates], candidates, rev=True)
+        scores = self.score(user, candidates)
+        return self.scores2recos(scores, candidates, rev=True)
