@@ -1,4 +1,4 @@
-from flurs.recommender import feature_recommender
+from flurs.base import FeatureRecommenderMixin
 
 import time
 import numpy as np
@@ -26,10 +26,10 @@ class Evaluator:
 
         """
         self.rec = recommender
-        self.is_feature_rec = issubclass(recommender.__class__, feature_recommender.FeatureRecommender)
+        self.is_feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
 
         # initialize models and user/item information
-        self.rec.init_model()
+        self.rec.init_params()
 
     def set_can_repeat(self, can_repeat):
         self.can_repeat = can_repeat
@@ -46,7 +46,7 @@ class Evaluator:
             n_epoch (int): Number of epochs for the batch training.
 
         """
-        self.rec.init_model()
+        self.rec.init_params()
 
         # make initial status for batch training
         for e in train_events:
