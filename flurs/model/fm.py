@@ -54,13 +54,8 @@ class FactorizationMachine(BaseModel):
         self.prev_w = self.w.copy()
         self.prev_V = self.V.copy()
 
-    def update_params(self, x, value):
+    def update_reg(self, x, err):
         x_vec = np.array([x]).T  # p x 1
-        interaction = np.sum(np.dot(self.V.T, x_vec) ** 2 - np.dot(self.V.T ** 2, x_vec ** 2)) / 2.
-        pred = self.w0 + np.inner(self.w, x) + interaction
-
-        # compute current error
-        err = value - pred
 
         # update regularization parameters
         coeff = 4. * self.learn_rate * err * self.learn_rate
@@ -75,6 +70,16 @@ class FactorizationMachine(BaseModel):
         dot_prev_v = np.dot(x_vec.T, self.prev_V).reshape((self.k,))  # (k, )
         s_duplicated = np.dot((x_vec.T ** 2), self.V * self.prev_V).reshape((self.k,))  # (k, )
         self.l2_rev_V = np.maximum(np.zeros(self.k), self.l2_reg_V + coeff * (dot_v * dot_prev_v - s_duplicated))
+
+    def update_params(self, x, value):
+        x_vec = np.array([x]).T  # p x 1
+        interaction = np.sum(np.dot(self.V.T, x_vec) ** 2 - np.dot(self.V.T ** 2, x_vec ** 2)) / 2.
+        pred = self.w0 + np.inner(self.w, x) + interaction
+
+        # compute current error
+        err = value - pred
+
+        self.update_reg(x, err)
 
         # update w0 with keeping the previous value
         self.prev_w0 = self.w0
