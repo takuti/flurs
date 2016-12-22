@@ -3,7 +3,7 @@ import numpy as np
 
 
 def n_feature_hash(s, seeds, dims):
-    """n-hot-encoded feature hashing.
+    """N-hot-encoded feature hashing.
 
     Args:
         s (str): Target string.
@@ -22,4 +22,22 @@ def n_feature_hash(s, seeds, dims):
         vec[offset + i] = 1
         offset += dim
 
+    return vec
+
+
+def feature_hash(s, seed, dim):
+    """Feature hashing.
+
+    Args:
+        s (str): Target string.
+        seed (float): Seed of a MurmurHash3 hash function.
+        dim (int): Number of dimensions for a hash value.
+
+    Returns:
+        numpy 1d array: one-hot-encoded feature vector for `s`.
+
+    """
+    vec = np.zeros(dim)
+    i = mmh3.hash(s, seed) % dim
+    vec[i] = 1
     return vec
