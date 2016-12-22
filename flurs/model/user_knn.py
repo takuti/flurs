@@ -12,7 +12,7 @@ class UserKNN(BaseModel):
         super().__init__()
 
         # number of nearest neighbors
-        self.k = 5
+        self.k = k
 
         self.init_params()
 
