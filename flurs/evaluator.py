@@ -3,6 +3,7 @@ from flurs.base import FeatureRecommenderMixin
 import time
 import numpy as np
 
+from collections import deque
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
 handler = StreamHandler()
@@ -18,7 +19,7 @@ class Evaluator:
 
     """
 
-    def __init__(self, recommender):
+    def __init__(self, recommender, maxlen=None):
         """Set/initialize parameters.
 
         Args:
@@ -27,6 +28,10 @@ class Evaluator:
         """
         self.rec = recommender
         self.is_feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
+
+        # create a ring buffer
+        # save items which are observed in most recent `maxlen` events
+        self.item_buffer = deque(maxlen=maxlen)
 
         # initialize models and user/item information
         self.rec.init_params()
@@ -52,10 +57,12 @@ class Evaluator:
         for e in train_events:
             self.__validate(e)
             self.rec.users[e.user.index]['observed'].add(e.item.index)
+            self.item_buffer.append(e.item.index)
 
         # for batch evaluation, temporarily save new users info
         for e in test_events:
             self.__validate(e)
+            self.item_buffer.append(e.item.index)
 
         self.batch_update(train_events, test_events, n_epoch)
 
@@ -101,7 +108,7 @@ class Evaluator:
         """
         percentiles = np.zeros(len(test_events))
 
-        all_items = set(range(self.rec.n_item))
+        all_items = set(self.item_buffer)
         for i, e in enumerate(test_events):
 
             # check if the data allows users to interact the same items repeatedly
@@ -134,7 +141,7 @@ class Evaluator:
             self.__validate(e)
 
             # target items (all or unobserved depending on a detaset)
-            unobserved = set(range(self.rec.n_item))
+            unobserved = set(self.item_buffer)
             if not self.can_repeat:
                 unobserved -= self.rec.users[e.user.index]['observed']
                 # * item i interacted by user u must be in the recommendation candidate
@@ -153,6 +160,8 @@ class Evaluator:
             start = time.clock()
             self.rec.update(e)
             update_time = (time.clock() - start)
+
+            self.item_buffer.append(e.item.index)
 
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
