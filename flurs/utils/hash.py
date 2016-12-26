@@ -18,8 +18,7 @@ def n_feature_hash(s, seeds, dims):
     offset = 0
 
     for seed, dim in zip(seeds, dims):
-        i = mmh3.hash(s, seed) % dim
-        vec[offset + i] = 1
+        vec[offset:(offset + dim)] = feature_hash(s, seed, dim)
         offset += dim
 
     return vec
