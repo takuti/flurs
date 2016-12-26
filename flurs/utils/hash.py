@@ -40,3 +40,22 @@ def feature_hash(feature, dim, seed=123):
     i = mmh3.hash(feature, seed) % dim
     vec[i] = 1
     return vec
+
+
+def multiple_feature_hash(feature, dim, seed=123):
+    """Feature hashing using multiple hash function.
+    This technique is effective to prevent collisions.
+
+    Args:
+        feature (str): Target feature represented as string.
+        dim (int): Number of dimensions for a hash value.
+        seed (float): Seed of a MurmurHash3 hash function.
+
+    Returns:
+        numpy 1d array: one-hot-encoded feature vector for `s`.
+
+    """
+    vec = np.zeros(dim)
+    i = mmh3.hash(feature, seed) % dim
+    vec[i] = 1 if mmh3.hash(feature) % 2 else -1
+    return vec
