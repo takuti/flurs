@@ -9,6 +9,9 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
     """Incremental User-based Collaborative Filtering
     """
 
+    def init_recommender(self):
+        super().init_recommender()
+
     def insert_row(self, mat, n_col):
         row = np.zeros((1, n_col))
         if mat.size == 0:

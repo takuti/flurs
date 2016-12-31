@@ -13,6 +13,9 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
     """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
     """
 
+    def init_recommender(self):
+        super().init_recommender()
+
     def add_user(self, user):
         super().add_user(user)
 

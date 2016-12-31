@@ -9,13 +9,16 @@ class Popular(BaseModel, RecommenderMixin):
     """
 
     def __init__(self):
-        super().__init__()
+        pass
 
     def init_params(self):
         self.freq = np.array([])
 
     def update_params(self, ia):
         self.freq[ia] += 1
+
+    def init_recommender(self):
+        super().init_recommender()
 
     def add_user(self, user):
         super().add_user(user)

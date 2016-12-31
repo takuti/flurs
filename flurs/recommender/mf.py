@@ -9,6 +9,12 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
     """Incremental Matrix Factorization
     """
 
+    def init_recommender(self, is_static=False):
+        super().init_recommender()
+
+        # if True, parameters will not be updated in evaluation
+        self.is_static = is_static
+
     def add_user(self, user):
         super().add_user(user)
         self.users[user.index]['vec'] = np.random.normal(0., 0.1, self.k)

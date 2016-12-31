@@ -9,8 +9,6 @@ class BPRMF(BaseModel):
     """
 
     def __init__(self, k=40, l2_reg=.01, learn_rate=.003):
-        super().__init__()
-
         self.k = k
         self.l2_reg_u = l2_reg
         self.l2_reg_i = l2_reg  # positive items: i

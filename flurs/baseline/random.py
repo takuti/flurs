@@ -9,13 +9,16 @@ class Random(BaseModel, RecommenderMixin):
     """
 
     def __init__(self):
-        super().__init__()
+        pass
 
     def init_params(self):
         pass
 
     def update_params(self):
         pass
+
+    def init_recommender(self):
+        super().init_recommender()
 
     def add_user(self, user):
         super().add_user(user)

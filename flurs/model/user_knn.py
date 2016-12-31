@@ -9,8 +9,6 @@ class UserKNN(BaseModel):
     """
 
     def __init__(self, k=5):
-        super().__init__()
-
         # number of nearest neighbors
         self.k = k
 

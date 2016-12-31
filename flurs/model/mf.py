@@ -8,12 +8,7 @@ class MatrixFactorization(BaseModel):
     """Incremental Matrix Factorization
     """
 
-    def __init__(self, is_static=False, k=40, l2_reg=.01, learn_rate=.003):
-        super().__init__()
-
-        # if True, parameters will not be updated in evaluation
-        self.is_static = is_static
-
+    def __init__(self, k=40, l2_reg=.01, learn_rate=.003):
         self.k = k
         self.l2_reg_u = l2_reg
         self.l2_reg_i = l2_reg

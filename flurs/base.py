@@ -5,12 +5,35 @@ import numpy as np
 
 class BaseModel:
 
-    """Base class for experimentation of the incremental models with positive-only feedback.
-
+    """Base class for the incremental models learning from positive-only feedback.
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self):
+    def __init__(self, *args):
+        """Set the hyperparameters.
+        """
+        pass
+
+    @abstractmethod
+    def init_params(self):
+        """Initialize model parameters.
+        """
+        pass
+
+    @abstractmethod
+    def update_params(self, *args):
+        """Update model parameters.
+        """
+        pass
+
+
+class RecommenderMixin:
+
+    """Mixin injected into a model.
+    """
+    __metaclass__ = ABCMeta
+
+    def init_recommender(self, *args):
         # number of observed users
         self.n_user = 0
 
@@ -22,31 +45,6 @@ class BaseModel:
 
         # store item data
         self.items = {}
-
-    @abstractmethod
-    def init_params(self):
-        """Initialize model parameters.
-
-        """
-        pass
-
-    @abstractmethod
-    def update_params(self, *args):
-        """Update model parameters based on d, a sample represented as a dictionary.
-
-        Args:
-            e (Event): Observed event.
-
-        """
-        pass
-
-
-class RecommenderMixin:
-
-    """Base class for experimentation of the incremental models with positive-only feedback.
-
-    """
-    __metaclass__ = ABCMeta
 
     def is_new_user(self, u):
         """Check if user is new.

@@ -19,19 +19,14 @@ class FactorizationMachine(BaseModel):
 
     def __init__(self,
                  contexts,
-                 is_static=False,
                  k=40,
                  l2_reg_w0=2.,
                  l2_reg_w=8.,
                  l2_reg_V=16.,
                  learn_rate=.004):
 
-        super().__init__()
-
         self.contexts = contexts
         self.p = np.sum(list(contexts.values()))
-
-        self.is_static = is_static
 
         self.k = k
         self.l2_reg_w0 = l2_reg_w0

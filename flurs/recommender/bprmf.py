@@ -9,6 +9,9 @@ class BPRMFRecommender(BPRMF, RecommenderMixin):
     """Incremental Matrix Factorization with BPR optimization
     """
 
+    def init_recommender(self):
+        super().init_recommender()
+
     def add_user(self, user):
         super().add_user(user)
         self.users[user.index]['vec'] = np.random.normal(0., 0.1, self.k)
