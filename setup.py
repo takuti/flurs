@@ -17,5 +17,6 @@ setup(
     install_requires=[
         'numpy',
         'scipy',
-        'scikit_learn'],
+        'scikit_learn',
+        'mmh3'],
 )
