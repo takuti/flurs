@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from flurs.utils.projections import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
+from flurs.utils.projection import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
 
 
 class ProjectionsTestCase(TestCase):

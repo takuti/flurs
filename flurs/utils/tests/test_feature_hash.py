@@ -1,10 +1,10 @@
 from unittest import TestCase
 import numpy as np
 
-from flurs.utils.hash import n_feature_hash, feature_hash, multiple_feature_hash
+from flurs.utils.feature_hash import n_feature_hash, feature_hash, multiple_feature_hash
 
 
-class HashTestCase(TestCase):
+class FeatureHashTestCase(TestCase):
 
     def test_feature_hash(self):
         x = feature_hash("Tom", 5, seed=123)
