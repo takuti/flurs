@@ -64,68 +64,13 @@ class Evaluator:
             self.__validate(e)
             self.item_buffer.append(e.item.index)
 
-        self.batch_update(train_events, test_events, n_epoch)
+        self.__batch_update(train_events, test_events, n_epoch)
 
         # batch test events are considered as a new observations;
         # the model is incrementally updated based on them before the incremental evaluation step
         for e in test_events:
             self.rec.users[e.user.index]['observed'].add(e.item.index)
             self.rec.update(e)
-
-    def batch_update(self, train_events, test_events, n_epoch):
-        """Batch update called by the fitting method.
-
-        Args:
-            train_events (list of Event): Positive training events (0-20%).
-            test_events (list of Event): Test events (20-30%).
-            n_epoch (int): Number of epochs for the batch training.
-
-        """
-        for epoch in range(n_epoch):
-            # SGD requires us to shuffle events in each iteration
-            # * if n_epoch == 1
-            #   => shuffle is not required because it is a deterministic training (i.e. matrix sketching)
-            if n_epoch != 1:
-                np.random.shuffle(train_events)
-
-            # 20%: update models
-            for e in train_events:
-                self.rec.update(e, is_batch_train=True)
-
-            # 10%: evaluate the current model
-            MPR = self.batch_evaluate(test_events)
-            logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
-
-    def batch_evaluate(self, test_events):
-        """Evaluate the current model by using the given test events.
-
-        Args:
-            test_events (list of Event): Current model is evaluated by these events.
-
-        Returns:
-            float: Mean Percentile Rank for the test set.
-
-        """
-        percentiles = np.zeros(len(test_events))
-
-        all_items = set(self.item_buffer)
-        for i, e in enumerate(test_events):
-
-            # check if the data allows users to interact the same items repeatedly
-            unobserved = all_items
-            if not self.can_repeat:
-                # make recommendation for all unobserved items
-                unobserved -= self.rec.users[e.user.index]['observed']
-                # true item itself must be in the recommendation candidates
-                unobserved.add(e.item.index)
-
-            candidates = np.asarray(list(unobserved))
-            recos, scores = self.__recommend(e, candidates)
-
-            pos = np.where(recos == e.item.index)[0][0]
-            percentiles[i] = pos / (len(recos) - 1) * 100
-
-        return np.mean(percentiles)
 
     def evaluate(self, test_events):
         """Iterate recommend/update procedure and compute incremental recall.
@@ -183,3 +128,58 @@ class Evaluator:
     def __validate_item(self, e):
         if self.rec.is_new_item(e.item.index):
             self.rec.add_item(e.item)
+
+    def __batch_update(self, train_events, test_events, n_epoch):
+        """Batch update called by the fitting method.
+
+        Args:
+            train_events (list of Event): Positive training events (0-20%).
+            test_events (list of Event): Test events (20-30%).
+            n_epoch (int): Number of epochs for the batch training.
+
+        """
+        for epoch in range(n_epoch):
+            # SGD requires us to shuffle events in each iteration
+            # * if n_epoch == 1
+            #   => shuffle is not required because it is a deterministic training (i.e. matrix sketching)
+            if n_epoch != 1:
+                np.random.shuffle(train_events)
+
+            # 20%: update models
+            for e in train_events:
+                self.rec.update(e, is_batch_train=True)
+
+            # 10%: evaluate the current model
+            MPR = self.__batch_evaluate(test_events)
+            logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
+
+    def __batch_evaluate(self, test_events):
+        """Evaluate the current model by using the given test events.
+
+        Args:
+            test_events (list of Event): Current model is evaluated by these events.
+
+        Returns:
+            float: Mean Percentile Rank for the test set.
+
+        """
+        percentiles = np.zeros(len(test_events))
+
+        all_items = set(self.item_buffer)
+        for i, e in enumerate(test_events):
+
+            # check if the data allows users to interact the same items repeatedly
+            unobserved = all_items
+            if not self.can_repeat:
+                # make recommendation for all unobserved items
+                unobserved -= self.rec.users[e.user.index]['observed']
+                # true item itself must be in the recommendation candidates
+                unobserved.add(e.item.index)
+
+            candidates = np.asarray(list(unobserved))
+            recos, scores = self.__recommend(e, candidates)
+
+            pos = np.where(recos == e.item.index)[0][0]
+            percentiles[i] = pos / (len(recos) - 1) * 100
+
+        return np.mean(percentiles)
