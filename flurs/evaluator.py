@@ -19,7 +19,7 @@ class Evaluator:
 
     """
 
-    def __init__(self, recommender, maxlen=None):
+    def __init__(self, recommender, can_repeat=True, maxlen=None):
         """Set/initialize parameters.
 
         Args:
@@ -29,15 +29,14 @@ class Evaluator:
         self.rec = recommender
         self.is_feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
 
+        self.can_repeat = can_repeat
+
         # create a ring buffer
         # save items which are observed in most recent `maxlen` events
         self.item_buffer = deque(maxlen=maxlen)
 
         # initialize models and user/item information
         self.rec.init_params()
-
-    def set_can_repeat(self, can_repeat):
-        self.can_repeat = can_repeat
 
     def fit(self, train_events, test_events, n_epoch=1):
         """Train a model using the first 30% positive events to avoid cold-start.
