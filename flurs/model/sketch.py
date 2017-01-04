@@ -1,9 +1,9 @@
 from flurs.base import BaseModel
 
-from flurs.utils.projections import Raw
-from flurs.utils.projections import RandomProjection
-from flurs.utils.projections import RandomMaclaurinProjection
-from flurs.utils.projections import TensorSketchProjection
+from flurs.utils.projection import Raw
+from flurs.utils.projection import RandomProjection
+from flurs.utils.projection import RandomMaclaurinProjection
+from flurs.utils.projection import TensorSketchProjection
 
 import numpy as np
 import numpy.linalg as ln
