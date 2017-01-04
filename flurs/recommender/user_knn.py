@@ -73,6 +73,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
                 denom += self.S[ua, uy]
             pred[pi] += (numer / denom)
 
+        pred[np.isnan(pred)] = 0.
+
         # Larger pred is more promising,
         # but `scores2recos` sorts in an ascending order.
         return -np.abs(pred)
