@@ -10,6 +10,7 @@ setup(
     license='MIT',
     url='https://github.com/takuti/flurs',
     packages=['flurs',
+              'flurs.data',
               'flurs.recommender',
               'flurs.baseline',
               'flurs.model',
