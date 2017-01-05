@@ -27,7 +27,7 @@ class BPRMFRecommender(BPRMF, RecommenderMixin):
     def score(self, user, candidates):
         pred = np.dot(self.users[user.index]['vec'],
                       self.Q[candidates, :].T)
-        return np.abs(1. - pred.flatten())
+        return pred.flatten()
 
     def recommend(self, user, candidates):
         scores = self.score(user, candidates)
