@@ -1,6 +1,8 @@
 FluRS
 ===
 
+[![Build Status](https://travis-ci.org/takuti/flurs.svg?branch=master)](https://travis-ci.org/takuti/flurs)
+
 ***FluRS*** is a Python library for online item recommendation. The name indicates *Flu-** (Flux, Fluid, Fluent) recommender systems which incrementally adapt to dynamic user-item interactions in a streaming environment.
 
 ## Installation

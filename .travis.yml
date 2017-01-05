@@ -1,0 +1,25 @@
+language: c
+
+env:
+  - TRAVIS_PYTHON_VERSION="3.4"
+  - TRAVIS_PYTHON_VERSION="3.5"
+
+os: linux
+sudo: required
+dist: trusty
+
+before_install:
+  - sudo apt-get update -qq
+  # anaconda (python) setup
+  - sudo apt-get install -y libopenblas-dev
+  - sudo which python && sudo python --version
+
+install:
+  - sudo pip install .
+  - sudo pip install nose
+
+script:
+  - sudo nosetests . -v
+
+notifications:
+  email: false
