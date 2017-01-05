@@ -34,4 +34,4 @@ class BPRMFRecommenderTestCase(TestCase):
         self.recommender.add_item(Item(0))
         self.recommender.update(Event(User(0), Item(0), 1))
         score = self.recommender.score(User(0), np.array([0]))
-        self.assertTrue(score >= 0)
+        self.assertTrue(score >= -1. and score <= 1.)
