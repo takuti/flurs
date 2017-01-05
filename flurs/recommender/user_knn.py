@@ -72,10 +72,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
 
         pred[np.isnan(pred)] = 0.
 
-        # Larger pred is more promising,
-        # but `scores2recos` sorts in an ascending order.
-        return -np.abs(pred)
+        return np.abs(pred)
 
     def recommend(self, user, candidates):
         scores = self.score(user, candidates)
-        return self.scores2recos(scores, candidates)
+        return self.scores2recos(scores, candidates, rev=True)
