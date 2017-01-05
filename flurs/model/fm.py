@@ -15,6 +15,11 @@ logger.addHandler(handler)
 class FactorizationMachine(BaseModel):
 
     """Incremental Factorization Machines
+
+    T. Kitazawa.
+    "Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation"
+    arXiv:1607.02858 [cs.LG], July 2016.
+
     """
 
     def __init__(self,

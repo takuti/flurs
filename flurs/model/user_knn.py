@@ -6,6 +6,11 @@ import numpy as np
 class UserKNN(BaseModel):
 
     """Incremental User-based Collaborative Filtering
+
+    M. Pepagelis et al.
+    "Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms"
+    In Foundations of Intelligent Systems, pages 553–561. Springer Berlin Heidelberg, 2005.
+
     """
 
     def __init__(self, k=5):

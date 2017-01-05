@@ -6,9 +6,6 @@ import numpy as np
 
 class UserKNNRecommender(UserKNN, RecommenderMixin):
 
-    """Incremental User-based Collaborative Filtering
-    """
-
     def init_recommender(self):
         super().init_recommender()
 

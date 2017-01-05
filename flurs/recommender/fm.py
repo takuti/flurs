@@ -8,9 +8,6 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
-    """Incremental Factorization Machines
-    """
-
     def init_recommender(self, is_static=False):
         super().init_recommender()
         self.is_static = is_static

@@ -10,9 +10,6 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
 
-    """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
-    """
-
     def init_recommender(self):
         super().init_recommender()
 

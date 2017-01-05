@@ -6,6 +6,11 @@ import numpy as np
 class BPRMF(BaseModel):
 
     """Incremental Matrix Factorization with BPR optimization
+
+    S. Rendle et al.
+    "BPR: Bayesian Personalized Ranking from Implicit Feedback"
+    In Proceedings of UAI 2009, pages 452–461, June 2009.
+
     """
 
     def __init__(self, k=40, l2_reg=.01, learn_rate=.003):

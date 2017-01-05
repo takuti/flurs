@@ -7,8 +7,7 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class BaseProjection:
 
-    """Base class for projection of context-aware matrix.
-
+    """Base class for projection of feature vectors
     """
     __metaclass__ = ABCMeta
 

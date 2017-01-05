@@ -16,14 +16,15 @@ logger.addHandler(handler)
 class Evaluator:
 
     """Base class for experimentation of the incremental models with positive-only feedback.
-
     """
 
     def __init__(self, recommender, can_repeat=True, maxlen=None):
         """Set/initialize parameters.
 
         Args:
-            recommender (Recommender): Instance of a recommender.
+            recommender (Recommender): Instance of a recommender which has been initialized.
+            can_repeat (boolean): Choose whether the same item can be repeatedly interacted by the same user.
+            maxlen (int): Size of an item buffer which stores most recently observed items.
 
         """
         self.rec = recommender

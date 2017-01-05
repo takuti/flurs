@@ -13,7 +13,12 @@ from sklearn import preprocessing
 
 class OnlineSketch(BaseModel):
 
-    """Inspired by: Streaming Anomaly Detection using Online Matrix Sketching
+    """Matrix-sketching-based online item recommender
+
+    T. Kitazawa.
+    "Sketching Dynamic User-Item Interactions for Online Item Recommendation"
+    In Proceedings of CHIIR 2017, March 2017.
+
     """
 
     def __init__(self, p, k=40, ell=-1, r=-1, proj='Raw'):

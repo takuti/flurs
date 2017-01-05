@@ -6,9 +6,6 @@ import numpy as np
 
 class MFRecommender(MatrixFactorization, RecommenderMixin):
 
-    """Incremental Matrix Factorization
-    """
-
     def init_recommender(self, is_static=False):
         super().init_recommender()
 

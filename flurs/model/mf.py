@@ -6,6 +6,11 @@ import numpy as np
 class MatrixFactorization(BaseModel):
 
     """Incremental Matrix Factorization
+
+    J. Vinagre et al.
+    "Fast Incremental Matrix Factorization for Recommendation with Positive-Only Feedback"
+    In Proceedings of UMAP 2014, pages 459–470, July 2014.
+
     """
 
     def __init__(self, k=40, l2_reg=.01, learn_rate=.003):

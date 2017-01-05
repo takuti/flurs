@@ -6,9 +6,6 @@ import numpy as np
 
 class BPRMFRecommender(BPRMF, RecommenderMixin):
 
-    """Incremental Matrix Factorization with BPR optimization
-    """
-
     def init_recommender(self):
         super().init_recommender()
 

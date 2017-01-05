@@ -29,11 +29,13 @@ class BaseModel:
 
 class RecommenderMixin:
 
-    """Mixin injected into a model.
+    """Mixin injected into a model to make it a recommender.
     """
     __metaclass__ = ABCMeta
 
     def init_recommender(self, *args):
+        """Initialize a recommender by resetting stored users and items.
+        """
         # number of observed users
         self.n_user = 0
 
@@ -53,7 +55,7 @@ class RecommenderMixin:
             u (int): User index.
 
         Returns:
-            boolean: whether user is new
+            boolean: Whether the user is new.
 
         """
         return u not in self.users
@@ -76,7 +78,7 @@ class RecommenderMixin:
             i (int): Item index.
 
         Returns:
-            boolean: whether item is new
+            boolean: Whether the item is new.
 
         """
         return i not in self.items
@@ -114,7 +116,7 @@ class RecommenderMixin:
             numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
 
         """
-        pass
+        return
 
     @abstractmethod
     def recommend(self, user, candidates):
@@ -156,8 +158,7 @@ class RecommenderMixin:
 
 class FeatureRecommenderMixin(RecommenderMixin):
 
-    """Base class for experimentation of the incremental models with positive-only feedback.
-
+    """Mixin injected into a model to make it a feature-based recommender.
     """
     __metaclass__ = ABCMeta
 
@@ -174,7 +175,7 @@ class FeatureRecommenderMixin(RecommenderMixin):
             numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
 
         """
-        pass
+        return
 
     @abstractmethod
     def recommend(self, user, candidates, context):
