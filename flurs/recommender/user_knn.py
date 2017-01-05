@@ -68,9 +68,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
             for uy in top_uys:
                 numer += ((self.R[uy, ii] - self.users[uy]['mean']) * self.S[ua, uy])
                 denom += self.S[ua, uy]
-            pred[pi] += (numer / denom)
-
-        pred[np.isnan(pred)] = 0.
+            if denom != 0.:
+                pred[pi] += (numer / denom)
 
         return np.abs(pred)
 

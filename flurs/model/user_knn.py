@@ -78,4 +78,6 @@ class UserKNN(BaseModel):
             self.C[ua, uy] += f
             self.D[ua, uy] += g
 
-        self.S[ua, :] = self.B[ua, :] / (np.sqrt(self.C[ua, :]) * np.sqrt(self.D[ua, :]))
+        # avoid zero division
+        idx = (self.C[ua, :] != 0) & (self.C[ua, :] != 0)
+        self.S[ua, idx] = self.B[ua, idx] / (np.sqrt(self.C[ua, idx]) * np.sqrt(self.D[ua, idx]))
