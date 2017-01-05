@@ -9,7 +9,7 @@ class UserKNN(BaseModel):
 
     M. Pepagelis et al.
     "Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms"
-    In Foundations of Intelligent Systems, pages 553–561. Springer Berlin Heidelberg, 2005.
+    In Foundations of Intelligent Systems, pages 553-561. Springer Berlin Heidelberg, 2005.
 
     """
 

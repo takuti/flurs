@@ -9,7 +9,7 @@ class MatrixFactorization(BaseModel):
 
     J. Vinagre et al.
     "Fast Incremental Matrix Factorization for Recommendation with Positive-Only Feedback"
-    In Proceedings of UMAP 2014, pages 459–470, July 2014.
+    In Proceedings of UMAP 2014, pages 459-470, July 2014.
 
     """
 

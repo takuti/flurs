@@ -9,7 +9,7 @@ class BPRMF(BaseModel):
 
     S. Rendle et al.
     "BPR: Bayesian Personalized Ranking from Implicit Feedback"
-    In Proceedings of UAI 2009, pages 452–461, June 2009.
+    In Proceedings of UAI 2009, pages 452-461, June 2009.
 
     """
 
