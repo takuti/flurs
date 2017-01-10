@@ -19,14 +19,15 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
     def add_item(self, item):
         super().add_item(item)
 
-        i_vec = sp.csr_matrix(np.array([item.feature]).T)
+        i_vec = item.encode(index=False, feature=True, vertical=True)
+        i_vec = sp.csr_matrix(i_vec)
         if self.i_mat.size == 0:
             self.i_mat = i_vec
         else:
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
 
     def update(self, e, is_batch_train=False):
-        y = np.concatenate((e.user.feature, e.context, e.item.feature))
+        y = e.encode(index=False, feature=True, context=True)
         self.update_params(y)
 
     def score(self, user, candidates, context):
