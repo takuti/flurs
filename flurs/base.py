@@ -68,7 +68,7 @@ class RecommenderMixin:
             user (User): User.
 
         """
-        self.users[user.index] = {'observed': set()}
+        self.users[user.index] = {'known_items': set()}
         self.n_user += 1
 
     def is_new_item(self, i):

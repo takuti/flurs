@@ -31,7 +31,7 @@ class BPRMF(BaseModel):
         i_vec = self.Q[ia]
         x_ui = np.inner(u_vec, i_vec)
 
-        unobserved = list(set(range(self.n_item)) - self.users[ua]['observed'])
+        unobserved = list(set(range(self.n_item)) - self.users[ua]['known_items'])
 
         # choose one negative (i.e., unobserved) sample
         j = np.random.choice(unobserved)

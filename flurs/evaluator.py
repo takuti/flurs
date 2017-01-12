@@ -56,7 +56,7 @@ class Evaluator:
         # make initial status for batch training
         for e in train_events:
             self.__validate(e)
-            self.rec.users[e.user.index]['observed'].add(e.item.index)
+            self.rec.users[e.user.index]['known_items'].add(e.item.index)
             self.item_buffer.append(e.item.index)
 
         # for batch evaluation, temporarily save new users info
@@ -69,7 +69,7 @@ class Evaluator:
         # batch test events are considered as a new observations;
         # the model is incrementally updated based on them before the incremental evaluation step
         for e in test_events:
-            self.rec.users[e.user.index]['observed'].add(e.item.index)
+            self.rec.users[e.user.index]['known_items'].add(e.item.index)
             self.rec.update(e)
 
     def evaluate(self, test_events):
@@ -88,7 +88,7 @@ class Evaluator:
             # target items (all or unobserved depending on a detaset)
             unobserved = set(self.item_buffer)
             if not self.can_repeat:
-                unobserved -= self.rec.users[e.user.index]['observed']
+                unobserved -= self.rec.users[e.user.index]['known_items']
                 # * item i interacted by user u must be in the recommendation candidate
                 unobserved.add(e.item.index)
             candidates = np.asarray(list(unobserved))
@@ -101,7 +101,7 @@ class Evaluator:
             rank = np.where(recos == e.item.index)[0][0]
 
             # Step 2: update the model with the observed event
-            self.rec.users[e.user.index]['observed'].add(e.item.index)
+            self.rec.users[e.user.index]['known_items'].add(e.item.index)
             start = time.clock()
             self.rec.update(e)
             update_time = (time.clock() - start)
@@ -172,7 +172,7 @@ class Evaluator:
             unobserved = all_items
             if not self.can_repeat:
                 # make recommendation for all unobserved items
-                unobserved -= self.rec.users[e.user.index]['observed']
+                unobserved -= self.rec.users[e.user.index]['known_items']
                 # true item itself must be in the recommendation candidates
                 unobserved.add(e.item.index)
 
