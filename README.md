@@ -8,7 +8,7 @@ FluRS
 ## Installation
 
 ```
-$ pip install git+https://github.com/takuti/flurs.git
+$ pip install flurs
 ```
 
 ## Usage
