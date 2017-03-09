@@ -83,4 +83,4 @@ T. Kitazawa. **[Incremental Factorization Machines for Persistently Cold-Startin
 
 ### Matrix Sketching (OnlineSketch)
 
-T. Kitazawa. **Sketching Dynamic User-Item Interactions for Online Item Recommendation**. In *Proc. of CHIIR 2017*, March 2017. (to appear)
+T. Kitazawa. **[Sketching Dynamic User-Item Interactions for Online Item Recommendation](http://dl.acm.org/citation.cfm?id=3022152)**. In *Proc. of CHIIR 2017*, March 2017.
