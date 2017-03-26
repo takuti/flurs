@@ -65,22 +65,15 @@ recommender.recommend(user, [0])
 
 ## References
 
-### Incremental Collaborative Filtering (UserKNN)
+- Incremental Collaborative Filtering (UserKNN)
+  - M. Pepagelis et al. **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**. In *Foundations of Intelligent Systems*, pp. 553–561, Springer Berlin Heidelberg, 2005.
+- Incremental Matrix Factorization (MF)
+  - J. Vinagre et al. **[Fast Incremental Matrix Factorization for Recommendation with Positive-only ](http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41)**. In *Proc. of UMAP 2014*, pp. 459–470, July 2014.
+- Incremental Matrix Factorization with BPR optimization (BPRMF)
+  - S. Rendle et al. **BPR: Bayesian Personalized Ranking from Implicit Feedback**. In *Proc. of UAI 2009*, pp. 452–461, June 2009.
+- Incremental Factorization Machines (FM)
+  - T. Kitazawa. **[Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation](https://arxiv.org/abs/1607.02858)**. arXiv:1607.02858 [cs.LG], July 2016.
+- Matrix Sketching (OnlineSketch)
+  - T. Kitazawa. **[Sketching Dynamic User-Item Interactions for Online Item Recommendation](http://dl.acm.org/citation.cfm?id=3022152)**. In *Proc. of CHIIR 2017*, March 2017.
 
-M. Pepagelis et al. **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**. In *Foundations of Intelligent Systems*, pp. 553–561, Springer Berlin Heidelberg, 2005.
-
-### Incremental Matrix Factorization (MF)
-
-J. Vinagre et al. **[Fast Incremental Matrix Factorization for Recommendation with Positive-only ](http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41)**. In *Proc. of UMAP 2014*, pp. 459–470, July 2014.
-
-### Incremental Matrix Factorization with BPR optimization (BPRMF)
-
-S. Rendle et al. **BPR: Bayesian Personalized Ranking from Implicit Feedback**. In *Proc. of UAI 2009*, pp. 452–461, June 2009.
-
-### Incremental Factorization Machines (FM)
-
-T. Kitazawa. **[Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation](https://arxiv.org/abs/1607.02858)**. arXiv:1607.02858 [cs.LG], July 2016.
-
-### Matrix Sketching (OnlineSketch)
-
-T. Kitazawa. **[Sketching Dynamic User-Item Interactions for Online Item Recommendation](http://dl.acm.org/citation.cfm?id=3022152)**. In *Proc. of CHIIR 2017*, March 2017.
+Repository [takuti/stream-recommender](https://github.com/takuti/stream-recommender) uses FluRS to write research papers.
