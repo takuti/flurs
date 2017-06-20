@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 
 
-class BaseModel:
+class BaseModel(object):
 
     """Base class for the incremental models learning from positive-only feedback.
     """
@@ -27,7 +27,7 @@ class BaseModel:
         pass
 
 
-class RecommenderMixin:
+class RecommenderMixin(object):
 
     """Mixin injected into a model to make it a recommender.
     """

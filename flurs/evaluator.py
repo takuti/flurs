@@ -13,7 +13,7 @@ logger.setLevel(DEBUG)
 logger.addHandler(handler)
 
 
-class Evaluator:
+class Evaluator(object):
 
     """Base class for experimentation of the incremental models with positive-only feedback.
     """

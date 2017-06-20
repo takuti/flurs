@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Base:
+class Base(object):
 
     def __init__(self, index, feature=np.array([0.])):
         self.index = index
@@ -41,7 +41,7 @@ class Item(Base):
     pass
 
 
-class Event:
+class Event(object):
 
     def __init__(self, user, item, value, context=np.array([0.])):
         self.user = user

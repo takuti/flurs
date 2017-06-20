@@ -5,7 +5,7 @@ import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
 
 
-class BaseProjection:
+class BaseProjection(object):
 
     """Base class for projection of feature vectors
     """
