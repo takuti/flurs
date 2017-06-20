@@ -88,6 +88,11 @@ def auc(truth, recommend):
             correct += tp
     # number of all possible tp-fp pairs
     pairs = tp * (recommend.size - tp)
+
+    # if there is no TP (or no FP), it's meaningless for this metric (i.e., AUC=0.5)
+    if pairs == 0:
+        return 0.5
+
     return correct / pairs
 
 
