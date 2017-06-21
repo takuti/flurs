@@ -1,9 +1,10 @@
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
+from sklearn.base import BaseEstimator
 
 
-class BaseModel(object):
+class BaseModel(BaseEstimator):
 
     """Base class for the incremental models learning from positive-only feedback.
     """
