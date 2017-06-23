@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='flurs',
     version='0.0.1',
-    description='A library for online item recommendation',
+    description='A library for streaming recommendation algorithms',
     author='Takuya Kitazawa',
     author_email='k.takuti@gmail.com',
     license='MIT',
