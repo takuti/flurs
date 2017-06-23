@@ -4,13 +4,7 @@ import time
 import numpy as np
 
 from collections import deque
-from logging import getLogger, StreamHandler, Formatter, DEBUG
-logger = getLogger(__name__)
-handler = StreamHandler()
-handler.setFormatter(Formatter('[%(process)d] %(message)s'))
-handler.setLevel(DEBUG)
-logger.setLevel(DEBUG)
-logger.addHandler(handler)
+from . import logger
 
 
 class Evaluator(object):
