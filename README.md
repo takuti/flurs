@@ -67,6 +67,8 @@ recommender.recommend(user, [0])
 
 ## References
 
+FluRS currently supports the following recommendation algorithms:
+
 - Incremental Collaborative Filtering (UserKNN)
   - M. Pepagelis et al. **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**. In *Foundations of Intelligent Systems*, pp. 553–561, Springer Berlin Heidelberg, 2005.
 - Incremental Matrix Factorization (MF)
