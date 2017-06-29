@@ -1,8 +1,15 @@
+"""FluRS
+============
+
+FluRS is a Python library for online item recommendation. The name indicates Flu-* (Flux, Fluid, Fluent) recommender systems which incrementally adapt to dynamic user-item interactions in a streaming environment.
+
+"""
 import flurs
 VERSION = flurs.__version__
 
 DISTNAME = 'flurs'
 DESCRIPTION = 'A library for streaming recommendation algorithms'
+LONG_DESCRIPTION = __doc__ or ''
 AUTHOR = 'Takuya Kitazawa'
 AUTHOR_EMAIL = 'k.takuti@gmail.com'
 MAINTAINER = AUTHOR
@@ -19,6 +26,7 @@ def setup_package():
         name=DISTNAME,
         version=VERSION,
         description=DESCRIPTION,
+        long_description=LONG_DESCRIPTION,
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         maintainer=MAINTAINER,
