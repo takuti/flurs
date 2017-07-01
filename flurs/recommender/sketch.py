@@ -11,13 +11,13 @@ from sklearn.utils.extmath import safe_sparse_dot
 class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
 
     def init_recommender(self):
-        super().init_recommender()
+        super(SketchRecommender, self).init_recommender()
 
     def add_user(self, user):
-        super().add_user(user)
+        super(SketchRecommender, self).add_user(user)
 
     def add_item(self, item):
-        super().add_item(item)
+        super(SketchRecommender, self).add_item(item)
 
         i_vec = item.encode(index=False, feature=True, vertical=True)
         i_vec = sp.csr_matrix(i_vec)

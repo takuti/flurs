@@ -7,17 +7,17 @@ import numpy as np
 class MFRecommender(MatrixFactorization, RecommenderMixin):
 
     def init_recommender(self, is_static=False):
-        super().init_recommender()
+        super(MFRecommender, self).init_recommender()
 
         # if True, parameters will not be updated in evaluation
         self.is_static = is_static
 
     def add_user(self, user):
-        super().add_user(user)
+        super(MFRecommender, self).add_user(user)
         self.users[user.index]['vec'] = np.random.normal(0., 0.1, self.k)
 
     def add_item(self, item):
-        super().add_item(item)
+        super(MFRecommender, self).add_item(item)
         i_vec = np.random.normal(0., 0.1, (1, self.k))
         if self.Q.size == 0:
             self.Q = i_vec

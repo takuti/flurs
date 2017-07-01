@@ -7,7 +7,7 @@ import numpy as np
 class UserKNNRecommender(UserKNN, RecommenderMixin):
 
     def init_recommender(self):
-        super().init_recommender()
+        super(UserKNNRecommender, self).init_recommender()
 
     def insert_row(self, mat, n_col):
         row = np.zeros((1, n_col))
@@ -26,7 +26,7 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
         return mat
 
     def add_user(self, user):
-        super().add_user(user)
+        super(UserKNNRecommender, self).add_user(user)
 
         self.R = self.insert_row(self.R, self.n_item)
 
@@ -50,7 +50,7 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
         self.users[user.index]['mean'] = 0.
 
     def add_item(self, item):
-        super().add_item(item)
+        super(UserKNNRecommender, self).add_item(item)
         self.R = self.insert_col(self.R, self.n_user)
 
     def update(self, e, is_batch_train=False):

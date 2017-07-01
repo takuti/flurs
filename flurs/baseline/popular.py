@@ -18,13 +18,13 @@ class Popular(BaseModel, RecommenderMixin):
         self.freq[ia] += 1
 
     def init_recommender(self):
-        super().init_recommender()
+        super(Popular, self).init_recommender()
 
     def add_user(self, user):
-        super().add_user(user)
+        super(Popular, self).add_user(user)
 
     def add_item(self, item):
-        super().add_item(item)
+        super(Popular, self).add_item(item)
         self.freq = np.append(self.freq, 0)
 
     def update(self, e, is_batch_train=False):

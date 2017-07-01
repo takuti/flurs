@@ -9,12 +9,12 @@ from sklearn.utils.extmath import safe_sparse_dot
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
     def init_recommender(self, is_static=False, use_index=False):
-        super().init_recommender()
+        super(FMRecommender, self).init_recommender()
         self.is_static = is_static
         self.use_index = use_index
 
     def add_user(self, user):
-        super().add_user(user)
+        super(FMRecommender, self).add_user(user)
 
         if self.use_index:
             n_user = self.n_user - 1
@@ -41,7 +41,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
             self.p += 1
 
     def add_item(self, item):
-        super().add_item(item)
+        super(FMRecommender, self).add_item(item)
 
         n_item = self.n_item - 1
 

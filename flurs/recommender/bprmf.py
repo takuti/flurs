@@ -7,14 +7,14 @@ import numpy as np
 class BPRMFRecommender(BPRMF, RecommenderMixin):
 
     def init_recommender(self):
-        super().init_recommender()
+        super(BPRMFRecommender, self).init_recommender()
 
     def add_user(self, user):
-        super().add_user(user)
+        super(BPRMFRecommender, self).add_user(user)
         self.users[user.index]['vec'] = np.random.normal(0., 0.1, self.k)
 
     def add_item(self, item):
-        super().add_item(item)
+        super(BPRMFRecommender, self).add_item(item)
         i_vec = np.random.normal(0., 0.1, (1, self.k))
         if self.Q.size == 0:
             self.Q = i_vec

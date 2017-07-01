@@ -18,13 +18,13 @@ class Random(BaseModel, RecommenderMixin):
         pass
 
     def init_recommender(self):
-        super().init_recommender()
+        super(Random, self).init_recommender()
 
     def add_user(self, user):
-        super().add_user(user)
+        super(Random, self).add_user(user)
 
     def add_item(self, item):
-        super().add_item(item)
+        super(Random, self).add_item(item)
 
     def update(self, e, is_batch_train=False):
         pass
