@@ -1,5 +1,3 @@
-from abc import ABCMeta, abstractmethod
-
 import numpy as np
 import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
@@ -9,9 +7,7 @@ class BaseProjection(object):
 
     """Base class for projection of feature vectors
     """
-    __metaclass__ = ABCMeta
 
-    @abstractmethod
     def __init__(self, k, p):
         """Initialize projection matrices.
 
@@ -23,7 +19,6 @@ class BaseProjection(object):
         """
         pass
 
-    @abstractmethod
     def insert_proj_col(self, offset):
         """Insert a new column for a projection matrix.
 
@@ -33,7 +28,6 @@ class BaseProjection(object):
         """
         pass
 
-    @abstractmethod
     def reduce(self, Y):
         """Make projection for an input matrix.
 

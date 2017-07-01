@@ -1,5 +1,3 @@
-from abc import ABCMeta, abstractmethod
-
 import numpy as np
 from sklearn.base import BaseEstimator
 
@@ -8,20 +6,17 @@ class BaseModel(BaseEstimator):
 
     """Base class for the incremental models learning from positive-only feedback.
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self, *args):
         """Set the hyperparameters.
         """
         pass
 
-    @abstractmethod
     def init_params(self):
         """Initialize model parameters.
         """
         pass
 
-    @abstractmethod
     def update_params(self, *args):
         """Update model parameters.
         """
@@ -32,7 +27,6 @@ class RecommenderMixin(object):
 
     """Mixin injected into a model to make it a recommender.
     """
-    __metaclass__ = ABCMeta
 
     def init_recommender(self, *args):
         """Initialize a recommender by resetting stored users and items.
@@ -61,7 +55,6 @@ class RecommenderMixin(object):
         """
         return u not in self.users
 
-    @abstractmethod
     def add_user(self, user):
         """For new users, append their information into the dictionaries.
 
@@ -84,7 +77,6 @@ class RecommenderMixin(object):
         """
         return i not in self.items
 
-    @abstractmethod
     def add_item(self, item):
         """For new items, append their information into the dictionaries.
 
@@ -95,7 +87,6 @@ class RecommenderMixin(object):
         self.items[item.index] = {}
         self.n_item += 1
 
-    @abstractmethod
     def update(self, e, is_batch_train):
         """Update model parameters based on d, a sample represented as a dictionary.
 
@@ -105,7 +96,6 @@ class RecommenderMixin(object):
         """
         pass
 
-    @abstractmethod
     def score(self, user, candidates):
         """Compute scores for the pairs of given user and item candidates.
 
@@ -119,7 +109,6 @@ class RecommenderMixin(object):
         """
         return
 
-    @abstractmethod
     def recommend(self, user, candidates):
         """Recommend items for a user represented as a dictionary d.
 
@@ -161,9 +150,7 @@ class FeatureRecommenderMixin(RecommenderMixin):
 
     """Mixin injected into a model to make it a feature-based recommender.
     """
-    __metaclass__ = ABCMeta
 
-    @abstractmethod
     def score(self, user, candidates, context):
         """Compute scores for the pairs of given user and item candidates.
 
@@ -178,7 +165,6 @@ class FeatureRecommenderMixin(RecommenderMixin):
         """
         return
 
-    @abstractmethod
     def recommend(self, user, candidates, context):
         """Recommend items for a user represented as a dictionary d.
 
