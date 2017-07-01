@@ -31,7 +31,7 @@ def recall(truth, recommend, k):
         float: Recall@k.
 
     """
-    return count_true_positive(truth, recommend[:k]) / truth.size
+    return count_true_positive(truth, recommend[:k]) / float(truth.size)
 
 
 def precision(truth, recommend, k):
@@ -46,7 +46,7 @@ def precision(truth, recommend, k):
         float: Precision@k.
 
     """
-    return count_true_positive(truth, recommend[:k]) / k
+    return count_true_positive(truth, recommend[:k]) / float(k)
 
 
 def mean_average_precision(truth, recommend):
@@ -60,11 +60,11 @@ def mean_average_precision(truth, recommend):
         float: MAP.
 
     """
-    tp = accum = 0
+    tp = accum = 0.
     for n in range(recommend.size):
         if recommend[n] in truth:
-            tp += 1
-            accum += (tp / (n + 1))
+            tp += 1.
+            accum += (tp / (n + 1.))
     return accum / truth.size
 
 
@@ -79,11 +79,11 @@ def auc(truth, recommend):
         float: AUC.
 
     """
-    tp = correct = 0
+    tp = correct = 0.
     for r in recommend:
         if r in truth:
             # keep track number of true positives placed before
-            tp += 1
+            tp += 1.
         else:
             correct += tp
     # number of all possible tp-fp pairs
@@ -109,8 +109,8 @@ def mrr(truth, recommend):
     """
     for n in range(recommend.size):
         if recommend[n] in truth:
-            return 1 / (n + 1)
-    return 0
+            return 1. / (n + 1)
+    return 0.
 
 
 def mpr(truth, recommend):
@@ -124,12 +124,12 @@ def mpr(truth, recommend):
         float: MPR.
 
     """
-    accum = 0
+    accum = 0.
     n_recommend = recommend.size
     for t in truth:
-        r = np.where(recommend == t)[0][0] / n_recommend
+        r = np.where(recommend == t)[0][0] / float(n_recommend)
         accum += r
-    return accum * 100 / truth.size
+    return accum * 100. / truth.size
 
 
 def ndcg(truth, recommend, k):
@@ -144,9 +144,9 @@ def ndcg(truth, recommend, k):
         float: NDCG.
 
     """
-    dcg = idcg = 0
+    dcg = idcg = 0.
     for n in range(k):
-        d = 1 / np.log2(n + 2)
+        d = 1. / np.log2(n + 2)
         if recommend[n] in truth:
             dcg += d
         idcg += d
