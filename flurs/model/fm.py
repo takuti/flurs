@@ -17,12 +17,14 @@ class FactorizationMachine(BaseModel):
     """
 
     def __init__(self,
-                 p,
+                 p=None,
                  k=40,
                  l2_reg_w0=2.,
                  l2_reg_w=8.,
                  l2_reg_V=16.,
                  learn_rate=.004):
+
+        assert p is not None
 
         # number of dimensions of input vectors
         self.p = p

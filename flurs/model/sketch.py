@@ -21,7 +21,9 @@ class OnlineSketch(BaseModel):
 
     """
 
-    def __init__(self, p, k=40, ell=-1, r=-1, proj='Raw'):
+    def __init__(self, p=None, k=40, ell=-1, r=-1, proj='Raw'):
+        assert p is not None
+
         # number of dimensions of input vectors
         self.p = p
 
