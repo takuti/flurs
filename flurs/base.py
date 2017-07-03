@@ -13,11 +13,6 @@ class BaseModel(BaseEstimator):
     arguments (no ``*args`` or ``**kwargs``).
     """
 
-    def __init__(self, **kwargs):
-        """Set the hyperparameters.
-        """
-        pass
-
     def init_params(self):
         """Initialize model parameters.
         """
