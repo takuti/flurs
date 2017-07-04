@@ -58,7 +58,7 @@ item = Item(0)
 recommender.add_item(item)
 
 event = Event(user, item, 5.0)
-recommender.update(event)
+recommender.update_recommender(event)
 
 # specify target user and list of item candidates
 recommender.recommend(user, [0])

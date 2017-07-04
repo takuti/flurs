@@ -86,7 +86,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
                                           self.prev_V[h:]))
             self.p += 1
 
-    def update(self, e, is_batch_train=False):
+    def update_recommender(self, e, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
@@ -94,7 +94,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         x = e.encode(index=self.use_index,
                      n_user=self.n_user, n_item=self.n_item)
 
-        self.update_params(x, e.value)
+        self.update(x, e.value)
 
     def score(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items

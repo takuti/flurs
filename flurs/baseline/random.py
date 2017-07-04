@@ -11,9 +11,6 @@ class Random(BaseModel, RecommenderMixin):
     def __init__(self):
         pass
 
-    def update_params(self):
-        pass
-
     def init_recommender(self):
         super(Random, self).init_recommender()
 
@@ -23,7 +20,7 @@ class Random(BaseModel, RecommenderMixin):
     def add_item(self, item):
         super(Random, self).add_item(item)
 
-    def update(self, e, is_batch_train=False):
+    def update_recommender(self, e, is_batch_train=False):
         pass
 
     def score(self, user, candidates):

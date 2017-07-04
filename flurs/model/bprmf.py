@@ -22,7 +22,7 @@ class BPRMF(BaseModel):
 
         self.Q = np.array([])
 
-    def update_params(self, ua, ia):
+    def update(self, ua, ia):
 
         u_vec = self.users[ua]['vec']
         i_vec = self.Q[ia]

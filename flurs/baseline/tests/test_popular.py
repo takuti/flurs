@@ -23,7 +23,7 @@ class PopularTestCase(TestCase):
     def test_update(self):
         self.recommender.add_user(User(0))
         self.recommender.add_item(Item(0))
-        self.recommender.update(Event(User(0), Item(0), 1))
+        self.recommender.update_recommender(Event(User(0), Item(0), 1))
         self.assertEqual(self.recommender.n_user, 1)
         self.assertEqual(self.recommender.n_item, 1)
         assert_array_equal(self.recommender.freq, np.array([1]))
@@ -31,5 +31,5 @@ class PopularTestCase(TestCase):
     def test_score(self):
         self.recommender.add_user(User(0))
         self.recommender.add_item(Item(0))
-        self.recommender.update(Event(User(0), Item(0), 1))
+        self.recommender.update_recommender(Event(User(0), Item(0), 1))
         self.assertEqual(self.recommender.score(User(0), np.array([0])), 1)

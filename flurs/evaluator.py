@@ -59,7 +59,7 @@ class Evaluator(object):
         # the model is incrementally updated based on them before the incremental evaluation step
         for e in test_events:
             self.rec.users[e.user.index]['known_items'].add(e.item.index)
-            self.rec.update(e)
+            self.rec.update_recommender(e)
 
     def evaluate(self, test_events):
         """Iterate recommend/update procedure and compute incremental recall.
@@ -92,7 +92,7 @@ class Evaluator(object):
             # Step 2: update the model with the observed event
             self.rec.users[e.user.index]['known_items'].add(e.item.index)
             start = time.clock()
-            self.rec.update(e)
+            self.rec.update_recommender(e)
             update_time = (time.clock() - start)
 
             self.item_buffer.append(e.item.index)
@@ -136,7 +136,7 @@ class Evaluator(object):
 
             # 20%: update models
             for e in train_events:
-                self.rec.update(e, is_batch_train=True)
+                self.rec.update_recommender(e, is_batch_train=True)
 
             # 10%: evaluate the current model
             MPR = self.__batch_evaluate(test_events)

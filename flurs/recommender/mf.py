@@ -24,12 +24,12 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
         else:
             self.Q = np.concatenate((self.Q, i_vec))
 
-    def update(self, e, is_batch_train=False):
+    def update_recommender(self, e, is_batch_train=False):
         # static baseline; w/o updating the model
         if not is_batch_train and self.is_static:
             return
 
-        self.update_params(e.user.index, e.item.index, e.value)
+        self.update(e.user.index, e.item.index, e.value)
 
     def score(self, user, candidates):
         pred = np.dot(self.users[user.index]['vec'],

@@ -21,7 +21,7 @@ class MatrixFactorization(BaseModel):
 
         self.Q = np.array([])
 
-    def update_params(self, ua, ia, value):
+    def update(self, ua, ia, value):
         u_vec = self.users[ua]['vec']
         i_vec = self.Q[ia]
 

@@ -12,11 +12,7 @@ class BaseModel(BaseEstimator):
     at the class level in their ``__init__`` as explicit keyword
     arguments (no ``*args`` or ``**kwargs``).
     """
-
-    def update_params(self, *args):
-        """Update model parameters.
-        """
-        pass
+    pass
 
 
 class RecommenderMixin(object):
@@ -83,7 +79,7 @@ class RecommenderMixin(object):
         self.items[item.index] = {}
         self.n_item += 1
 
-    def update(self, e, is_batch_train):
+    def update_recommender(self, e, is_batch_train):
         """Update model parameters based on d, a sample represented as a dictionary.
 
         Args:
