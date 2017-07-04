@@ -1,6 +1,5 @@
 from unittest import TestCase
 import numpy as np
-from numpy.testing import assert_array_equal
 
 from flurs.data.entity import User, Item, Event
 from flurs.baseline.random import Random
