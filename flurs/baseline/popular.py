@@ -1,9 +1,10 @@
-from flurs.base import BaseModel, RecommenderMixin
+from sklearn.base import BaseEstimator
+from flurs.base import RecommenderMixin
 
 import numpy as np
 
 
-class Popular(BaseModel, RecommenderMixin):
+class Popular(BaseEstimator, RecommenderMixin):
 
     """Popularity (non-personalized) baseline
     """

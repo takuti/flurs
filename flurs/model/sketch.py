@@ -1,4 +1,4 @@
-from flurs.base import BaseModel
+from sklearn.base import BaseEstimator
 
 from flurs.utils.projection import Raw
 from flurs.utils.projection import RandomProjection
@@ -11,7 +11,7 @@ import scipy.sparse as sp
 from sklearn import preprocessing
 
 
-class OnlineSketch(BaseModel):
+class OnlineSketch(BaseEstimator):
 
     """Matrix-sketching-based online item recommender
 

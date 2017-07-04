@@ -1,9 +1,9 @@
-from flurs.base import BaseModel
+from sklearn.base import BaseEstimator
 
 import numpy as np
 
 
-class UserKNN(BaseModel):
+class UserKNN(BaseEstimator):
 
     """Incremental User-based Collaborative Filtering
 

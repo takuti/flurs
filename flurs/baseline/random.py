@@ -1,9 +1,10 @@
-from flurs.base import BaseModel, RecommenderMixin
+from sklearn.base import BaseEstimator
+from flurs.base import RecommenderMixin
 
 import numpy as np
 
 
-class Random(BaseModel, RecommenderMixin):
+class Random(BaseEstimator, RecommenderMixin):
 
     """Random baseline
     """

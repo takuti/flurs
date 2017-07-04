@@ -1,18 +1,4 @@
 import numpy as np
-from sklearn.base import BaseEstimator
-
-
-class BaseModel(BaseEstimator):
-
-    """Base class for the incremental models learning from positive-only feedback.
-
-    Notes
-    -----
-    All models should specify all the parameters that can be set
-    at the class level in their ``__init__`` as explicit keyword
-    arguments (no ``*args`` or ``**kwargs``).
-    """
-    pass
 
 
 class RecommenderMixin(object):

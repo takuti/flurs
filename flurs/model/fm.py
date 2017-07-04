@@ -1,4 +1,4 @@
-from flurs.base import BaseModel
+from sklearn.base import BaseEstimator
 
 import numpy as np
 import scipy.sparse as sp
@@ -6,7 +6,7 @@ import scipy.sparse as sp
 from .. import logger
 
 
-class FactorizationMachine(BaseModel):
+class FactorizationMachine(BaseEstimator):
 
     """Incremental Factorization Machines
 

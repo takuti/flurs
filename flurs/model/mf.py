@@ -1,9 +1,9 @@
-from flurs.base import BaseModel
+from sklearn.base import BaseEstimator
 
 import numpy as np
 
 
-class MatrixFactorization(BaseModel):
+class MatrixFactorization(BaseEstimator):
 
     """Incremental Matrix Factorization
 

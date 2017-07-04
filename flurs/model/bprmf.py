@@ -1,9 +1,9 @@
-from flurs.base import BaseModel
+from sklearn.base import BaseEstimator
 
 import numpy as np
 
 
-class BPRMF(BaseModel):
+class BPRMF(BaseEstimator):
 
     """Incremental Matrix Factorization with BPR optimization
 
