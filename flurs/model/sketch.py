@@ -50,9 +50,6 @@ class OnlineSketch(BaseModel):
         elif proj == 'TensorSketchProjection':
             self.proj = TensorSketchProjection(self.k, self.p)
 
-        self.init_params()
-
-    def init_params(self):
         self.i_mat = sp.csr_matrix([])
 
     def update_params(self, y):

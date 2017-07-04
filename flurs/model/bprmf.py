@@ -20,9 +20,6 @@ class BPRMF(BaseModel):
         self.l2_reg_j = l2_reg  # negative items: j
         self.learn_rate = learn_rate
 
-        self.init_params()
-
-    def init_params(self):
         self.Q = np.array([])
 
     def update_params(self, ua, ia):

@@ -9,7 +9,6 @@ class SketchRecommenderTestCase(TestCase):
 
     def setUp(self):
         self.recommender = SketchRecommender(p=3)
-        self.recommender.init_params()
         self.recommender.init_recommender()
 
     def test_add_user(self):

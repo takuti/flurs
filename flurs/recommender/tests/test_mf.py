@@ -10,7 +10,6 @@ class MFRecommenderTestCase(TestCase):
     def setUp(self):
         self.k = 40
         self.recommender = MFRecommender(k=self.k)
-        self.recommender.init_params()
         self.recommender.init_recommender()
 
     def test_add_user(self):

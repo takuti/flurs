@@ -9,9 +9,6 @@ class Popular(BaseModel, RecommenderMixin):
     """
 
     def __init__(self):
-        pass
-
-    def init_params(self):
         self.freq = np.array([])
 
     def update_params(self, ia):

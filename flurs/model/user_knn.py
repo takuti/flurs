@@ -17,9 +17,6 @@ class UserKNN(BaseModel):
         # number of nearest neighbors
         self.k = k
 
-        self.init_params()
-
-    def init_params(self):
         # user-item matrix
         self.R = np.array([])
 

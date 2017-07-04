@@ -13,11 +13,6 @@ class BaseModel(BaseEstimator):
     arguments (no ``*args`` or ``**kwargs``).
     """
 
-    def init_params(self):
-        """Initialize model parameters.
-        """
-        pass
-
     def update_params(self, *args):
         """Update model parameters.
         """

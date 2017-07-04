@@ -9,7 +9,6 @@ class UserKNNRecommenderTestCase(TestCase):
 
     def setUp(self):
         self.recommender = UserKNNRecommender()
-        self.recommender.init_params()
         self.recommender.init_recommender()
 
     def test_add_user(self):

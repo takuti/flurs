@@ -35,9 +35,6 @@ class FactorizationMachine(BaseModel):
         self.l2_reg_V = np.ones(k) * l2_reg_V
         self.learn_rate = learn_rate
 
-        self.init_params()
-
-    def init_params(self):
         self.i_mat = sp.csr_matrix([])
 
         # initial parameters

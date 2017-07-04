@@ -10,7 +10,6 @@ class RandomTestCase(TestCase):
 
     def setUp(self):
         self.recommender = Random()
-        self.recommender.init_params()
         self.recommender.init_recommender()
 
     def test_add_user(self):

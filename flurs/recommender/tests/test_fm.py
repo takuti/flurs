@@ -10,7 +10,6 @@ class FMRecommenderTestCase(TestCase):
     def setUp(self):
         self.k = 40
         self.recommender = FMRecommender(p=3, k=self.k)
-        self.recommender.init_params()
         self.recommender.init_recommender()
 
     def test_add_user(self):

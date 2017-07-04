@@ -11,9 +11,6 @@ class Random(BaseModel, RecommenderMixin):
     def __init__(self):
         pass
 
-    def init_params(self):
-        pass
-
     def update_params(self):
         pass
 

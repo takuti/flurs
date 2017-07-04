@@ -30,9 +30,6 @@ class Evaluator(object):
         # save items which are observed in most recent `maxlen` events
         self.item_buffer = deque(maxlen=maxlen)
 
-        # initialize models and user/item information
-        self.rec.init_params()
-
     def fit(self, train_events, test_events, n_epoch=1):
         """Train a model using the first 30% positive events to avoid cold-start.
 
@@ -45,8 +42,6 @@ class Evaluator(object):
             n_epoch (int): Number of epochs for the batch training.
 
         """
-        self.rec.init_params()
-
         # make initial status for batch training
         for e in train_events:
             self.__validate(e)
