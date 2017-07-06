@@ -122,8 +122,8 @@ class Evaluator(object):
         """Batch update called by the fitting method.
 
         Args:
-            train_events (list of Event): Positive training events (0-20%).
-            test_events (list of Event): Test events (20-30%).
+            train_events (list of Event): Positive training events.
+            test_events (list of Event): Test events.
             n_epoch (int): Number of epochs for the batch training.
 
         """
@@ -134,11 +134,11 @@ class Evaluator(object):
             if n_epoch != 1:
                 np.random.shuffle(train_events)
 
-            # 20%: update models
+            # train
             for e in train_events:
                 self.rec.update_recommender(e, is_batch_train=True)
 
-            # 10%: evaluate the current model
+            # test
             MPR = self.__batch_evaluate(test_events)
             logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
 
