@@ -12,19 +12,19 @@ class Evaluator(object):
     """Base class for experimentation of the incremental models with positive-only feedback.
     """
 
-    def __init__(self, recommender, can_repeat=True, maxlen=None):
+    def __init__(self, recommender, repeat=True, maxlen=None):
         """Set/initialize parameters.
 
         Args:
             recommender (Recommender): Instance of a recommender which has been initialized.
-            can_repeat (boolean): Choose whether the same item can be repeatedly interacted by the same user.
+            repeat (boolean): Choose whether the same item can be repeatedly interacted by the same user.
             maxlen (int): Size of an item buffer which stores most recently observed items.
 
         """
         self.rec = recommender
         self.is_feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
 
-        self.can_repeat = can_repeat
+        self.repeat = repeat
 
         # create a ring buffer
         # save items which are observed in most recent `maxlen` events
@@ -76,7 +76,7 @@ class Evaluator(object):
 
             # target items (all or unobserved depending on a detaset)
             unobserved = set(self.item_buffer)
-            if not self.can_repeat:
+            if not self.repeat:
                 unobserved -= self.rec.users[e.user.index]['known_items']
                 # * item i interacted by user u must be in the recommendation candidate
                 unobserved.add(e.item.index)
@@ -159,7 +159,7 @@ class Evaluator(object):
 
             # check if the data allows users to interact the same items repeatedly
             unobserved = all_items
-            if not self.can_repeat:
+            if not self.repeat:
                 # make recommendation for all unobserved items
                 unobserved -= self.rec.users[e.user.index]['known_items']
                 # true item itself must be in the recommendation candidates
