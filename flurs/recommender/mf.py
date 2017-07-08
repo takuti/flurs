@@ -6,11 +6,11 @@ import numpy as np
 
 class MFRecommender(MatrixFactorization, RecommenderMixin):
 
-    def init_recommender(self, is_static=False):
+    def init_recommender(self, static=False):
         super(MFRecommender, self).init_recommender()
 
         # if True, parameters will not be updated in evaluation
-        self.is_static = is_static
+        self.static = static
 
     def add_user(self, user):
         super(MFRecommender, self).add_user(user)
@@ -24,9 +24,9 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
         else:
             self.Q = np.concatenate((self.Q, i_vec))
 
-    def update_recommender(self, e, is_batch_train=False):
+    def update_recommender(self, e, batch_train=False):
         # static baseline; w/o updating the model
-        if not is_batch_train and self.is_static:
+        if not batch_train and self.static:
             return
 
         self.update(e.user.index, e.item.index, e.value)

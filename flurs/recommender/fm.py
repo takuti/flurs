@@ -8,9 +8,9 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
-    def init_recommender(self, is_static=False, use_index=False):
+    def init_recommender(self, static=False, use_index=False):
         super(FMRecommender, self).init_recommender()
-        self.is_static = is_static
+        self.static = static
         self.use_index = use_index
 
     def add_user(self, user):
@@ -86,9 +86,9 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
                                           self.prev_V[h:]))
             self.p += 1
 
-    def update_recommender(self, e, is_batch_train=False):
+    def update_recommender(self, e, batch_train=False):
         # static baseline; w/o updating the model
-        if not is_batch_train and self.is_static:
+        if not batch_train and self.static:
             return
 
         x = e.encode(index=self.use_index,

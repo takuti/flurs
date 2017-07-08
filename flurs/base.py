@@ -65,7 +65,7 @@ class RecommenderMixin(object):
         self.items[item.index] = {}
         self.n_item += 1
 
-    def update_recommender(self, e, is_batch_train):
+    def update_recommender(self, e, batch_train):
         """Update model parameters based on d, a sample represented as a dictionary.
 
         Args:

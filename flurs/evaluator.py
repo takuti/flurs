@@ -22,7 +22,7 @@ class Evaluator(object):
 
         """
         self.rec = recommender
-        self.is_feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
+        self.feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
 
         self.repeat = repeat
 
@@ -101,7 +101,7 @@ class Evaluator(object):
             yield scores[0], rank, recommend_time, update_time
 
     def __recommend(self, e, candidates):
-        if self.is_feature_rec:
+        if self.feature_rec:
             return self.rec.recommend(e.user, candidates, e.context)
         else:
             return self.rec.recommend(e.user, candidates)
@@ -136,7 +136,7 @@ class Evaluator(object):
 
             # train
             for e in train_events:
-                self.rec.update_recommender(e, is_batch_train=True)
+                self.rec.update_recommender(e, batch_train=True)
 
             # test
             MPR = self.__batch_evaluate(test_events)

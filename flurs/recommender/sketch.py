@@ -26,7 +26,7 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
         else:
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, i_vec)))
 
-    def update_recommender(self, e, is_batch_train=False):
+    def update_recommender(self, e, batch_train=False):
         y = e.encode(index=False, feature=True, context=True)
         self.update(y)
 

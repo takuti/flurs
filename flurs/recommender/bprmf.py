@@ -21,7 +21,7 @@ class BPRMFRecommender(BPRMF, RecommenderMixin):
         else:
             self.Q = np.concatenate((self.Q, i_vec))
 
-    def update_recommender(self, e, is_batch_train=False):
+    def update_recommender(self, e, batch_train=False):
         self.update(e.user.index, e.item.index)
 
     def score(self, user, candidates):

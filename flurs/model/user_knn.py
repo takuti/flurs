@@ -30,12 +30,12 @@ class UserKNN(BaseEstimator):
 
     def update(self, ua, ia, value):
         prev_r = self.R[ua, ia]
-        is_new_submit = (prev_r == 0)
+        new_submit = (prev_r == 0)
         self.R[ua, ia] = value
 
         prev_mean = self.users[ua]['mean']
 
-        if is_new_submit:
+        if new_submit:
             self.users[ua]['count'] += 1
             self.users[ua]['mean'] = self.R[ua, ia] / self.users[ua]['count'] + (
                 self.users[ua]['count'] - 1) / self.users[ua]['count'] * prev_mean
@@ -56,7 +56,7 @@ class UserKNN(BaseEstimator):
                 ua_normalized = self.R[ua, ia] - self.users[ua]['mean']
                 uy_normalized = self.R[uy, ia] - self.users[uy]['mean']
 
-                if is_new_submit:
+                if new_submit:
                     e = ua_normalized * uy_normalized
                     f = ua_normalized ** 2
                     g = uy_normalized ** 2

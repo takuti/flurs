@@ -25,7 +25,7 @@ class Popular(BaseEstimator, RecommenderMixin):
         super(Popular, self).add_item(item)
         self.freq = np.append(self.freq, 0)
 
-    def update_recommender(self, e, is_batch_train=False):
+    def update_recommender(self, e, batch_train=False):
         self.update(e.item.index)
 
     def score(self, user, candidates):
