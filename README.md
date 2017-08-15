@@ -48,7 +48,6 @@ from flurs.recommender.mf import MFRecommender
 
 recommender = MFRecommender(k=40)
 
-recommender.init_params()
 recommender.init_recommender()
 
 user = User(0)
