@@ -34,11 +34,21 @@ class Base(object):
 
 
 class User(Base):
-    pass
+
+    def __str__(self):
+        if len(self.feature) == 1 and self.feature[0] == 0.:
+            return 'User(index={})'.format(self.index)
+        else:
+            return 'User(index={}, feature={})'.format(self.index, self.feature)
 
 
 class Item(Base):
-    pass
+
+    def __str__(self):
+        if len(self.feature) == 1 and self.feature[0] == 0.:
+            return 'Item(index={})'.format(self.index)
+        else:
+            return 'Item(index={}, feature={})'.format(self.index, self.feature)
 
 
 class Event(object):
@@ -64,3 +74,9 @@ class Event(object):
         x = np.concatenate((x, iv))
 
         return x if not vertical else np.array([x]).T
+
+    def __str__(self):
+        if len(self.context) == 1 and self.context[0] == 0.:
+            return 'Event(user={}, item={}, value={})'.format(self.user, self.item, self.value)
+        else:
+            return 'Event(user={}, item={}, value={}, context={})'.format(self.user, self.item, self.value, self.context)
