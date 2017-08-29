@@ -43,7 +43,7 @@ class Item(Base):
 
 class Event(object):
 
-    def __init__(self, user, item, value, context=np.array([0.])):
+    def __init__(self, user, item, value=1., context=np.array([0.])):
         self.user = user
         self.item = item
         self.value = value
