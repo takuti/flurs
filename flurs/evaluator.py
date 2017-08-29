@@ -78,8 +78,11 @@ class Evaluator(object):
             unobserved = set(self.item_buffer)
             if not self.repeat:
                 unobserved -= self.rec.users[e.user.index]['known_items']
-                # * item i interacted by user u must be in the recommendation candidate
-                unobserved.add(e.item.index)
+
+            # item i interacted by user u must be in the recommendation candidate
+            # even if it is a new item
+            unobserved.add(e.item.index)
+
             candidates = np.asarray(list(unobserved))
 
             # make top-{at} recommendation for the 1001 items
