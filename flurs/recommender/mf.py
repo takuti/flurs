@@ -1,5 +1,6 @@
 from flurs.base import RecommenderMixin
 from flurs.model.mf import MatrixFactorization
+from .. import logger
 
 import numpy as np
 
@@ -28,6 +29,10 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
         # static baseline; w/o updating the model
         if not batch_train and self.static:
             return
+
+        if e.value != 1.:
+            logger.info('Incremental matrix factorization assumes implicit feedback recommendation, so the event value is automatically converted into 1.0')
+            e.value = 1.
 
         self.update(e.user.index, e.item.index, e.value)
 

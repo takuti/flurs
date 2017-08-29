@@ -1,5 +1,6 @@
 from flurs.base import FeatureRecommenderMixin
 from flurs.model.fm import FactorizationMachine
+from .. import logger
 
 import numpy as np
 import scipy.sparse as sp
@@ -93,6 +94,10 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
         x = e.encode(index=self.use_index,
                      n_user=self.n_user, n_item=self.n_item)
+
+        if e.value != 1.:
+            logger.info('Incremental factorization machines assumes implicit feedback recommendation, so the event value is automatically converted into 1.0')
+            e.value = 1.
 
         self.update(x, e.value)
 
