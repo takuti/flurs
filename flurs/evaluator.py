@@ -12,7 +12,7 @@ class Evaluator(object):
     """Base class for experimentation of the incremental models with positive-only feedback.
     """
 
-    def __init__(self, recommender, repeat=True, maxlen=None):
+    def __init__(self, recommender, repeat=True, maxlen=None, debug=False):
         """Set/initialize parameters.
 
         Args:
@@ -29,6 +29,8 @@ class Evaluator(object):
         # create a ring buffer
         # save items which are observed in most recent `maxlen` events
         self.item_buffer = deque(maxlen=maxlen)
+
+        self.debug = debug
 
     def fit(self, train_events, test_events, n_epoch=1):
         """Train a model using the first 30% positive events to avoid cold-start.
@@ -143,7 +145,8 @@ class Evaluator(object):
 
             # test
             MPR = self.__batch_evaluate(test_events)
-            logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
+            if self.debug:
+                logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
 
     def __batch_evaluate(self, test_events):
         """Evaluate the current model by using the given test events.

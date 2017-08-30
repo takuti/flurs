@@ -57,7 +57,7 @@ class FactorizationMachine(BaseEstimator):
         self.l2_reg_w = max(0., self.l2_reg_w + coeff * np.inner(x, self.prev_w))
 
         if self.l2_reg_w0 == 0. or self.l2_reg_w == 0.:
-            logger.debug('[warn] reg_w0 and/or reg_w are fallen in 0.0')
+            logger.warn('reg_w0 and/or reg_w are fallen in 0.0')
 
         dot_v = np.dot(x_vec.T, self.V).reshape((self.k,))  # (k, )
         dot_prev_v = np.dot(x_vec.T, self.prev_V).reshape((self.k,))  # (k, )
