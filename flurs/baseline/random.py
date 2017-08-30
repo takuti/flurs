@@ -15,11 +15,11 @@ class Random(BaseEstimator, RecommenderMixin):
     def init_recommender(self):
         super(Random, self).init_recommender()
 
-    def add_user(self, user):
-        super(Random, self).add_user(user)
+    def register_user(self, user):
+        super(Random, self).register_user(user)
 
-    def add_item(self, item):
-        super(Random, self).add_item(item)
+    def register_item(self, item):
+        super(Random, self).register_item(item)
 
     def update_recommender(self, e, batch_train=False):
         pass

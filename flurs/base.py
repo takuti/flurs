@@ -1,3 +1,5 @@
+from .data.entity import User, Item
+
 import numpy as np
 
 
@@ -33,7 +35,14 @@ class RecommenderMixin(object):
         """
         return u not in self.users
 
-    def add_user(self, user):
+    def register(self, entity):
+        t = type(entity)
+        if t == User:
+            self.register_user(entity)
+        elif t == Item:
+            self.register_item(entity)
+
+    def register_user(self, user):
         """For new users, append their information into the dictionaries.
 
         Args:
@@ -55,7 +64,7 @@ class RecommenderMixin(object):
         """
         return i not in self.items
 
-    def add_item(self, item):
+    def register_item(self, item):
         """For new items, append their information into the dictionaries.
 
         Args:

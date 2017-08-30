@@ -25,8 +25,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
             mat = np.concatenate((mat, col), axis=1)
         return mat
 
-    def add_user(self, user):
-        super(UserKNNRecommender, self).add_user(user)
+    def register_user(self, user):
+        super(UserKNNRecommender, self).register_user(user)
 
         self.R = self.insert_row(self.R, self.n_item)
 
@@ -49,8 +49,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
         # current average rating of the user
         self.users[user.index]['mean'] = 0.
 
-    def add_item(self, item):
-        super(UserKNNRecommender, self).add_item(item)
+    def register_item(self, item):
+        super(UserKNNRecommender, self).register_item(item)
         self.R = self.insert_col(self.R, self.n_user)
 
     def update_recommender(self, e, batch_train=False):

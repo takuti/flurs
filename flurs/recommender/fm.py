@@ -14,8 +14,8 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         self.static = static
         self.use_index = use_index
 
-    def add_user(self, user):
-        super(FMRecommender, self).add_user(user)
+    def register_user(self, user):
+        super(FMRecommender, self).register_user(user)
 
         if self.use_index:
             n_user = self.n_user - 1
@@ -41,8 +41,8 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
             self.p += 1
 
-    def add_item(self, item):
-        super(FMRecommender, self).add_item(item)
+    def register_item(self, item):
+        super(FMRecommender, self).register_item(item)
 
         n_item = self.n_item - 1
 

@@ -117,11 +117,11 @@ class Evaluator(object):
 
     def __validate_user(self, e):
         if self.rec.is_new_user(e.user.index):
-            self.rec.add_user(e.user)
+            self.rec.register_user(e.user)
 
     def __validate_item(self, e):
         if self.rec.is_new_item(e.item.index):
-            self.rec.add_item(e.item)
+            self.rec.register_item(e.item)
 
     def __batch_update(self, train_events, test_events, n_epoch):
         """Batch update called by the fitting method.

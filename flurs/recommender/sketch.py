@@ -13,11 +13,11 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
     def init_recommender(self):
         super(SketchRecommender, self).init_recommender()
 
-    def add_user(self, user):
-        super(SketchRecommender, self).add_user(user)
+    def register_user(self, user):
+        super(SketchRecommender, self).register_user(user)
 
-    def add_item(self, item):
-        super(SketchRecommender, self).add_item(item)
+    def register_item(self, item):
+        super(SketchRecommender, self).register_item(item)
 
         i_vec = item.encode(index=False, feature=True, vertical=True)
         i_vec = sp.csr_matrix(i_vec)
