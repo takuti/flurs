@@ -25,7 +25,7 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
         else:
             self.Q = np.concatenate((self.Q, i_vec))
 
-    def update_recommender(self, e, batch_train=False):
+    def update(self, e, batch_train=False):
         # static baseline; w/o updating the model
         if not batch_train and self.static:
             return
@@ -34,7 +34,7 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
             logger.info('Incremental matrix factorization assumes implicit feedback recommendation, so the event value is automatically converted into 1.0')
             e.value = 1.
 
-        self.update(e.user.index, e.item.index, e.value)
+        self.update_model(e.user.index, e.item.index, e.value)
 
     def score(self, user, candidates):
         pred = np.dot(self.users[user.index]['vec'],

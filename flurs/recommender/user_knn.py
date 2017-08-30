@@ -53,8 +53,8 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
         super(UserKNNRecommender, self).register_item(item)
         self.R = self.insert_col(self.R, self.n_user)
 
-    def update_recommender(self, e, batch_train=False):
-        self.update(e.user.index, e.item.index, e.value)
+    def update(self, e, batch_train=False):
+        self.update_model(e.user.index, e.item.index, e.value)
 
     def score(self, user, candidates):
         ua = user.index

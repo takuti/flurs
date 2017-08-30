@@ -22,7 +22,7 @@ class BPRMF(BaseEstimator):
 
         self.Q = np.array([])
 
-    def update(self, ua, ia):
+    def update_model(self, ua, ia):
 
         u_vec = self.users[ua]['vec']
         i_vec = self.Q[ia]

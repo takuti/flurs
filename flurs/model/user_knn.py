@@ -28,7 +28,7 @@ class UserKNN(BaseEstimator):
         self.C = np.array([])
         self.D = np.array([])
 
-    def update(self, ua, ia, value):
+    def update_model(self, ua, ia, value):
         prev_r = self.R[ua, ia]
         new_submit = (prev_r == 0)
         self.R[ua, ia] = value

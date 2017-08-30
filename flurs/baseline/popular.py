@@ -12,9 +12,6 @@ class Popular(BaseEstimator, RecommenderMixin):
     def __init__(self):
         self.freq = np.array([])
 
-    def update(self, ia):
-        self.freq[ia] += 1
-
     def initialize(self):
         super(Popular, self).initialize()
 
@@ -25,8 +22,8 @@ class Popular(BaseEstimator, RecommenderMixin):
         super(Popular, self).register_item(item)
         self.freq = np.append(self.freq, 0)
 
-    def update_recommender(self, e, batch_train=False):
-        self.update(e.item.index)
+    def update(self, e, batch_train=False):
+        self.freq[e.item.index] += 1
 
     def score(self, user, candidates):
         return self.freq[candidates]

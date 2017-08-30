@@ -87,7 +87,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
                                           self.prev_V[h:]))
             self.p += 1
 
-    def update_recommender(self, e, batch_train=False):
+    def update(self, e, batch_train=False):
         # static baseline; w/o updating the model
         if not batch_train and self.static:
             return
@@ -99,7 +99,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
             logger.info('Incremental factorization machines assumes implicit feedback recommendation, so the event value is automatically converted into 1.0')
             e.value = 1.
 
-        self.update(x, e.value)
+        self.update_model(x, e.value)
 
     def score(self, user, candidates, context):
         # i_mat is (n_item_context, n_item) for all possible items

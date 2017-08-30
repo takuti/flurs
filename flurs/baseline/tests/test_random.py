@@ -22,6 +22,6 @@ class RandomTestCase(TestCase):
     def test_score(self):
         self.recommender.register(User(0))
         self.recommender.register(Item(0))
-        self.recommender.update_recommender(Event(User(0), Item(0), 1))
+        self.recommender.update(Event(User(0), Item(0), 1))
         score = self.recommender.score(User(0), np.array([0]))
         self.assertTrue(score >= 0. and score < 1.)

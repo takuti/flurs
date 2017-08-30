@@ -52,7 +52,7 @@ class OnlineSketch(BaseEstimator):
 
         self.i_mat = sp.csr_matrix([])
 
-    def update(self, y):
+    def update_model(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -87,7 +87,7 @@ class OnlineRandomSketch(OnlineSketch):
     [WIP] many matrix multiplications are computational heavy
     """
 
-    def update(self, y):
+    def update_model(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = np.ravel(preprocessing.normalize(y, norm='l2', axis=0))
 
@@ -130,7 +130,7 @@ class OnlineSparseSketch(OnlineSketch):
     """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices
     """
 
-    def update(self, y):
+    def update_model(self, y):
         y = self.proj.reduce(np.array([y]).T)
         y = preprocessing.normalize(y, norm='l2', axis=0)  # (k, 1)
 
