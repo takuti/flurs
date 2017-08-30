@@ -6,8 +6,8 @@ import numpy as np
 
 class UserKNNRecommender(UserKNN, RecommenderMixin):
 
-    def init_recommender(self):
-        super(UserKNNRecommender, self).init_recommender()
+    def initialize(self):
+        super(UserKNNRecommender, self).initialize()
 
     def insert_row(self, mat, n_col):
         row = np.zeros((1, n_col))

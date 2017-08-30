@@ -10,7 +10,7 @@ class PopularTestCase(TestCase):
 
     def setUp(self):
         self.recommender = Popular()
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
     def test_register_user(self):
         self.recommender.register(User(0))

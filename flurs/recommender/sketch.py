@@ -10,8 +10,8 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
 
-    def init_recommender(self):
-        super(SketchRecommender, self).init_recommender()
+    def initialize(self):
+        super(SketchRecommender, self).initialize()
 
     def register_user(self, user):
         super(SketchRecommender, self).register_user(user)

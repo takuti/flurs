@@ -8,7 +8,7 @@ class RecommenderMixin(object):
     """Mixin injected into a model to make it a recommender.
     """
 
-    def init_recommender(self, *args):
+    def initialize(self, *args):
         """Initialize a recommender by resetting stored users and items.
         """
         # number of observed users

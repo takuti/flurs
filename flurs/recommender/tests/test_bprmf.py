@@ -10,7 +10,7 @@ class BPRMFRecommenderTestCase(TestCase):
     def setUp(self):
         self.k = 40
         self.recommender = BPRMFRecommender(k=self.k)
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
     def test_register_user(self):
         self.recommender.register(User(0))

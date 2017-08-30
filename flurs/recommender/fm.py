@@ -9,8 +9,8 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
-    def init_recommender(self, static=False, use_index=False):
-        super(FMRecommender, self).init_recommender()
+    def initialize(self, static=False, use_index=False):
+        super(FMRecommender, self).initialize()
         self.static = static
         self.use_index = use_index
 

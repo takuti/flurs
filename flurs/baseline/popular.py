@@ -15,8 +15,8 @@ class Popular(BaseEstimator, RecommenderMixin):
     def update(self, ia):
         self.freq[ia] += 1
 
-    def init_recommender(self):
-        super(Popular, self).init_recommender()
+    def initialize(self):
+        super(Popular, self).initialize()
 
     def register_user(self, user):
         super(Popular, self).register_user(user)

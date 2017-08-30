@@ -7,8 +7,8 @@ import numpy as np
 
 class MFRecommender(MatrixFactorization, RecommenderMixin):
 
-    def init_recommender(self, static=False):
-        super(MFRecommender, self).init_recommender()
+    def initialize(self, static=False):
+        super(MFRecommender, self).initialize()
 
         # if True, parameters will not be updated in evaluation
         self.static = static

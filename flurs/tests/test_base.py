@@ -10,15 +10,15 @@ class RecommenderMixinTestCase(TestCase):
     def setUp(self):
         self.recommender = RecommenderMixin()
 
-    def test_init_recommender(self):
-        self.recommender.init_recommender()
+    def test_initialize(self):
+        self.recommender.initialize()
         self.assertEqual(self.recommender.n_user, 0)
         self.assertEqual(self.recommender.users, {})
         self.assertEqual(self.recommender.n_item, 0)
         self.assertEqual(self.recommender.items, {})
 
     def test_is_new_user(self):
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
         self.assertTrue(self.recommender.is_new_user(1))
         self.assertTrue(self.recommender.is_new_user(2))
@@ -27,7 +27,7 @@ class RecommenderMixinTestCase(TestCase):
         self.assertFalse(self.recommender.is_new_user(1))
 
     def test_is_new_item(self):
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
         self.assertTrue(self.recommender.is_new_item(1))
         self.assertTrue(self.recommender.is_new_item(2))

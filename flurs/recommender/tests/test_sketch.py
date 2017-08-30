@@ -9,7 +9,7 @@ class SketchRecommenderTestCase(TestCase):
 
     def setUp(self):
         self.recommender = SketchRecommender(p=3)
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
     def test_register_user(self):
         self.recommender.register(User(0))

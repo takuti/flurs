@@ -6,8 +6,8 @@ import numpy as np
 
 class BPRMFRecommender(BPRMF, RecommenderMixin):
 
-    def init_recommender(self):
-        super(BPRMFRecommender, self).init_recommender()
+    def initialize(self):
+        super(BPRMFRecommender, self).initialize()
 
     def register_user(self, user):
         super(BPRMFRecommender, self).register_user(user)

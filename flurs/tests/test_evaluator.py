@@ -11,7 +11,7 @@ class EvaluatorTestCase(TestCase):
 
     def setUp(self):
         recommender = Popular()
-        recommender.init_recommender()
+        recommender.initialize()
         self.evaluator = Evaluator(recommender=recommender, repeat=False)
 
         self.samples = [Event(User(0), Item(0), 1),

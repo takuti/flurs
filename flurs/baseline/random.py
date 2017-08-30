@@ -12,8 +12,8 @@ class Random(BaseEstimator, RecommenderMixin):
     def __init__(self):
         pass
 
-    def init_recommender(self):
-        super(Random, self).init_recommender()
+    def initialize(self):
+        super(Random, self).initialize()
 
     def register_user(self, user):
         super(Random, self).register_user(user)

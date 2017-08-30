@@ -9,7 +9,7 @@ class RandomTestCase(TestCase):
 
     def setUp(self):
         self.recommender = Random()
-        self.recommender.init_recommender()
+        self.recommender.initialize()
 
     def test_register_user(self):
         self.recommender.register(User(0))
