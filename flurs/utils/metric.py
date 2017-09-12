@@ -144,10 +144,16 @@ def ndcg(truth, recommend, k):
         float: NDCG.
 
     """
-    dcg = idcg = 0.
-    for n in range(k):
-        d = 1. / np.log2(n + 2)
-        if recommend[n] in truth:
-            dcg += d
-        idcg += d
-    return dcg / idcg
+    def idcg(n_possible_truth):
+        res = 0.
+        for n in range(n_possible_truth):
+            res += 1. / np.log2(n + 2)
+        return res
+
+    dcg = 0.
+    for n, r in enumerate(recommend[:k]):
+        if r not in truth:
+            continue
+        dcg += 1. / np.log2(n + 2)
+
+    return dcg / idcg(np.min([truth.size, k]))
