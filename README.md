@@ -5,7 +5,9 @@ FluRS
 
 ***FluRS*** is a Python library for online item recommendation. The name indicates *Flu-** (Flux, Fluid, Fluent) *Recommender Systems* which incrementally adapt to dynamic user-item interactions in a streaming environment.
 
-You can refer to [my article](https://takuti.me/note/flurs/) for mode detailed explanation.
+You can refer to [my article](https://takuti.me/note/flurs/) and [slides](https://speakerdeck.com/takuti/flurs-a-library-for-streaming-recommendation-algorithms) for mode detailed explanation:
+
+[![structure](doc/images/structure.png)](https://speakerdeck.com/takuti/flurs-a-library-for-streaming-recommendation-algorithms)
 
 ## Installation
 
