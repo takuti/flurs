@@ -27,8 +27,8 @@ class MetricTestCase(TestCase):
         actual = metric.auc(self.truth, self.recommend)
         self.assertAlmostEqual(actual, 0.667, delta=1e-3)
 
-    def test_mrr(self):
-        actual = metric.mrr(self.truth, self.recommend)
+    def test_reciprocal_rank(self):
+        actual = metric.reciprocal_rank(self.truth, self.recommend)
         self.assertAlmostEqual(actual, 1.0, delta=1e-3)
 
     def test_mpr(self):

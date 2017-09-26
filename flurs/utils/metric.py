@@ -96,15 +96,15 @@ def auc(truth, recommend):
     return correct / pairs
 
 
-def mrr(truth, recommend):
-    """Mean Reciprocal Rank (MRR).
+def reciprocal_rank(truth, recommend):
+    """Reciprocal Rank (RR).
 
     Args:
         truth (numpy 1d array): Set of truth samples.
         recommend (numpy 1d array): Ordered set of recommended samples.
 
     Returns:
-        float: MRR.
+        float: RR.
 
     """
     for n in range(recommend.size):
