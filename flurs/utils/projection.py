@@ -56,8 +56,9 @@ class Raw(BaseProjection):
 
 class RandomProjection(BaseProjection):
 
-    def __init__(self, k, p):
+    def __init__(self, k, p, density=0.2):
         self.k = k
+        self.density = density
         self.R = sp.csr_matrix(self.__create_proj_mat((k, p)))
 
     def insert_proj_col(self, offset):
@@ -81,7 +82,7 @@ class RandomProjection(BaseProjection):
         # return np.random.choice([-np.sqrt(3), 0, np.sqrt(3)], size=size, p=[1 / 6, 2 / 3, 1 / 6])
 
         # [2]
-        s = 1 / 0.2
+        s = 1 / self.density
         return np.random.choice([-np.sqrt(s / self.k), 0, np.sqrt(s / self.k)],
                                 size=size,
                                 p=[1 / (2 * s), 1 - 1 / s, 1 / (2 * s)])
