@@ -19,8 +19,8 @@ class MetricTestCase(TestCase):
         actual = metric.precision(self.truth, self.recommend, self.k)
         self.assertAlmostEqual(actual, 0.5, delta=1e-3)
 
-    def test_mean_average_precision(self):
-        actual = metric.mean_average_precision(self.truth, self.recommend)
+    def test_average_precision(self):
+        actual = metric.average_precision(self.truth, self.recommend)
         self.assertAlmostEqual(actual, 0.756, delta=1e-3)
 
     def test_auc(self):

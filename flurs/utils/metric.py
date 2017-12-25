@@ -49,15 +49,15 @@ def precision(truth, recommend, k):
     return count_true_positive(truth, recommend[:k]) / float(k)
 
 
-def mean_average_precision(truth, recommend):
-    """Mean Average Precision (MAP).
+def average_precision(truth, recommend):
+    """Average Precision (AP).
 
     Args:
         truth (numpy 1d array): Set of truth samples.
         recommend (numpy 1d array): Ordered set of recommended samples.
 
     Returns:
-        float: MAP.
+        float: AP.
 
     """
     tp = accum = 0.
