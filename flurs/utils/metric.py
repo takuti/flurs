@@ -19,7 +19,7 @@ def count_true_positive(truth, recommend):
     return tp
 
 
-def recall(truth, recommend, k):
+def recall(truth, recommend, k=None):
     """Recall@k.
 
     Args:
@@ -31,10 +31,12 @@ def recall(truth, recommend, k):
         float: Recall@k.
 
     """
+    if k is None:
+        k = len(recommend)
     return count_true_positive(truth, recommend[:k]) / float(truth.size)
 
 
-def precision(truth, recommend, k):
+def precision(truth, recommend, k=None):
     """Precision@k.
 
     Args:
@@ -46,6 +48,8 @@ def precision(truth, recommend, k):
         float: Precision@k.
 
     """
+    if k is None:
+        k = len(recommend)
     return count_true_positive(truth, recommend[:k]) / float(k)
 
 
@@ -132,7 +136,7 @@ def mpr(truth, recommend):
     return accum * 100. / truth.size
 
 
-def ndcg(truth, recommend, k):
+def ndcg(truth, recommend, k=None):
     """Normalized Discounted Cumulative Grain (NDCG).
 
     Args:
@@ -144,6 +148,9 @@ def ndcg(truth, recommend, k):
         float: NDCG.
 
     """
+    if k is None:
+        k = len(recommend)
+
     def idcg(n_possible_truth):
         res = 0.
         for n in range(n_possible_truth):
