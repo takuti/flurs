@@ -31,6 +31,11 @@ def recall(truth, recommend, k=None):
         float: Recall@k.
 
     """
+    if len(truth) == 0:
+        if len(recommend) == 0:
+            return 1.
+        return 0.
+
     if k is None:
         k = len(recommend)
     return count_true_positive(truth, recommend[:k]) / float(truth.size)
@@ -48,6 +53,11 @@ def precision(truth, recommend, k=None):
         float: Precision@k.
 
     """
+    if len(recommend) == 0:
+        if len(truth) == 0:
+            return 1.
+        return 0.
+
     if k is None:
         k = len(recommend)
     return count_true_positive(truth, recommend[:k]) / float(k)
@@ -64,6 +74,11 @@ def average_precision(truth, recommend):
         float: AP.
 
     """
+    if len(truth) == 0:
+        if len(recommend) == 0:
+            return 1.
+        return 0.
+
     tp = accum = 0.
     for n in range(recommend.size):
         if recommend[n] in truth:
@@ -128,6 +143,11 @@ def mpr(truth, recommend):
         float: MPR.
 
     """
+    if len(recommend) == 0 and len(truth) == 0:
+        return 0.  # best
+    elif len(truth) == 0 or len(truth) == 0:
+        return 100.  # worst
+
     accum = 0.
     n_recommend = recommend.size
     for t in truth:
@@ -163,4 +183,7 @@ def ndcg(truth, recommend, k=None):
             continue
         dcg += 1. / np.log2(n + 2)
 
-    return dcg / idcg(np.min([truth.size, k]))
+    res_idcg = idcg(np.min([truth.size, k]))
+    if res_idcg == 0.:
+        return 0.
+    return dcg / res_idcg
