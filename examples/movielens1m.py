@@ -1,7 +1,7 @@
 """USAGE: %(program)s PATH_TO_MOVIELENS_1M_DIR
 """
 
-from flurs.datasets import fetch_movielens1m
+from flurs.datasets import fetch_movielens
 from flurs.recommender import FMRecommender
 from flurs.evaluator import Evaluator
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     logging.info('converting data into FluRS input object')
-    data = fetch_movielens1m(sys.argv[1])
+    data = fetch_movielens(data_home=sys.argv[1], size='1m')
 
     logging.info('initialize recommendation model and evaluation module')
     rec = FMRecommender(p=sum(data.contexts.values()),  # number of dimensions of input vector
