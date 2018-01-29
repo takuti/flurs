@@ -35,15 +35,17 @@ if __name__ == '__main__':
     rec.initialize()
     evaluator = Evaluator(rec, data.can_repeat)
 
-    batch_tail = data.n_batch_train + data.n_batch_test
+    n_batch_train = int(data.n_sample * 0.2)  # 20% for pre-training to avoid cold-start
+    n_batch_test = int(data.n_sample * 0.1)  # 10% for evaluation of pre-training
+    batch_tail = n_batch_train + n_batch_test
 
     # pre-train
     # 20% for batch training | 10% for batch evaluate
     # after the batch training, 10% samples are used for incremental updating
     logging.info('batch pre-training before streaming input')
     evaluator.fit(
-        data.samples[:data.n_batch_train],
-        data.samples[data.n_batch_train:batch_tail],
+        data.samples[:n_batch_train],
+        data.samples[n_batch_train:batch_tail],
         n_epoch=1  # single pass even for batch training
     )
 

@@ -224,10 +224,6 @@ def fetch_movielens(data_home=None, size='100k'):
         # record users' last rated movie features
         last[user_id] = {'item': movies[item_id], 'weekday': weekday_vec}
 
-    n_sample = len(samples)
-    n_batch_train = int(n_sample * 0.2)  # 20% for pre-training to avoid cold-start
-    n_batch_test = int(n_sample * 0.1)  # 10% for evaluation of pre-training
-
     # contexts in this dataset
     # 1 delta time, 18 genres, and 23 demographics (1 for M/F, 1 for age, 21 for occupation(0-20))
     # 7 for day of week, 18 for the last rated item genres, 7 for the last day of week
@@ -236,7 +232,4 @@ def fetch_movielens(data_home=None, size='100k'):
                  contexts={'others': 7 + 18 + 7, 'item': 18, 'user': 23},
                  n_user=len(user_ids),
                  n_item=len(item_ids),
-                 n_sample=n_sample,
-                 n_batch_train=n_batch_train,
-                 n_batch_test=n_batch_test,
-                 n_test=n_sample - (n_batch_train + n_batch_test))
+                 n_sample=len(samples))
