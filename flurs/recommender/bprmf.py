@@ -1,5 +1,5 @@
-from flurs.base import RecommenderMixin
-from flurs.model.bprmf import BPRMF
+from ..base import RecommenderMixin
+from ..model import BPRMF
 
 import numpy as np
 

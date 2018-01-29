@@ -2,7 +2,7 @@ from unittest import TestCase
 import numpy as np
 
 from flurs.data.entity import User, Item, Event
-from flurs.baseline.random import Random
+from flurs.baseline import Random
 
 
 class RandomTestCase(TestCase):

@@ -1,4 +1,4 @@
-from flurs.base import FeatureRecommenderMixin
+from .base import FeatureRecommenderMixin
 
 import time
 import numpy as np

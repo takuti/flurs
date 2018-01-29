@@ -46,7 +46,7 @@ To give an example, a matrix-factorization-based recommender can be used as foll
 
 ```python
 import numpy as np
-from flurs.recommender.mf import MFRecommender
+from flurs.recommender import MFRecommender
 
 recommender = MFRecommender(k=40)
 

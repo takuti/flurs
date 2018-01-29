@@ -1,5 +1,5 @@
-from flurs.base import FeatureRecommenderMixin
-from flurs.model.fm import FactorizationMachine
+from ..base import FeatureRecommenderMixin
+from ..model import FactorizationMachine
 from .. import logger
 
 import numpy as np

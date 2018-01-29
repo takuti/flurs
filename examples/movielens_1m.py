@@ -2,7 +2,7 @@
 """
 
 from flurs.data.entity import User, Item, Event
-from flurs.recommender.fm import FMRecommender
+from flurs.recommender import FMRecommender
 from flurs.evaluator import Evaluator
 
 import logging

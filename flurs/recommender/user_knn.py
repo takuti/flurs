@@ -1,5 +1,5 @@
-from flurs.base import RecommenderMixin
-from flurs.model.user_knn import UserKNN
+from ..base import RecommenderMixin
+from ..model import UserKNN
 
 import numpy as np
 

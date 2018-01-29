@@ -2,7 +2,7 @@ from unittest import TestCase
 import numpy as np
 
 from flurs.data.entity import User, Item, Event
-from flurs.recommender.sketch import SketchRecommender
+from flurs.recommender import SketchRecommender
 
 
 class SketchRecommenderTestCase(TestCase):

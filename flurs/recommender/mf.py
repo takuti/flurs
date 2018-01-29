@@ -1,5 +1,5 @@
-from flurs.base import RecommenderMixin
-from flurs.model.mf import MatrixFactorization
+from ..base import RecommenderMixin
+from ..model import MatrixFactorization
 from .. import logger
 
 import numpy as np

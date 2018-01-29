@@ -1,9 +1,6 @@
 from sklearn.base import BaseEstimator
 
-from flurs.utils.projection import Raw
-from flurs.utils.projection import RandomProjection
-from flurs.utils.projection import RandomMaclaurinProjection
-from flurs.utils.projection import TensorSketchProjection
+from ..utils.projection import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
 
 import numpy as np
 import numpy.linalg as ln

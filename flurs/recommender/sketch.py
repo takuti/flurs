@@ -1,5 +1,5 @@
-from flurs.base import FeatureRecommenderMixin
-from flurs.model.sketch import OnlineSketch
+from ..base import FeatureRecommenderMixin
+from ..model import OnlineSketch
 
 import numpy as np
 import numpy.linalg as ln

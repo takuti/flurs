@@ -2,7 +2,7 @@ from unittest import TestCase
 import numpy as np
 
 from flurs.data.entity import User, Item, Event
-from flurs.recommender.bprmf import BPRMFRecommender
+from flurs.recommender import BPRMFRecommender
 
 
 class BPRMFRecommenderTestCase(TestCase):

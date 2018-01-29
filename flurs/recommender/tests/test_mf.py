@@ -2,7 +2,7 @@ from unittest import TestCase
 import numpy as np
 
 from flurs.data.entity import User, Item, Event
-from flurs.recommender.mf import MFRecommender
+from flurs.recommender import MFRecommender
 
 
 class MFRecommenderTestCase(TestCase):

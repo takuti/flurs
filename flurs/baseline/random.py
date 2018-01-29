@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator
-from flurs.base import RecommenderMixin
+from ..base import RecommenderMixin
 
 import numpy as np
 
