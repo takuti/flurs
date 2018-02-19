@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>References &#8212; FluRS 0.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="FluRS 0.0.2 documentation" href="index.html" />
+    <link rel="prev" title="Tutorials" href="tutorial.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>FluRS 0.0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>References</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="tutorial.html">Tutorials</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="baseline">
+<h2>Baseline<a class="headerlink" href="#baseline" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flurs.baseline.Random">
+<code class="descclassname">flurs.baseline.</code><code class="descname">Random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/baseline/random.html#Random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.baseline.Random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random baseline</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="flurs.baseline.Popular">
+<code class="descclassname">flurs.baseline.</code><code class="descname">Popular</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/baseline/popular.html#Popular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.baseline.Popular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Popularity (non-personalized) baseline</p>
+</dd></dl>
+
+</div>
+<div class="section" id="collaborative-filtering">
+<h2>Collaborative filtering<a class="headerlink" href="#collaborative-filtering" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flurs.recommender.UserKNNRecommender">
+<code class="descclassname">flurs.recommender.</code><code class="descname">UserKNNRecommender</code><span class="sig-paren">(</span><em>k=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/user_knn.html#UserKNNRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.UserKNNRecommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><ol class="first upperalpha" start="13">
+<li>Pepagelis et al. <strong>Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms</strong>. In <em>Foundations of Intelligent Systems</em>, pp. 553–561, Springer Berlin Heidelberg, 2005.</li>
+</ol>
+</li>
+</ul>
+<dl class="function">
+<dt id="flurs.recommender.MFRecommender">
+<code class="descclassname">flurs.recommender.</code><code class="descname">MFRecommender</code><span class="sig-paren">(</span><em>k=40</em>, <em>l2_reg=0.01</em>, <em>learn_rate=0.003</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/matrix_factorization.html#MFRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.MFRecommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><ol class="first upperalpha" start="10">
+<li>Vinagre et al. <a class="reference external" href="http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41">Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback</a>. In <em>Proc. of UMAP 2014</em>, pp. 459–470, July 2014.</li>
+</ol>
+</li>
+</ul>
+<dl class="function">
+<dt id="flurs.recommender.BPRMFRecommender">
+<code class="descclassname">flurs.recommender.</code><code class="descname">BPRMFRecommender</code><span class="sig-paren">(</span><em>k=40</em>, <em>l2_reg=0.01</em>, <em>learn_rate=0.003</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/bprmf.html#BPRMFRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.BPRMFRecommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><ol class="first upperalpha" start="19">
+<li>Rendle et al. <strong>BPR: Bayesian Personalized Ranking from Implicit Feedback</strong>. In <em>Proc. of UAI 2009</em>, pp. 452–461, June 2009.</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="feature-based-recommender">
+<h2>Feature-based recommender<a class="headerlink" href="#feature-based-recommender" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flurs.recommender.FMRecommender">
+<code class="descclassname">flurs.recommender.</code><code class="descname">FMRecommender</code><span class="sig-paren">(</span><em>p=None</em>, <em>k=40</em>, <em>l2_reg_w0=2.0</em>, <em>l2_reg_w=8.0</em>, <em>l2_reg_V=16.0</em>, <em>learn_rate=0.004</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/factorization_machine.html#FMRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.FMRecommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><ol class="first upperalpha" start="20">
+<li>Kitazawa. <a class="reference external" href="https://arxiv.org/abs/1607.02858">Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation</a>. arXiv:1607.02858 [cs.LG], July 2016.</li>
+</ol>
+</li>
+</ul>
+<dl class="function">
+<dt id="flurs.recommender.SketchRecommender">
+<code class="descclassname">flurs.recommender.</code><code class="descname">SketchRecommender</code><span class="sig-paren">(</span><em>p=None</em>, <em>k=40</em>, <em>ell=-1</em>, <em>r=-1</em>, <em>proj='Raw'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/online_sketch.html#SketchRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.SketchRecommender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><ol class="first upperalpha" start="20">
+<li>Kitazawa. <a class="reference external" href="http://dl.acm.org/citation.cfm?id=3022152">Sketching Dynamic User-Item Interactions for Online Item Recommendation</a>. In <em>Proc. of CHIIR 2017</em>, March 2017.</li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="tutorial.html">Tutorials</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Takuya Kitazawa.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.6.
+    </div>
+  </body>
+</html>
