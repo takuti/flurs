@@ -1,0 +1,6 @@
+numpy
+scipy
+scikit_learn
+mmh3
+nose
+wheel
