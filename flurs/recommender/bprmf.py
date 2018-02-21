@@ -6,6 +6,16 @@ import numpy as np
 
 class BPRMFRecommender(BPRMF, RecommenderMixin):
 
+    """Bayesian Personalized Ranking (BPR) recommender
+
+    References
+    ----------
+
+    - S. Rendle et al.
+      **BPR: Bayesian Personalized Ranking from Implicit Feedback**.
+      In *Proc. of UAI 2009*, pp. 452–461, June 2009.
+    """
+
     def initialize(self):
         super(BPRMFRecommender, self).initialize()
 

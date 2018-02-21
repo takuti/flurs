@@ -10,6 +10,16 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
 
+    """Online-matrix-sketching-based recommender
+
+    References
+    ----------
+
+    - T. Kitazawa.
+      `Sketching Dynamic User-Item Interactions for Online Item Recommendation <http://dl.acm.org/citation.cfm?id=3022152>`_.
+      In *Proc. of CHIIR 2017*, March 2017.
+    """
+
     def initialize(self):
         super(SketchRecommender, self).initialize()
 
