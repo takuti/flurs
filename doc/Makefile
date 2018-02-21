@@ -43,6 +43,7 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
 	@echo "  dummy      to check syntax errors of document sources"
+	@echo "  gh-pages   to push standalone HTML files to gh-pages branch"
 
 .PHONY: clean
 clean:
@@ -223,3 +224,9 @@ dummy:
 	$(SPHINXBUILD) -b dummy $(ALLSPHINXOPTS) $(BUILDDIR)/dummy
 	@echo
 	@echo "Build finished. Dummy builder generates no files."
+
+.PHONY: gh-pages 
+gh-pages:
+	ghp-import $(BUILDDIR)/html -p
+	@echo
+	@echo "Pushed HTML pages in $(BUILDDIR)/html to gh-pages branch."
