@@ -54,6 +54,16 @@
 
 <div class="viewcode-block" id="FMRecommender"><a class="viewcode-back" href="../../../reference.html#flurs.recommender.FMRecommender">[docs]</a><span class="k">class</span> <span class="nc">FMRecommender</span><span class="p">(</span><span class="n">FactorizationMachine</span><span class="p">,</span> <span class="n">FeatureRecommenderMixin</span><span class="p">):</span>
 
+    <span class="sd">&quot;&quot;&quot;Incremental Factorization Machines (FMs) recommender</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    - T. Kitazawa.</span>
+<span class="sd">      `Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation &lt;https://arxiv.org/abs/1607.02858&gt;`_.</span>
+<span class="sd">      arXiv:1607.02858 [cs.LG], July 2016.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FMRecommender</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">static</span> <span class="o">=</span> <span class="n">static</span>

@@ -51,6 +51,16 @@
 
 <div class="viewcode-block" id="UserKNNRecommender"><a class="viewcode-back" href="../../../reference.html#flurs.recommender.UserKNNRecommender">[docs]</a><span class="k">class</span> <span class="nc">UserKNNRecommender</span><span class="p">(</span><span class="n">UserKNN</span><span class="p">,</span> <span class="n">RecommenderMixin</span><span class="p">):</span>
 
+    <span class="sd">&quot;&quot;&quot;User k-Nearest-Neighbor (kNN; user-based collaborative filtering) recommender</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    - M. Pepagelis et al.</span>
+<span class="sd">      **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**.</span>
+<span class="sd">      In *Foundations of Intelligent Systems*, pp. 553–561, Springer Berlin Heidelberg, 2005.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">UserKNNRecommender</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 

@@ -52,6 +52,16 @@
 
 <div class="viewcode-block" id="MFRecommender"><a class="viewcode-back" href="../../../reference.html#flurs.recommender.MFRecommender">[docs]</a><span class="k">class</span> <span class="nc">MFRecommender</span><span class="p">(</span><span class="n">MatrixFactorization</span><span class="p">,</span> <span class="n">RecommenderMixin</span><span class="p">):</span>
 
+    <span class="sd">&quot;&quot;&quot;Incremental Matrix Factorization (MF) recommender</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    - J. Vinagre et al.</span>
+<span class="sd">      `Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback &lt;http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41&gt;`_.</span>
+<span class="sd">      In *Proc. of UMAP 2014*, pp. 459–470, July 2014.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MFRecommender</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 

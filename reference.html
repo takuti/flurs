@@ -66,61 +66,62 @@
 <dl class="function">
 <dt id="flurs.recommender.UserKNNRecommender">
 <code class="descclassname">flurs.recommender.</code><code class="descname">UserKNNRecommender</code><span class="sig-paren">(</span><em>k=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/user_knn.html#UserKNNRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.UserKNNRecommender" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>User k-Nearest-Neighbor (kNN; user-based collaborative filtering) recommender</p>
 <ul class="simple">
-<li><ol class="first upperalpha" start="13">
-<li>Pepagelis et al. <strong>Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms</strong>. In <em>Foundations of Intelligent Systems</em>, pp. 553–561, Springer Berlin Heidelberg, 2005.</li>
-</ol>
-</li>
+<li>M. Pepagelis et al.
+<strong>Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms</strong>.
+In <em>Foundations of Intelligent Systems</em>, pp. 553–561, Springer Berlin Heidelberg, 2005.</li>
 </ul>
+</dd></dl>
+
 <dl class="function">
 <dt id="flurs.recommender.MFRecommender">
 <code class="descclassname">flurs.recommender.</code><code class="descname">MFRecommender</code><span class="sig-paren">(</span><em>k=40</em>, <em>l2_reg=0.01</em>, <em>learn_rate=0.003</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/matrix_factorization.html#MFRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.MFRecommender" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Incremental Matrix Factorization (MF) recommender</p>
 <ul class="simple">
-<li><ol class="first upperalpha" start="10">
-<li>Vinagre et al. <a class="reference external" href="http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41">Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback</a>. In <em>Proc. of UMAP 2014</em>, pp. 459–470, July 2014.</li>
-</ol>
-</li>
+<li>J. Vinagre et al.
+<a class="reference external" href="http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41">Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback</a>.
+In <em>Proc. of UMAP 2014</em>, pp. 459–470, July 2014.</li>
 </ul>
+</dd></dl>
+
 <dl class="function">
 <dt id="flurs.recommender.BPRMFRecommender">
 <code class="descclassname">flurs.recommender.</code><code class="descname">BPRMFRecommender</code><span class="sig-paren">(</span><em>k=40</em>, <em>l2_reg=0.01</em>, <em>learn_rate=0.003</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/bprmf.html#BPRMFRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.BPRMFRecommender" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Bayesian Personalized Ranking (BPR) recommender</p>
 <ul class="simple">
 <li><ol class="first upperalpha" start="19">
 <li>Rendle et al. <strong>BPR: Bayesian Personalized Ranking from Implicit Feedback</strong>. In <em>Proc. of UAI 2009</em>, pp. 452–461, June 2009.</li>
 </ol>
 </li>
 </ul>
+</dd></dl>
+
 </div>
 <div class="section" id="feature-based-recommender">
 <h2>Feature-based recommender<a class="headerlink" href="#feature-based-recommender" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="flurs.recommender.FMRecommender">
 <code class="descclassname">flurs.recommender.</code><code class="descname">FMRecommender</code><span class="sig-paren">(</span><em>p=None</em>, <em>k=40</em>, <em>l2_reg_w0=2.0</em>, <em>l2_reg_w=8.0</em>, <em>l2_reg_V=16.0</em>, <em>learn_rate=0.004</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/factorization_machine.html#FMRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.FMRecommender" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Incremental Factorization Machines (FMs) recommender</p>
 <ul class="simple">
-<li><ol class="first upperalpha" start="20">
-<li>Kitazawa. <a class="reference external" href="https://arxiv.org/abs/1607.02858">Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation</a>. arXiv:1607.02858 [cs.LG], July 2016.</li>
-</ol>
-</li>
+<li>T. Kitazawa.
+<a class="reference external" href="https://arxiv.org/abs/1607.02858">Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation</a>.
+arXiv:1607.02858 [cs.LG], July 2016.</li>
 </ul>
+</dd></dl>
+
 <dl class="function">
 <dt id="flurs.recommender.SketchRecommender">
 <code class="descclassname">flurs.recommender.</code><code class="descname">SketchRecommender</code><span class="sig-paren">(</span><em>p=None</em>, <em>k=40</em>, <em>ell=-1</em>, <em>r=-1</em>, <em>proj='Raw'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flurs/recommender/online_sketch.html#SketchRecommender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flurs.recommender.SketchRecommender" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Online-matrix-sketching-based recommender</p>
 <ul class="simple">
-<li><ol class="first upperalpha" start="20">
-<li>Kitazawa. <a class="reference external" href="http://dl.acm.org/citation.cfm?id=3022152">Sketching Dynamic User-Item Interactions for Online Item Recommendation</a>. In <em>Proc. of CHIIR 2017</em>, March 2017.</li>
-</ol>
-</li>
+<li>T. Kitazawa.
+<a class="reference external" href="http://dl.acm.org/citation.cfm?id=3022152">Sketching Dynamic User-Item Interactions for Online Item Recommendation</a>.
+In <em>Proc. of CHIIR 2017</em>, March 2017.</li>
 </ul>
+</dd></dl>
+
 </div>
 </div>
 
