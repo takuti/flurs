@@ -13,7 +13,7 @@ class BPRMFRecommender(BPRMF, RecommenderMixin):
 
     - S. Rendle et al.
       **BPR: Bayesian Personalized Ranking from Implicit Feedback**.
-      In *Proc. of UAI 2009*, pp. 452–461, June 2009.
+      In *Proc. of UAI 2009*, pp. 452-461, June 2009.
     """
 
     def initialize(self):
