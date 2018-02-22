@@ -11,7 +11,7 @@ FluRS
 $ pip install flurs
 ```
 
-Note that repository [takuti/stream-recommender](https://github.com/takuti/stream-recommender) uses FluRS to write research papers.
+Note that repository [takuti/stream-recommender](https://github.com/takuti/stream-recommender) uses [FluRS v0.0.1](https://pypi.python.org/pypi/flurs/0.0.1) to write research papers.
 
 ## Usage
 
