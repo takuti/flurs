@@ -179,8 +179,8 @@ def fetch_movielens(data_home=None, size='100k'):
 
     samples = []
 
-    user_ids = []
-    item_ids = []
+    user_ids = {}
+    item_ids = {}
 
     head_date = datetime(*time.localtime(ratings[0, 3])[:6])
     dts = []
@@ -189,14 +189,18 @@ def fetch_movielens(data_home=None, size='100k'):
 
     for user_id, item_id, rating, timestamp in ratings:
         # give an unique user index
-        if user_id not in user_ids:
-            user_ids.append(user_id)
-        u_index = user_ids.index(user_id)
+        if user_id in user_ids:
+            u_index = user_ids[user_id]
+        else:
+            u_index = len(user_ids) + 1
+            user_ids[user_id] = u_index
 
         # give an unique item index
-        if item_id not in item_ids:
-            item_ids.append(item_id)
-        i_index = item_ids.index(item_id)
+        if item_id in item_ids:
+            i_index = item_ids[item_id]
+        else:
+            i_index = len(item_ids) + 1
+            item_ids[item_id] = i_index
 
         # delta days
         date = datetime(*time.localtime(timestamp)[:6])
