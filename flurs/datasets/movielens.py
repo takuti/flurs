@@ -192,14 +192,14 @@ def fetch_movielens(data_home=None, size='100k'):
         if user_id in user_ids:
             u_index = user_ids[user_id]
         else:
-            u_index = len(user_ids) + 1
+            u_index = len(user_ids)
             user_ids[user_id] = u_index
 
         # give an unique item index
         if item_id in item_ids:
             i_index = item_ids[item_id]
         else:
-            i_index = len(item_ids) + 1
+            i_index = len(item_ids)
             item_ids[item_id] = i_index
 
         # delta days
