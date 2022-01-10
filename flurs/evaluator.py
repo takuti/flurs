@@ -88,17 +88,17 @@ class Evaluator(object):
             candidates = np.asarray(list(unobserved))
 
             # make top-{at} recommendation for the 1001 items
-            start = time.clock()
+            start = time.perf_counter()
             recos, scores = self.__recommend(e, candidates)
-            recommend_time = (time.clock() - start)
+            recommend_time = (time.perf_counter() - start)
 
             rank = np.where(recos == e.item.index)[0][0]
 
             # Step 2: update the model with the observed event
             self.rec.users[e.user.index]['known_items'].add(e.item.index)
-            start = time.clock()
+            start = time.perf_counter()
             self.rec.update(e)
-            update_time = (time.clock() - start)
+            update_time = (time.perf_counter() - start)
 
             self.item_buffer.append(e.item.index)
 
