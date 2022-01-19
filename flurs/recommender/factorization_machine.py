@@ -20,6 +20,16 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
     """
 
     def initialize(self, static=False, use_index=False):
+        """Initialize a recommender.
+
+        Parameters
+        ----------
+        static : bool, default=False
+            Disable incremental update if True.
+
+        use_index : bool, default=False
+            Incorporate onehot-encoded user/item index into a feature vector.
+        """
         super(FMRecommender, self).initialize()
         self.static = static
         self.use_index = use_index
