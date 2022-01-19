@@ -40,7 +40,7 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
         y = e.encode(index=False, feature=True, context=True)
         self.update_model(y)
 
-    def score(self, user, candidates, context):
+    def score(self, user, candidates, context=np.array([])):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, candidates]
