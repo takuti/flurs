@@ -3,7 +3,7 @@ import numpy as np
 
 class Base(object):
 
-    def __init__(self, index, feature=np.array([0.])):
+    def __init__(self, index, feature=np.array([])):
         self.index = index
         self.feature = feature
 
@@ -36,7 +36,7 @@ class Base(object):
 class User(Base):
 
     def __str__(self):
-        if len(self.feature) == 1 and self.feature[0] == 0.:
+        if len(self.feature) == 0:
             return 'User(index={})'.format(self.index)
         else:
             return 'User(index={}, feature={})'.format(self.index, self.feature)
@@ -45,7 +45,7 @@ class User(Base):
 class Item(Base):
 
     def __str__(self):
-        if len(self.feature) == 1 and self.feature[0] == 0.:
+        if len(self.feature) == 0:
             return 'Item(index={})'.format(self.index)
         else:
             return 'Item(index={}, feature={})'.format(self.index, self.feature)
@@ -53,7 +53,7 @@ class Item(Base):
 
 class Event(object):
 
-    def __init__(self, user, item, value=1., context=np.array([0.])):
+    def __init__(self, user, item, value=1., context=np.array([])):
         self.user = user
         self.item = item
         self.value = value
@@ -73,10 +73,12 @@ class Event(object):
                               feature=feature, vertical=False)
         x = np.concatenate((x, iv))
 
+        assert len(x) > 0, 'feature vector has zero dimension'
+
         return x if not vertical else np.array([x]).T
 
     def __str__(self):
-        if len(self.context) == 1 and self.context[0] == 0.:
+        if len(self.context) == 0:
             return 'Event(user={}, item={}, value={})'.format(self.user, self.item, self.value)
         else:
             return 'Event(user={}, item={}, value={}, context={})'.format(self.user, self.item, self.value, self.context)
