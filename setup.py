@@ -52,7 +52,12 @@ def setup_package():
             'numpy',
             'scipy>=1.6.3',
             'scikit_learn',
-            'mmh3'])
+            'mmh3'],
+        extras_require={
+            'docs': [
+                'sphinx_rtd_theme'
+            ]
+        })
 
     setup(**metadata)
 
