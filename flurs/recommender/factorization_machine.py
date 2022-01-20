@@ -20,6 +20,16 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
     """
 
     def initialize(self, static=False, use_index=False):
+        """Initialize a recommender.
+
+        Parameters
+        ----------
+        static : bool, default=False
+            Disable incremental update if True.
+
+        use_index : bool, default=False
+            Incorporate onehot-encoded user/item index into a feature vector.
+        """
         super(FMRecommender, self).initialize()
         self.static = static
         self.use_index = use_index
@@ -111,7 +121,7 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
         self.update_model(x, e.value)
 
-    def score(self, user, candidates, context):
+    def score(self, user, candidates, context=np.array([])):
         # i_mat is (n_item_context, n_item) for all possible items
         # extract only target items
         i_mat = self.i_mat[:, candidates]
