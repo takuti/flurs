@@ -23,7 +23,7 @@ Installation
 Usage
 -----
 
-See `documentation <https://takuti.github.io/flurs/>`_ for detail.
+See `documentation <https://flurs.readthedocs.io/>`_ for detail.
 
 References
 ----------
