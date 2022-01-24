@@ -1,7 +1,10 @@
 import numpy as np
 
 
-class Base(object):
+class BaseActor(object):
+
+    """Base class of an actor object for recommenders.
+    """
 
     def __init__(self, index, feature=np.array([])):
         self.index = index
@@ -33,7 +36,7 @@ class Base(object):
         return x
 
 
-class User(Base):
+class User(BaseActor):
 
     def __str__(self):
         if len(self.feature) == 0:
@@ -42,7 +45,7 @@ class User(Base):
             return 'User(index={}, feature={})'.format(self.index, self.feature)
 
 
-class Item(Base):
+class Item(BaseActor):
 
     def __str__(self):
         if len(self.feature) == 0:
