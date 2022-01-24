@@ -3,9 +3,6 @@ import numpy as np
 
 class BaseActor(object):
 
-    """Base class of an actor object for recommenders.
-    """
-
     def __init__(self, index, feature=np.array([])):
         self.index = index
         self.feature = feature
@@ -13,6 +10,29 @@ class BaseActor(object):
     def encode(self, dim=None,
                index=True, feature=True,
                vertical=False):
+        """Encode an actor to an input vector for feature-based recommenders.
+
+        Parameters
+        ----------
+        dim : int or None, default=None
+            Number of dimensions for onehot-encoded index. Use ``self.index + 1`` if ``None``.
+
+        index : bool, default=True
+            Include onehot-encoded index to an input vector.
+
+        feature : bool, default=True
+            Include features associated with an actor.
+
+        vertical : bool, default=False
+            Return as a transposed n-by-1 vertical vector.
+
+        Returns
+        -------
+        array
+            n-dimensional vector representing an actor.
+            Size can be ``(n, 1)`` or ``(1, n)``, depending on ``vertical`` parameter.
+
+        """
 
         if not dim:
             dim = self.index + 1
@@ -28,6 +48,20 @@ class BaseActor(object):
         return x if not vertical else np.array([x]).T
 
     def index_one_hot(self, dim):
+        """Onehot-encode own index to a vector.
+
+        Parameters
+        ----------
+        dim : int
+            Number of dimensions of an output vector.
+            Must be greater than or equal to `self.index`.
+
+        Returns
+        -------
+        array
+            ``dim``-dimensional onehot-encoded vector.
+
+        """
         if self.index >= dim:
             raise ValueError('number of dimensions must be greater than index: %d' % self.index)
 
@@ -38,6 +72,19 @@ class BaseActor(object):
 
 class User(BaseActor):
 
+    """User object for recommenders.
+
+    Parameters
+    ----------
+    index : int
+        User index used as their ID. Starting from ``0``.
+
+    features : numpy array, default=empty
+        Feature vector associated with a user.
+        An element can be age, gender, days from last access, etc.
+
+    """
+
     def __str__(self):
         if len(self.feature) == 0:
             return 'User(index={})'.format(self.index)
@@ -46,6 +93,19 @@ class User(BaseActor):
 
 
 class Item(BaseActor):
+
+    """Item object for recommenders.
+
+    Parameters
+    ----------
+    index : int
+        Item index used as their ID. Starting from ``0``.
+
+    features : numpy array, default=empty
+        Feature vector associated with an item.
+        An element can be price, category, date published, etc.
+
+    """
 
     def __str__(self):
         if len(self.feature) == 0:
@@ -56,6 +116,26 @@ class Item(BaseActor):
 
 class Event(object):
 
+    """An event object that represents a single user-item interaction.
+
+    Parameters
+    ----------
+    user : User
+        A `User` instance.
+
+    item : Item
+        An `Item` instance.
+
+    value : float, default=1.0
+        A value representing the feedback. ``1.0`` in case of positive-only feedback,
+        or 5-scale value for rating prediction, for example.
+
+    context : numpy array, default=empty
+        Vector-represented contextual information associated with an interaction.
+        An element can be day of the week, time, weather, etc.
+
+    """
+
     def __init__(self, user, item, value=1., context=np.array([])):
         self.user = user
         self.item = item
@@ -65,6 +145,35 @@ class Event(object):
     def encode(self, n_user=None, n_item=None,
                index=True, feature=True, context=True,
                vertical=False):
+        """Encode an event to an input vector for feature-based recommenders.
+
+        Parameters
+        ----------
+        n_user : int
+            Number of users currently registered to a recommender.
+
+        n_item : int
+            Number of items currently registered to a recommender.
+
+        index : bool, default=True
+            Include onehot-encoded user/item index to an input vector.
+
+        feature : bool, default=True
+            Include features associated with user and item.
+
+        context : bool, default=True
+            Include event-specific contextual information to a vector.
+
+        vertical : bool, default=False
+            Return as a transposed n-by-1 vertical vector.
+
+        Returns
+        -------
+        array
+            n-dimensional vector representing a user-item interaction.
+            Size can be ``(n, 1)`` or ``(1, n)``, depending on ``vertical`` parameter.
+
+        """
 
         x = self.user.encode(dim=n_user, index=index,
                              feature=feature, vertical=False)
