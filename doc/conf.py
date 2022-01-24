@@ -101,11 +101,8 @@ extensions = [
 ]
 
 autodoc_default_options = {
-    "members": None,
-    "member-order": "bysource",
-    "special-members": "__init__",
-    "undoc-members": True,
-    "exclude-members": None,
+    "members": True,
+    "inherited-members": True
 }
 
 autosummary_generate = True
