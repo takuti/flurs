@@ -6,15 +6,7 @@ import numpy as np
 
 class UserKNNRecommender(UserKNN, RecommenderMixin):
 
-    """User k-Nearest-Neighbor (kNN; user-based collaborative filtering) recommender.
-
-    References
-    ----------
-
-    .. [1] M. Pepagelis et al.
-           **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**.
-           In *Foundations of Intelligent Systems*, pp. 553-561, Springer Berlin Heidelberg, 2005.
-    """
+    __doc__ = UserKNN.__doc__
 
     def initialize(self):
         super(UserKNNRecommender, self).initialize()

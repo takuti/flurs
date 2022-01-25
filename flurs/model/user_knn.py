@@ -5,12 +5,18 @@ import numpy as np
 
 class UserKNN(BaseEstimator):
 
-    """Incremental User-based Collaborative Filtering
+    """Incremental User-based Collaborative Filtering using k-Nearest-Neighbor (kNN).
 
-    M. Pepagelis et al.
-    "Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms"
-    In Foundations of Intelligent Systems, pages 553-561. Springer Berlin Heidelberg, 2005.
+    Parameters
+    ----------
+    k : int, default=5
+        Number of nearest neighbors.
 
+    References
+    ----------
+    .. [1] M. Pepagelis et al.
+           **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**.
+           In *Foundations of Intelligent Systems*, pp. 553-561, Springer Berlin Heidelberg, 2005.
     """
 
     def __init__(self, k=5):

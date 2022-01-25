@@ -9,15 +9,7 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
-    """Incremental Factorization Machines (FMs) recommender.
-
-    References
-    ----------
-    .. [1] T. Kitazawa.
-           `Incremental Factorization Machines for Persistently Cold-Starting Online
-           Item Recommendation <https://arxiv.org/abs/1607.02858>`_.
-           arXiv:1607.02858 [cs.LG], July 2016.
-    """
+    __doc__ = FactorizationMachine.__doc__
 
     def initialize(self, static=False, use_index=False):
         """Initialize a recommender by resetting stored users and items.
