@@ -1,3 +1,6 @@
+"""Utility classes for vector projection.
+"""
+
 import numpy as np
 import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
@@ -5,43 +8,61 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class BaseProjection(object):
 
-    """Base class for projection of feature vectors
+    """Base class for projection of feature vectors.
+
+    Parameters
+    ----------
+    k : int
+        Number of reduced dimensions (i.e. rows of projection mat.).
+
+    p : int
+        Number of input dimensions (i.e. cols of projection mat.).
+        ``p`` will be increased in the future due to new user/item/context insersion.
     """
 
     def __init__(self, k, p):
-        """Initialize projection matrices.
-
-        Args:
-            k (int): Number of reduced dimensions (i.e. rows of projection mat.).
-            p (int): Number of input dimensions (i.e. cols of projection mat.).
-                p will be increased in the future due to new user/item/context insersion.
-
-        """
         pass
 
     def insert_proj_col(self, offset):
-        """Insert a new column for a projection matrix.
+        """Insert a new column into a projection matrix.
 
-        Args:
-            offset (int): Index of the inserted column.
-
+        Parameters
+        ----------
+        offset : int
+            Column index of where the new dimension is inserted
         """
         pass
 
     def reduce(self, Y):
-        """Make projection for an input matrix.
+        """Apply projection to an input matrix.
 
-        Args:
-            Y (numpy array; (p, n)): Input p-by-n matrix projected to a k-by-n matrix.
+        Parameters
+        ----------
+        Y : numpy array, (p, n)
+            Input p-by-n matrix projected to a k-by-n matrix.
 
-        Returns:
-            numpy array; (k, n): Projected matrix.
-
+        Returns
+        -------
+        array
+            A k-by-n projected matrix.
         """
         return
 
 
 class Raw(BaseProjection):
+
+    """Raw projector that does nothing regardless of the parameters
+    i.e., a projector is an identity matrix.
+
+    Parameters
+    ----------
+    k : int
+        Number of reduced dimensions (i.e. rows of projection mat.).
+
+    p : int
+        Number of input dimensions (i.e. cols of projection mat.).
+        ``p`` will be increased in the future due to new user/item/context insersion.
+    """
 
     def __init__(self, k, p):
         # k == p
@@ -55,6 +76,27 @@ class Raw(BaseProjection):
 
 
 class RandomProjection(BaseProjection):
+
+    """Projection based on a randomly initialized matrix.
+
+    Parameters
+    ----------
+    k : int
+        Number of reduced dimensions (i.e. rows of projection mat.).
+
+    p : int
+        Number of input dimensions (i.e. cols of projection mat.).
+        ``p`` will be increased in the future due to new user/item/context insersion.
+
+    density : float, default=0.2
+        Density parameter used to create a projection matrix.
+
+    References
+    ----------
+    .. [1] D. Achlioptas. Database-friendly random projections: Johnson-Lindenstrauss with binary coins.
+    .. [2] P. Li, et al. Very sparse random projections.
+    .. [3] http://scikit-learn.org/stable/modules/random_projection.html#sparse-random-projection
+    """
 
     def __init__(self, k, p, density=0.2):
         self.k = k
@@ -70,18 +112,10 @@ class RandomProjection(BaseProjection):
         return safe_sparse_dot(self.R, Y)
 
     def __create_proj_mat(self, size):
-        """Create a random projection matrix
-
-        [1] D. Achlioptas. Database-friendly random projections: Johnson-Lindenstrauss with binary coins.
-        [2] P. Li, et al. Very sparse random projections.
-
-        http://scikit-learn.org/stable/modules/random_projection.html#sparse-random-projection
-        """
-
-        # [1]
+        # [1]_
         # return np.random.choice([-np.sqrt(3), 0, np.sqrt(3)], size=size, p=[1 / 6, 2 / 3, 1 / 6])
 
-        # [2]
+        # [2]_
         s = 1 / self.density
         return np.random.choice([-np.sqrt(s / self.k), 0, np.sqrt(s / self.k)],
                                 size=size,
@@ -89,6 +123,18 @@ class RandomProjection(BaseProjection):
 
 
 class RandomMaclaurinProjection(BaseProjection):
+
+    """Random Maclaurin Projection.
+
+    Parameters
+    ----------
+    k : int
+        Number of reduced dimensions (i.e. rows of projection mat.).
+
+    p : int
+        Number of input dimensions (i.e. cols of projection mat.).
+        ``p`` will be increased in the future due to new user/item/context insersion.
+    """
 
     def __init__(self, k, p):
         self.k = k
@@ -108,6 +154,18 @@ class RandomMaclaurinProjection(BaseProjection):
 
 
 class TensorSketchProjection(BaseProjection):
+
+    """Tensor Sketch Projection.
+
+    Parameters
+    ----------
+    k : int
+        Number of reduced dimensions (i.e. rows of projection mat.).
+
+    p : int
+        Number of input dimensions (i.e. cols of projection mat.).
+        ``p`` will be increased in the future due to new user/item/context insersion.
+    """
 
     def __init__(self, k, p):
         self.k = k
