@@ -6,51 +6,35 @@ import numpy as np
 
 class UserKNNRecommender(UserKNN, RecommenderMixin):
 
-    """User k-Nearest-Neighbor (kNN; user-based collaborative filtering) recommender
+    """User k-Nearest-Neighbor (kNN; user-based collaborative filtering) recommender.
 
     References
     ----------
 
-    - M. Pepagelis et al.
-      **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**.
-      In *Foundations of Intelligent Systems*, pp. 553-561, Springer Berlin Heidelberg, 2005.
+    .. [1] M. Pepagelis et al.
+           **Incremental Collaborative Filtering for Highly-Scalable Recommendation Algorithms**.
+           In *Foundations of Intelligent Systems*, pp. 553-561, Springer Berlin Heidelberg, 2005.
     """
 
     def initialize(self):
         super(UserKNNRecommender, self).initialize()
 
-    def insert_row(self, mat, n_col):
-        row = np.zeros((1, n_col))
-        if mat.size == 0:
-            mat = row
-        else:
-            mat = np.concatenate((mat, row))
-        return mat
-
-    def insert_col(self, mat, n_row):
-        col = np.zeros((n_row, 1))
-        if mat.size == 0:
-            mat = col
-        else:
-            mat = np.concatenate((mat, col), axis=1)
-        return mat
-
     def register_user(self, user):
         super(UserKNNRecommender, self).register_user(user)
 
-        self.R = self.insert_row(self.R, self.n_item)
+        self.R = self.__insert_row(self.R, self.n_item)
 
-        self.S = self.insert_row(self.S, self.n_user - 1)
-        self.S = self.insert_col(self.S, self.n_user)
+        self.S = self.__insert_row(self.S, self.n_user - 1)
+        self.S = self.__insert_col(self.S, self.n_user)
 
-        self.B = self.insert_row(self.B, self.n_user - 1)
-        self.B = self.insert_col(self.B, self.n_user)
+        self.B = self.__insert_row(self.B, self.n_user - 1)
+        self.B = self.__insert_col(self.B, self.n_user)
 
-        self.C = self.insert_row(self.C, self.n_user - 1)
-        self.C = self.insert_col(self.C, self.n_user)
+        self.C = self.__insert_row(self.C, self.n_user - 1)
+        self.C = self.__insert_col(self.C, self.n_user)
 
-        self.D = self.insert_row(self.D, self.n_user - 1)
-        self.D = self.insert_col(self.D, self.n_user)
+        self.D = self.__insert_row(self.D, self.n_user - 1)
+        self.D = self.__insert_col(self.D, self.n_user)
 
         # keep track how many times each user interacted with items
         # to compute user's mean
@@ -61,7 +45,7 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
 
     def register_item(self, item):
         super(UserKNNRecommender, self).register_item(item)
-        self.R = self.insert_col(self.R, self.n_user)
+        self.R = self.__insert_col(self.R, self.n_user)
 
     def update(self, e, batch_train=False):
         self.update_model(e.user.index, e.item.index, e.value)
@@ -86,3 +70,19 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
     def recommend(self, user, candidates):
         scores = self.score(user, candidates)
         return self.scores2recos(scores, candidates, rev=True)
+
+    def __insert_row(self, mat, n_col):
+        row = np.zeros((1, n_col))
+        if mat.size == 0:
+            mat = row
+        else:
+            mat = np.concatenate((mat, row))
+        return mat
+
+    def __insert_col(self, mat, n_row):
+        col = np.zeros((n_row, 1))
+        if mat.size == 0:
+            mat = col
+        else:
+            mat = np.concatenate((mat, col), axis=1)
+        return mat

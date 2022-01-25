@@ -6,7 +6,8 @@ import numpy as np
 
 class Popular(BaseEstimator, RecommenderMixin):
 
-    """Popularity (non-personalized) baseline
+    """Popularity-based non-personalized baseline that prioritizes
+    items observed most through `update`, regardless of user profiles.
     """
 
     def __init__(self):

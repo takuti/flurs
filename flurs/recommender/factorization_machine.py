@@ -9,23 +9,24 @@ from sklearn.utils.extmath import safe_sparse_dot
 
 class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
-    """Incremental Factorization Machines (FMs) recommender
+    """Incremental Factorization Machines (FMs) recommender.
 
     References
     ----------
-
-    - T. Kitazawa.
-      `Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation <https://arxiv.org/abs/1607.02858>`_.
-      arXiv:1607.02858 [cs.LG], July 2016.
+    .. [1] T. Kitazawa.
+           `Incremental Factorization Machines for Persistently Cold-Starting Online
+           Item Recommendation <https://arxiv.org/abs/1607.02858>`_.
+           arXiv:1607.02858 [cs.LG], July 2016.
     """
 
     def initialize(self, static=False, use_index=False):
-        """Initialize a recommender.
+        """Initialize a recommender by resetting stored users and items.
+        Default the number of users and items to zero.
 
         Parameters
         ----------
         static : bool, default=False
-            Disable incremental update if True.
+            Disable incremental update if ``True``.
 
         use_index : bool, default=False
             Incorporate onehot-encoded user/item index into a feature vector.
@@ -116,7 +117,9 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
                      n_user=self.n_user, n_item=self.n_item)
 
         if e.value != 1.:
-            logger.info('Incremental factorization machines assumes implicit feedback recommendation, so the event value is automatically converted into 1.0')
+            logger.info('Incremental factorization machines assumes ' +
+                        'implicit feedback recommendation, so ' +
+                        'the event value is automatically converted into 1.0')
             e.value = 1.
 
         self.update_model(x, e.value)
@@ -137,7 +140,8 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
         mat = sp.vstack((u_mat, i_mat))
 
-        # Matrix A and B should be dense (numpy array; rather than scipy CSR matrix) because V is dense.
+        # Matrix A and B should be dense (numpy array; rather than scipy CSR
+        # matrix) because V is dense.
         V = sp.csr_matrix(self.V)
         A = safe_sparse_dot(V.T, mat)
         A.data[:] = A.data ** 2
@@ -151,7 +155,8 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         interaction = (A - B).sum(axis=0)
         interaction /= 2.  # (1, n_item); numpy matrix form
 
-        pred = self.w0 + safe_sparse_dot(self.w, mat, dense_output=True) + interaction
+        pred = self.w0 + safe_sparse_dot(self.w, mat, dense_output=True) + \
+            interaction
 
         return np.abs(1. - np.ravel(pred))
 
