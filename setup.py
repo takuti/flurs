@@ -49,10 +49,11 @@ def setup_package():
         ],
         packages=find_packages(exclude=['*tests*']),
         install_requires=[
-            'numpy',
+            'numpy>=1.14.6',
             'scipy>=1.6.3',
-            'scikit_learn',
-            'mmh3'],
+            'scikit_learn>=1.0',
+            'mmh3>=3.0.0'
+        ],
         extras_require={
             'docs': [
                 'sphinx_rtd_theme'
