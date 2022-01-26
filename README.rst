@@ -25,7 +25,7 @@ Usage
 
 See `documentation <https://flurs.readthedocs.io/>`_ for detail.
 
-References
+Learn More
 ----------
 
 * `FluRS: A Library for Streaming Recommendation Algorithms <https://speakerdeck.com/takuti/flurs-a-library-for-streaming-recommendation-algorithms>`_ at `EuroSciPy 2017 <https://www.euroscipy.org/2017/>`_ (`video <https://www.youtube.com/watch?v=nARfsX63nDc>`_)
