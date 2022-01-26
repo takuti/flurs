@@ -5,12 +5,24 @@ import numpy as np
 
 class BPRMF(BaseEstimator):
 
-    """Incremental Matrix Factorization with BPR optimization
+    """Incremental Matrix Factorization with BPR optimization.
 
-    S. Rendle et al.
-    "BPR: Bayesian Personalized Ranking from Implicit Feedback"
-    In Proceedings of UAI 2009, pages 452-461, June 2009.
+    Parameters
+    ----------
+    k : int, default=40
+        Number of latent factors.
 
+    l2_reg : float, default=0.01
+        :math:`\lambda` for L2 regularization.
+
+    learn_rate : float, default=0.003
+        Learning rate :math:`\eta`.
+
+    References
+    ----------
+    .. [1] S. Rendle et al.
+           **BPR: Bayesian Personalized Ranking from Implicit Feedback**.
+           In *Proc. of UAI 2009*, pp. 452-461, June 2009.
     """
 
     def __init__(self, k=40, l2_reg=.01, learn_rate=.003):
@@ -23,7 +35,6 @@ class BPRMF(BaseEstimator):
         self.Q = np.array([])
 
     def update_model(self, ua, ia):
-
         u_vec = self.users[ua]['vec']
         i_vec = self.Q[ia]
         x_ui = np.inner(u_vec, i_vec)

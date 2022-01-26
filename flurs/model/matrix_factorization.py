@@ -5,12 +5,24 @@ import numpy as np
 
 class MatrixFactorization(BaseEstimator):
 
-    """Incremental Matrix Factorization
+    """Incremental Matrix Factorization (MF).
 
-    J. Vinagre et al.
-    "Fast Incremental Matrix Factorization for Recommendation with Positive-Only Feedback"
-    In Proceedings of UMAP 2014, pages 459-470, July 2014.
+    Parameters
+    ----------
+    k : int, default=40
+        Number of latent factors.
 
+    l2_reg : float, default=0.01
+        :math:`\lambda` for L2 regularization.
+
+    learn_rate : float, default=0.003
+        Learning rate :math:`\eta`.
+
+    References
+    ----------
+    .. [1] J. Vinagre et al.
+           `Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback <http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41>`_.
+           In *Proc. of UMAP 2014*, pp. 459-470, July 2014.
     """
 
     def __init__(self, k=40, l2_reg=.01, learn_rate=.003):

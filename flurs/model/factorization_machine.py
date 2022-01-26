@@ -8,12 +8,34 @@ from .. import logger
 
 class FactorizationMachine(BaseEstimator):
 
-    """Incremental Factorization Machines
+    """Incremental Factorization Machines (FMs).
 
-    T. Kitazawa.
-    "Incremental Factorization Machines for Persistently Cold-Starting Online Item Recommendation"
-    arXiv:1607.02858 [cs.LG], July 2016.
+    Parameters
+    ----------
+    p : int
+        Number of dimensions of an input vector.
 
+    k : int, default=40
+        Number of latent factors.
+
+    l2_reg_w0 : float, default=2.0
+        :math:`\lambda_{w_0}` for L2 regularization.
+
+    l2_reg_w : float, default=8.0
+        :math:`\lambda_w` for L2 regularization.
+
+    l2_reg_V : float, default=16.0
+        :math:`\lambda_{V}` for L2 regularization.
+
+    learn_rate : float, default=0.003
+        Learning rate :math:`\eta`.
+
+    References
+    ----------
+    .. [1] T. Kitazawa.
+           `Incremental Factorization Machines for Persistently Cold-Starting Online
+           Item Recommendation <https://arxiv.org/abs/1607.02858>`_.
+           arXiv:1607.02858 [cs.LG], July 2016.
     """
 
     def __init__(self,

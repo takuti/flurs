@@ -7,17 +7,17 @@ import numpy as np
 
 class MFRecommender(MatrixFactorization, RecommenderMixin):
 
-    """Incremental Matrix Factorization (MF) recommender
-
-    References
-    ----------
-
-    - J. Vinagre et al.
-      `Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback <http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41>`_.
-      In *Proc. of UMAP 2014*, pp. 459-470, July 2014.
-    """
+    __doc__ = MatrixFactorization.__doc__
 
     def initialize(self, static=False):
+        """Initialize a recommender by resetting stored users and items.
+        Default the number of users and items to zero.
+
+        Parameters
+        ----------
+        static : bool, default=False
+            Disable incremental update if ``True``s.
+        """
         super(MFRecommender, self).initialize()
 
         # if True, parameters will not be updated in evaluation

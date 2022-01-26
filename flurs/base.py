@@ -10,6 +10,7 @@ class RecommenderMixin(object):
 
     def initialize(self, *args):
         """Initialize a recommender by resetting stored users and items.
+        Default the number of users and items to zero.
         """
         # number of observed users
         self.n_user = 0
@@ -24,106 +25,146 @@ class RecommenderMixin(object):
         self.items = {}
 
     def is_new_user(self, u):
-        """Check if user is new.
+        """Check if a user is already registered to a recommender.
 
-        Args:
-            u (int): User index.
+        Parameters
+        ----------
+        u : int
+            User index.
 
-        Returns:
-            boolean: Whether the user is new.
-
+        Returns
+        -------
+        bool
+            Whether the user is new.
         """
         return u not in self.users
 
-    def register(self, entity):
-        t = type(entity)
+    def register(self, actor):
+        """Register a user or item to a recommender.
+        Delegate the process to `register_user` or `register_item`.
+
+        Parameters
+        ----------
+        actor : User or Item
+            A `User` or `Item` instance to register.
+        """
+        t = type(actor)
         if t == User:
-            self.register_user(entity)
+            self.register_user(actor)
         elif t == Item:
-            self.register_item(entity)
+            self.register_item(actor)
 
     def register_user(self, user):
-        """For new users, append their information into the dictionaries.
+        """Register a user to a recommender with an empty dictionary that
+        records a set of item indices observed in the past.
 
-        Args:
-            user (User): User.
-
+        Parameters
+        ----------
+        user : User
+            A `User` instance to register.
         """
         self.users[user.index] = {'known_items': set()}
         self.n_user += 1
 
     def is_new_item(self, i):
-        """Check if item is new.
+        """Check if an item is already registered to a recommender.
 
-        Args:
-            i (int): Item index.
+        Parameters
+        ----------
+        i : int
+            Item index.
 
-        Returns:
-            boolean: Whether the item is new.
-
+        Returns
+        -------
+        bool
+            Whether the item is new.
         """
         return i not in self.items
 
     def register_item(self, item):
-        """For new items, append their information into the dictionaries.
+        """Register an item to a recommender with an empty dictionary that is
+        potentially used to record any auxiliary information.
 
-        Args:
-            item (Item): Item.
-
+        Parameters
+        ----------
+        item : Item
+            A `Item` instance to register.
         """
         self.items[item.index] = {}
         self.n_item += 1
 
     def update(self, e, batch_train):
-        """Update model parameters based on d, a sample represented as a dictionary.
+        """Update model parameters given a single user-item interaction.
 
-        Args:
-            e (Event): Observed event.
+        Parameters
+        ----------
+        e : Event
+            Observed event representing a user-item interaction.
 
+        batch_train : bool
+            Let recommender know if the update operation is part of batch training
+            rather than incremental, online update.
         """
         pass
 
     def score(self, user, candidates):
         """Compute scores for the pairs of given user and item candidates.
 
-        Args:
-            user (User): Target user.
-            candidates (numpy array; (# candidates, )): Target item' indices.
+        Parameters
+        ----------
+        user : User
+            Target user.
 
-        Returns:
-            numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
+        candidates : numpy array, (# candidates, )
+            Target item indices.
 
+        Returns
+        -------
+        array, (# candidates, )
+            Predicted values for the given user-candidates pairs.
         """
         return
 
     def recommend(self, user, candidates):
-        """Recommend items for a user represented as a dictionary d.
+        """Recommend items for a user by calculating sorted list of item candidates.
 
-        First, scores are computed.
-        Next, `self.__scores2recos()` is called to convert the scores into a recommendation list.
+        1. Scores are computed.
+        2. `scores2recos()` is called to convert the scores into a recommendation list.
 
-        Args:
-            user (User): Target user.
-            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
+        Parameters
+        ----------
+        user : User
+            Target user.
 
-        Returns:
-            (numpy array, numpy array) : (Sorted list of items, Sorted scores).
+        candidates : numpy array, (# target items, )
+            Target items indices. Only these items are considered as the recommendation candidates.
 
+        Returns
+        -------
+        (array, array)
+            A tuple of ``(sorted list of item indices, sorted scores)``.
         """
         return
 
     def scores2recos(self, scores, candidates, rev=False):
-        """Get recommendation list for a user u_index based on scores.
+        """Get recommendation list for a user based on scores.
 
-        Args:
-            scores (numpy array; (n_target_items,)):
-                Scores for the target items. Smaller score indicates a promising item.
-            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
-            rev (bool): If true, return items in an descending order. A ascending order (i.e., smaller scores are more promising) is default.
+        Parameters
+        ----------
+        scores : numpy array, (n_target_items,)
+            Scores for the target items. Smaller score indicates a promising item.
 
-        Returns:
-            (numpy array, numpy array) : (Sorted list of items, Sorted scores).
+        candidates : numpy array, (# target items, )
+            Target items indices. Only these items are considered as the recommendation candidates.
 
+        rev : bool, default=False
+            If ``True``, sort and return items in an descending order.
+            The default is an ascending order (i.e., smaller scores are more promising).
+
+        Returns
+        -------
+        (array, array)
+            A tuple of ``(sorted list of item indices, sorted scores)``.
         """
         sorted_indices = np.argsort(scores)
 
@@ -141,30 +182,44 @@ class FeatureRecommenderMixin(RecommenderMixin):
     def score(self, user, candidates, context):
         """Compute scores for the pairs of given user and item candidates.
 
-        Args:
-            user (User): Target user.
-            candidates (numpy array; (# candidates, )): Target item' indices.
-            context (numpy 1d array): Feature vector representing contextual information.
+        Parameters
+        ----------
+        user : User
+            Target user.
 
-        Returns:
-            numpy float array; (# candidates, ): Predicted values for the given user-candidates pairs.
+        candidates : numpy array, (# candidates, )
+            Target item indices.
 
+        context : (numpy array)
+            Feature vector representing contextual information.
+
+        Returns
+        -------
+        array, (# candidates, )
+            Predicted values for the given user-candidates pairs.
         """
         return
 
     def recommend(self, user, candidates, context):
-        """Recommend items for a user represented as a dictionary d.
+        """Recommend items for a user by calculating sorted list of item candidates.
 
-        First, scores are computed.
-        Next, `self.__scores2recos()` is called to convert the scores into a recommendation list.
+        1. Scores are computed.
+        2. `scores2recos()` is called to convert the scores into a recommendation list.
 
-        Args:
-            user (User): Target user.
-            candidates (numpy array; (# target items, )): Target items' indices. Only these items are considered as the recommendation candidates.
-            context (numpy 1d array): Feature vector representing contextual information.
+        Parameters
+        ----------
+        user : User
+            Target user.
 
-        Returns:
-            (numpy array, numpy array) : (Sorted list of items, Sorted scores).
+        candidates : numpy array, (# target items, )
+            Target items indices. Only these items are considered as the recommendation candidates.
 
+        context : (numpy array)
+            Feature vector representing contextual information.
+
+        Returns
+        -------
+        (array, array)
+            A tuple of ``(sorted list of item indices, sorted scores)``.
         """
         return

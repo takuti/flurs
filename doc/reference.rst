@@ -1,25 +1,60 @@
-References
-==========
+API Reference
+=============
 
-Baseline
---------
+.. currentmodule:: flurs
 
-.. autofunction:: flurs.baseline.Random
+Data representation
+-------------------
 
-.. autofunction:: flurs.baseline.Popular
+.. autosummary::
+    :toctree: generated
+
+    data.entity.User
+    data.entity.Item
+    data.entity.Event
+
+Baseline recommenders
+---------------------
+
+.. autosummary::
+    :toctree: generated
+
+    baseline.Random
+    baseline.Popular
 
 Collaborative filtering
 -----------------------
 
-.. autofunction:: flurs.recommender.UserKNNRecommender
+.. autosummary::
+    :toctree: generated
 
-.. autofunction:: flurs.recommender.MFRecommender
+    recommender.UserKNNRecommender
+    recommender.MFRecommender
+    recommender.BPRMFRecommender
 
-.. autofunction:: flurs.recommender.BPRMFRecommender
+Feature-based recommenders
+--------------------------
 
-Feature-based recommender
--------------------------
+.. autosummary::
+    :toctree: generated
 
-.. autofunction:: flurs.recommender.FMRecommender
+    recommender.FMRecommender
+    recommender.SketchRecommender
 
-.. autofunction:: flurs.recommender.SketchRecommender
+Vector manipulation utilities
+-----------------------------
+
+.. autosummary::
+    :toctree: generated
+
+    utils.feature_hash
+    utils.projection
+
+Evaluation utilities
+--------------------
+
+.. autosummary::
+    :toctree: generated
+
+    utils.metric
+    evaluator.Evaluator

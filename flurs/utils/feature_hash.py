@@ -1,3 +1,6 @@
+"""Utility functions for feature hashing that encodes a feature value to a vector.
+"""
+
 import mmh3
 import numpy as np
 
@@ -5,14 +8,21 @@ import numpy as np
 def n_feature_hash(feature, dims, seeds):
     """N-hot-encoded feature hashing.
 
-    Args:
-        feature (str): Target feature represented as string.
-        dims (list of int): Number of dimensions for each hash value.
-        seeds (list of float): Seed of each hash function (mmh3).
+    Parameters
+    ----------
+    feature : str
+        Target feature value represented as string.
 
-    Returns:
-        numpy 1d array: n-hot-encoded feature vector for `s`.
+    dims : list of int
+        Number of dimensions for each hash value.
 
+    seeds : list of float)
+        Seed of each hash function (MurmurHash3).
+
+    Returns
+    -------
+    array
+        n-hot-encoded vector for ``feature``.
     """
     vec = np.zeros(sum(dims))
     offset = 0
@@ -25,16 +35,23 @@ def n_feature_hash(feature, dims, seeds):
 
 
 def feature_hash(feature, dim, seed=123):
-    """Feature hashing.
+    """Onehot-encoded Feature hashing.
 
-    Args:
-        feature (str): Target feature represented as string.
-        dim (int): Number of dimensions for a hash value.
-        seed (float): Seed of a MurmurHash3 hash function.
+    Parameters
+    ----------
+    feature : str
+        Target feature value represented as string.
 
-    Returns:
-        numpy 1d array: one-hot-encoded feature vector for `s`.
+    dim : int
+        Number of dimensions for a hash value.
 
+    seed : float
+        Seed of a MurmurHash3 hash function.
+
+    Returns
+    -------
+    array
+        Onehot-encoded vector for ``feature``.
     """
     vec = np.zeros(dim)
     i = mmh3.hash(feature, seed) % dim
@@ -43,17 +60,24 @@ def feature_hash(feature, dim, seed=123):
 
 
 def multiple_feature_hash(feature, dim, seed=123):
-    """Feature hashing using multiple hash function.
+    """Onehot-encoded feature hashing using multiple hash functions.
     This technique is effective to prevent collisions.
 
-    Args:
-        feature (str): Target feature represented as string.
-        dim (int): Number of dimensions for a hash value.
-        seed (float): Seed of a MurmurHash3 hash function.
+    Parameters
+    ----------
+    feature : str
+        Target feature value represented as string.
 
-    Returns:
-        numpy 1d array: one-hot-encoded feature vector for `s`.
+    dim : int
+        Number of dimensions for a hash value.
 
+    seed : float
+        Seed of a MurmurHash3 hash function.
+
+    Returns
+    -------
+    array
+        Onehot-encoded vector for ``feature``.
     """
     vec = np.zeros(dim)
     i = mmh3.hash(feature, seed) % dim

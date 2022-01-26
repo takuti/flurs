@@ -3,9 +3,9 @@ VERSION = flurs.__version__
 
 DISTNAME = 'flurs'
 DESCRIPTION = 'A library for streaming recommendation algorithms'
-with open('README.md') as f:
+with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
-LONG_DESCRIPTION_CONTENT_TYPE = 'text/markdown'
+LONG_DESCRIPTION_CONTENT_TYPE = 'text/x-rst'
 AUTHOR = 'Takuya Kitazawa'
 AUTHOR_EMAIL = 'k.takuti@gmail.com'
 MAINTAINER = AUTHOR
@@ -52,7 +52,12 @@ def setup_package():
             'numpy',
             'scipy>=1.6.3',
             'scikit_learn',
-            'mmh3'])
+            'mmh3'],
+        extras_require={
+            'docs': [
+                'sphinx_rtd_theme'
+            ]
+        })
 
     setup(**metadata)
 

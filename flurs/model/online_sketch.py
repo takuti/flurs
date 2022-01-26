@@ -10,12 +10,31 @@ from sklearn import preprocessing
 
 class OnlineSketch(BaseEstimator):
 
-    """Matrix-sketching-based online item recommender
+    """Online matrix sketching.
 
-    T. Kitazawa.
-    "Sketching Dynamic User-Item Interactions for Online Item Recommendation"
-    In Proceedings of CHIIR 2017, March 2017.
+    Parameters
+    ----------
+    p : int
+        Number of dimensions of an input vector.
 
+    k : int, default=40
+        Number of dimensions of a projected vector.
+
+    ell : int, default=-1
+        Upper bound for the number of tracked orthogonal bases :math:`\ell`.
+        Defaults to :math:`\sqrt{k}` if the value is negative.
+
+    r : int, default=-1
+        Number of tracked orthogonal bases. Defaults to :math:`\ell / 2` (ceiled).
+
+    proj : {'Raw', 'RandomProjection', 'RandomMaclaurinProjection', 'TensorSketchProjection'}, default='Raw'
+        Vector projection method for dimensionality reduction. See `flurs.utils.projection`.
+
+    References
+    ----------
+    .. [1] T. Kitazawa.
+           `Sketching Dynamic User-Item Interactions for Online Item Recommendation <http://dl.acm.org/citation.cfm?id=3022152>`_.
+           In *Proc. of CHIIR 2017*, March 2017.
     """
 
     def __init__(self, p=None, k=40, ell=-1, r=-1, proj='Raw'):

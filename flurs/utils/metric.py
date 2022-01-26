@@ -1,16 +1,23 @@
+"""Ranking-based evaluation metrics for recommender systems"""
+
 import numpy as np
 
 
 def count_true_positive(truth, recommend):
     """Count number of true positives from given sets of samples.
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        int: Number of true positives.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    Returns
+    -------
+    int
+        Number of true positives.
     """
     tp = 0
     for r in recommend:
@@ -22,14 +29,22 @@ def count_true_positive(truth, recommend):
 def recall(truth, recommend, k=None):
     """Recall@k.
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
-        k (int): Top-k items in `recommend` will be recommended.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: Recall@k.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    k : int or None, default=None
+        Top-k items in ``recommend`` are considered to be recommended.
+        Defaults to ``len(recommend)``.
+
+    Returns
+    -------
+    float
+        Recall@k.
     """
     if len(truth) == 0:
         if len(recommend) == 0:
@@ -44,14 +59,22 @@ def recall(truth, recommend, k=None):
 def precision(truth, recommend, k=None):
     """Precision@k.
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
-        k (int): Top-k items in `recommend` will be recommended.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: Precision@k.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    k : int or None, default=None
+        Top-k items in ``recommend`` are considered to be recommended.
+        Defaults to ``len(recommend)``.
+
+    Returns
+    -------
+    float
+        Precision@k.
     """
     if len(recommend) == 0:
         if len(truth) == 0:
@@ -66,13 +89,18 @@ def precision(truth, recommend, k=None):
 def average_precision(truth, recommend):
     """Average Precision (AP).
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: AP.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    Returns
+    -------
+    float
+        Average Precision.
     """
     if len(truth) == 0:
         if len(recommend) == 0:
@@ -90,13 +118,18 @@ def average_precision(truth, recommend):
 def auc(truth, recommend):
     """Area under the ROC curve (AUC).
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: AUC.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    Returns
+    -------
+    float
+        AUC.
     """
     tp = correct = 0.
     for r in recommend:
@@ -118,13 +151,18 @@ def auc(truth, recommend):
 def reciprocal_rank(truth, recommend):
     """Reciprocal Rank (RR).
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: RR.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    Returns
+    -------
+    float
+        Reciprocal Rank.
     """
     for n in range(recommend.size):
         if recommend[n] in truth:
@@ -135,13 +173,18 @@ def reciprocal_rank(truth, recommend):
 def mpr(truth, recommend):
     """Mean Percentile Rank (MPR).
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: MPR.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    Returns
+    -------
+    float
+        Mean Percentile Rank.
     """
     if len(recommend) == 0 and len(truth) == 0:
         return 0.  # best
@@ -159,14 +202,22 @@ def mpr(truth, recommend):
 def ndcg(truth, recommend, k=None):
     """Normalized Discounted Cumulative Grain (NDCG).
 
-    Args:
-        truth (numpy 1d array): Set of truth samples.
-        recommend (numpy 1d array): Ordered set of recommended samples.
-        k (int): Top-k items in `recommend` will be recommended.
+    Parameters
+    ----------
+    truth : numpy 1d array
+        Set of truth samples.
 
-    Returns:
-        float: NDCG.
+    recommend : numpy 1d array
+        Ordered listed of recommended samples.
 
+    k : int or None, default=None
+        Top-k items in ``recommend`` are considered to be recommended.
+        Defaults to ``len(recommend)``.
+
+    Returns
+    -------
+    float
+        NDCG@k.
     """
     if k is None:
         k = len(recommend)
