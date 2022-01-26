@@ -1,4 +1,6 @@
 *.pyc
+.pytest_cache/
+build/
 doc/_build
 doc/generated
 dist/
