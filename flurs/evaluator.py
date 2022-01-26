@@ -9,18 +9,30 @@ from . import logger
 
 class Evaluator(object):
 
-    """Base class for experimentation of the incremental models with positive-only feedback.
+    """Wrap a streaming recommender and evaluate them in the positive-only feedback setting.
+
+    Parameters
+    ----------
+    recommender : RecommenderMixin
+        Instance of a recommender which has already been initialized.
+
+    repeat : bool, default=True
+        Whether the same item can be repeatedly interacted by the same user.
+
+    maxlen : int
+        Size of an item buffer which stores most recently observed items.
+
+    debug : bool, default=False
+        Verbose logging if ``True``.
+
+    References
+    ----------
+    .. [1] J. Vinagre et al.
+           `Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback <http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41>`_.
+           In *Proc. of UMAP 2014*, pp. 459-470, July 2014.
     """
 
     def __init__(self, recommender, repeat=True, maxlen=None, debug=False):
-        """Set/initialize parameters.
-
-        Args:
-            recommender (Recommender): Instance of a recommender which has been initialized.
-            repeat (boolean): Choose whether the same item can be repeatedly interacted by the same user.
-            maxlen (int): Size of an item buffer which stores most recently observed items.
-
-        """
         self.rec = recommender
         self.feature_rec = issubclass(recommender.__class__, FeatureRecommenderMixin)
 
@@ -38,11 +50,16 @@ class Evaluator(object):
         Evaluation of this batch training is done by using the next 20% positive events.
         After the batch SGD training, the models are incrementally updated by using the 20% test events.
 
-        Args:
-            train_events (list of Event): Positive training events (0-30%).
-            test_events (list of Event): Test events (30-50%).
-            n_epoch (int): Number of epochs for the batch training.
+        Parameters
+        ----------
+        train_events : list of Event
+            Positive training events (0-30%).
 
+        test_events : list of Event
+            Test events (30-50%).
+
+        n_epoch : int, default=1
+            Number of epochs for the batch training.
         """
         # make initial status for batch training
         for e in train_events:
@@ -55,7 +72,7 @@ class Evaluator(object):
             self.__validate(e)
             self.item_buffer.append(e.item.index)
 
-        self.__batch_update(train_events, test_events, n_epoch)
+        self.batch_update(train_events, test_events, n_epoch)
 
         # batch test events are considered as a new observations;
         # the model is incrementally updated based on them before the incremental evaluation step
@@ -64,14 +81,17 @@ class Evaluator(object):
             self.rec.update(e)
 
     def evaluate(self, test_events):
-        """Iterate recommend/update procedure and compute incremental recall.
+        """Iterate recommend-then-update procedure and compute incremental recall.
 
-        Args:
-            test_events (list of Event): Positive test events.
+        Parameters
+        ----------
+        test_events : list of Event
+            Positive test events.
 
-        Returns:
-            list of tuples: (rank, recommend time, update time)
-
+        Yields
+        ------
+        tuple
+            (rank, recommend time, update time).
         """
         for i, e in enumerate(test_events):
             self.__validate(e)
@@ -105,32 +125,19 @@ class Evaluator(object):
             # (top-1 score, where the correct item is ranked, rec time, update time)
             yield scores[0], rank, recommend_time, update_time
 
-    def __recommend(self, e, candidates):
-        if self.feature_rec:
-            return self.rec.recommend(e.user, candidates, e.context)
-        else:
-            return self.rec.recommend(e.user, candidates)
+    def batch_update(self, train_events, test_events, n_epoch):
+        """Update a model in the batch fashion.
 
-    def __validate(self, e):
-        self.__validate_user(e)
-        self.__validate_item(e)
+        Parameters
+        ----------
+        train_events : list of Event
+            Training samples.
 
-    def __validate_user(self, e):
-        if self.rec.is_new_user(e.user.index):
-            self.rec.register_user(e.user)
+        test_events : list of Event
+            Validation samples.
 
-    def __validate_item(self, e):
-        if self.rec.is_new_item(e.item.index):
-            self.rec.register_item(e.item)
-
-    def __batch_update(self, train_events, test_events, n_epoch):
-        """Batch update called by the fitting method.
-
-        Args:
-            train_events (list of Event): Positive training events.
-            test_events (list of Event): Test events.
-            n_epoch (int): Number of epochs for the batch training.
-
+        n_epoch : int
+            Number of epochs for the batch training.
         """
         for epoch in range(n_epoch):
             # SGD requires us to shuffle events in each iteration
@@ -144,19 +151,22 @@ class Evaluator(object):
                 self.rec.update(e, batch_train=True)
 
             # test
-            MPR = self.__batch_evaluate(test_events)
+            MPR = self.batch_evaluate(test_events)
             if self.debug:
                 logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
 
-    def __batch_evaluate(self, test_events):
-        """Evaluate the current model by using the given test events.
+    def batch_evaluate(self, test_events):
+        """Evaluate the current model in terms of Mean Percentile Rank (MPR), by using the given test events.
 
-        Args:
-            test_events (list of Event): Current model is evaluated by these events.
+        Parameters
+        ----------
+        test_events : list of Event
+            Validation samples to evaluate the current model.
 
-        Returns:
-            float: Mean Percentile Rank for the test set.
-
+        Returns
+        -------
+        float
+            Mean Percentile Rank for the test set.
         """
         percentiles = np.zeros(len(test_events))
 
@@ -178,3 +188,21 @@ class Evaluator(object):
             percentiles[i] = pos / (len(recos) - 1) * 100
 
         return np.mean(percentiles)
+
+    def __recommend(self, e, candidates):
+        if self.feature_rec:
+            return self.rec.recommend(e.user, candidates, e.context)
+        else:
+            return self.rec.recommend(e.user, candidates)
+
+    def __validate(self, e):
+        self.__validate_user(e)
+        self.__validate_item(e)
+
+    def __validate_user(self, e):
+        if self.rec.is_new_user(e.user.index):
+            self.rec.register_user(e.user)
+
+    def __validate_item(self, e):
+        if self.rec.is_new_item(e.item.index):
+            self.rec.register_item(e.item)
