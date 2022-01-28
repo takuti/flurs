@@ -34,23 +34,19 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
             n_user = self.n_user - 1
 
             # insert new user's row for the parameters
-            self.w = np.concatenate((self.w[:n_user],
-                                     np.array([0.]),
-                                     self.w[n_user:]))
+            self.w = np.concatenate((self.w[:n_user], np.array([0.0]), self.w[n_user:]))
 
-            self.prev_w = np.concatenate((self.prev_w[:n_user],
-                                          np.array([0.]),
-                                          self.prev_w[n_user:]))
+            self.prev_w = np.concatenate(
+                (self.prev_w[:n_user], np.array([0.0]), self.prev_w[n_user:])
+            )
 
-            rand_row = np.random.normal(0., 0.1, (1, self.k))
+            rand_row = np.random.normal(0.0, 0.1, (1, self.k))
 
-            self.V = np.concatenate((self.V[:n_user],
-                                     rand_row,
-                                     self.V[n_user:]))
+            self.V = np.concatenate((self.V[:n_user], rand_row, self.V[n_user:]))
 
-            self.prev_V = np.concatenate((self.prev_V[:n_user],
-                                          rand_row,
-                                          self.prev_V[n_user:]))
+            self.prev_V = np.concatenate(
+                (self.prev_V[:n_user], rand_row, self.prev_V[n_user:])
+            )
 
             self.p += 1
 
@@ -60,18 +56,17 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         n_item = self.n_item - 1
 
         # update the item matrix for all items
-        i_vec = item.encode(dim=(n_item + 1),
-                            index=self.use_index,
-                            feature=True,
-                            vertical=True)
+        i_vec = item.encode(
+            dim=(n_item + 1), index=self.use_index, feature=True, vertical=True
+        )
         sp_i_vec = sp.csr_matrix(i_vec)
 
         if self.i_mat.size == 0:
             self.i_mat = sp_i_vec
         elif self.use_index:
-            self.i_mat = sp.vstack((self.i_mat[:n_item],
-                                    np.zeros((1, n_item)),
-                                    self.i_mat[n_item:]))
+            self.i_mat = sp.vstack(
+                (self.i_mat[:n_item], np.zeros((1, n_item)), self.i_mat[n_item:])
+            )
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
         else:
             self.i_mat = sp.csr_matrix(sp.hstack((self.i_mat, sp_i_vec)))
@@ -81,23 +76,17 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
             # insert new item's row for the parameters
             h = self.n_user + n_item
 
-            self.w = np.concatenate((self.w[:h],
-                                     np.array([0.]),
-                                     self.w[h:]))
+            self.w = np.concatenate((self.w[:h], np.array([0.0]), self.w[h:]))
 
-            self.prev_w = np.concatenate((self.prev_w[:h],
-                                          np.array([0.]),
-                                          self.prev_w[h:]))
+            self.prev_w = np.concatenate(
+                (self.prev_w[:h], np.array([0.0]), self.prev_w[h:])
+            )
 
-            rand_row = np.random.normal(0., 0.1, (1, self.k))
+            rand_row = np.random.normal(0.0, 0.1, (1, self.k))
 
-            self.V = np.concatenate((self.V[:h],
-                                     rand_row,
-                                     self.V[h:]))
+            self.V = np.concatenate((self.V[:h], rand_row, self.V[h:]))
 
-            self.prev_V = np.concatenate((self.prev_V[:h],
-                                          rand_row,
-                                          self.prev_V[h:]))
+            self.prev_V = np.concatenate((self.prev_V[:h], rand_row, self.prev_V[h:]))
             self.p += 1
 
     def update(self, e, batch_train=False):
@@ -105,14 +94,15 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         if not batch_train and self.static:
             return
 
-        x = e.encode(index=self.use_index,
-                     n_user=self.n_user, n_item=self.n_item)
+        x = e.encode(index=self.use_index, n_user=self.n_user, n_item=self.n_item)
 
-        if e.value != 1.:
-            logger.info('Incremental factorization machines assumes ' +
-                        'implicit feedback recommendation, so ' +
-                        'the event value is automatically converted into 1.0')
-            e.value = 1.
+        if e.value != 1.0:
+            logger.info(
+                "Incremental factorization machines assumes "
+                + "implicit feedback recommendation, so "
+                + "the event value is automatically converted into 1.0"
+            )
+            e.value = 1.0
 
         self.update_model(x, e.value)
 
@@ -123,10 +113,9 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
 
         n_target = len(candidates)
 
-        u_vec = user.encode(dim=self.n_user,
-                            index=self.use_index,
-                            feature=True,
-                            vertical=True)
+        u_vec = user.encode(
+            dim=self.n_user, index=self.use_index, feature=True, vertical=True
+        )
         u_vec = np.concatenate((u_vec, np.array([context]).T))
         u_mat = sp.csr_matrix(np.repeat(u_vec, n_target, axis=1))
 
@@ -145,12 +134,11 @@ class FMRecommender(FactorizationMachine, FeatureRecommenderMixin):
         B = safe_sparse_dot(sq_V.T, sq_mat)
 
         interaction = (A - B).sum(axis=0)
-        interaction /= 2.  # (1, n_item); numpy matrix form
+        interaction /= 2.0  # (1, n_item); numpy matrix form
 
-        pred = self.w0 + safe_sparse_dot(self.w, mat, dense_output=True) + \
-            interaction
+        pred = self.w0 + safe_sparse_dot(self.w, mat, dense_output=True) + interaction
 
-        return np.abs(1. - np.ravel(pred))
+        return np.abs(1.0 - np.ravel(pred))
 
     def recommend(self, user, candidates, context):
         scores = self.score(user, candidates, context)

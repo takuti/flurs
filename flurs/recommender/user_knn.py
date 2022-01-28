@@ -30,10 +30,10 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
 
         # keep track how many times each user interacted with items
         # to compute user's mean
-        self.users[user.index]['count'] = 0
+        self.users[user.index]["count"] = 0
 
         # current average rating of the user
-        self.users[user.index]['mean'] = 0.
+        self.users[user.index]["mean"] = 0.0
 
     def register_item(self, item):
         super(UserKNNRecommender, self).register_item(item)
@@ -46,16 +46,16 @@ class UserKNNRecommender(UserKNN, RecommenderMixin):
         ua = user.index
 
         # find k nearest neightbors
-        top_uys = np.argsort(self.S[ua, :])[::-1][:self.k]
+        top_uys = np.argsort(self.S[ua, :])[::-1][: self.k]
 
-        pred = np.ones(len(candidates)) * self.users[ua]['mean']
+        pred = np.ones(len(candidates)) * self.users[ua]["mean"]
         for pi, ii in enumerate(candidates):
-            denom = numer = 0.
+            denom = numer = 0.0
             for uy in top_uys:
-                numer += ((self.R[uy, ii] - self.users[uy]['mean']) * self.S[ua, uy])
+                numer += (self.R[uy, ii] - self.users[uy]["mean"]) * self.S[ua, uy]
                 denom += self.S[ua, uy]
-            if denom != 0.:
-                pred[pi] += (numer / denom)
+            if denom != 0.0:
+                pred[pi] += numer / denom
 
         return np.abs(pred)
 

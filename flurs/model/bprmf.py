@@ -5,7 +5,7 @@ import numpy as np
 
 class BPRMF(BaseEstimator):
 
-    """Incremental Matrix Factorization with BPR optimization.
+    r"""Incremental Matrix Factorization with BPR optimization.
 
     Parameters
     ----------
@@ -25,7 +25,7 @@ class BPRMF(BaseEstimator):
            In *Proc. of UAI 2009*, pp. 452-461, June 2009.
     """
 
-    def __init__(self, k=40, l2_reg=.01, learn_rate=.003):
+    def __init__(self, k=40, l2_reg=0.01, learn_rate=0.003):
         self.k = k
         self.l2_reg_u = l2_reg
         self.l2_reg_i = l2_reg  # positive items: i
@@ -35,11 +35,11 @@ class BPRMF(BaseEstimator):
         self.Q = np.array([])
 
     def update_model(self, ua, ia):
-        u_vec = self.users[ua]['vec']
+        u_vec = self.users[ua]["vec"]
         i_vec = self.Q[ia]
         x_ui = np.inner(u_vec, i_vec)
 
-        unobserved = list(set(range(self.n_item)) - self.users[ua]['known_items'])
+        unobserved = list(set(range(self.n_item)) - self.users[ua]["known_items"])
 
         # choose one negative (i.e., unobserved) sample
         j = np.random.choice(unobserved)
@@ -59,6 +59,6 @@ class BPRMF(BaseEstimator):
         grad = -u_vec
         next_j_vec = j_vec + self.learn_rate * (sigmoid * grad + self.l2_reg_j * j_vec)
 
-        self.users[ua]['vec'] = next_u_vec
+        self.users[ua]["vec"] = next_u_vec
         self.Q[ia] = next_i_vec
         self.Q[j] = next_j_vec

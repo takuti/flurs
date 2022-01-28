@@ -48,7 +48,7 @@ class SketchRecommender(OnlineSketch, FeatureRecommenderMixin):
         # stack them into (p, n_item) matrix
         Y = sp.vstack((u_mat, i_mat))
         Y = self.proj.reduce(Y)
-        Y = sp.csr_matrix(preprocessing.normalize(Y, norm='l2', axis=0))
+        Y = sp.csr_matrix(preprocessing.normalize(Y, norm="l2", axis=0))
 
         X = np.identity(self.k) - np.dot(self.U_r, self.U_r.T)
         A = safe_sparse_dot(X, Y, dense_output=True)

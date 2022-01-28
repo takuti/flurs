@@ -4,5 +4,10 @@ from .matrix_factorization import MFRecommender
 from .online_sketch import SketchRecommender
 from .user_knn import UserKNNRecommender
 
-__all__ = ['BPRMFRecommender', 'FMRecommender', 'MFRecommender',
-           'SketchRecommender', 'UserKNNRecommender']
+__all__ = [
+    "BPRMFRecommender",
+    "FMRecommender",
+    "MFRecommender",
+    "SketchRecommender",
+    "UserKNNRecommender",
+]

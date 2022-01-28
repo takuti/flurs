@@ -6,7 +6,6 @@ from flurs.baseline import Random
 
 
 class RandomTestCase(TestCase):
-
     def setUp(self):
         self.recommender = Random()
         self.recommender.initialize()
@@ -24,4 +23,4 @@ class RandomTestCase(TestCase):
         self.recommender.register(Item(0))
         self.recommender.update(Event(User(0), Item(0), 1))
         score = self.recommender.score(User(0), np.array([0]))
-        self.assertTrue(score >= 0. and score < 1.)
+        self.assertTrue(score >= 0.0 and score < 1.0)

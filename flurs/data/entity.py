@@ -2,20 +2,18 @@ import numpy as np
 
 
 class BaseActor(object):
-
     def __init__(self, index, feature=np.array([])):
         self.index = index
         self.feature = feature
 
-    def encode(self, dim=None,
-               index=True, feature=True,
-               vertical=False):
+    def encode(self, dim=None, index=True, feature=True, vertical=False):
         """Encode an actor to an input vector for feature-based recommenders.
 
         Parameters
         ----------
         dim : int or None, default=None
-            Number of dimensions for onehot-encoded index. Use ``self.index + 1`` if ``None``.
+            Number of dimensions for onehot-encoded index.
+            Use ``self.index + 1`` if ``None``.
 
         index : bool, default=True
             Include onehot-encoded index to an input vector.
@@ -63,10 +61,12 @@ class BaseActor(object):
 
         """
         if self.index >= dim:
-            raise ValueError('number of dimensions must be greater than index: %d' % self.index)
+            raise ValueError(
+                "number of dimensions must be greater than index: %d" % self.index
+            )
 
         x = np.zeros(dim)
-        x[self.index] = 1.
+        x[self.index] = 1.0
         return x
 
 
@@ -87,9 +87,9 @@ class User(BaseActor):
 
     def __str__(self):
         if len(self.feature) == 0:
-            return 'User(index={})'.format(self.index)
+            return "User(index={})".format(self.index)
         else:
-            return 'User(index={}, feature={})'.format(self.index, self.feature)
+            return "User(index={}, feature={})".format(self.index, self.feature)
 
 
 class Item(BaseActor):
@@ -109,9 +109,9 @@ class Item(BaseActor):
 
     def __str__(self):
         if len(self.feature) == 0:
-            return 'Item(index={})'.format(self.index)
+            return "Item(index={})".format(self.index)
         else:
-            return 'Item(index={}, feature={})'.format(self.index, self.feature)
+            return "Item(index={}, feature={})".format(self.index, self.feature)
 
 
 class Event(object):
@@ -136,15 +136,21 @@ class Event(object):
 
     """
 
-    def __init__(self, user, item, value=1., context=np.array([])):
+    def __init__(self, user, item, value=1.0, context=np.array([])):
         self.user = user
         self.item = item
         self.value = value
         self.context = context
 
-    def encode(self, n_user=None, n_item=None,
-               index=True, feature=True, context=True,
-               vertical=False):
+    def encode(
+        self,
+        n_user=None,
+        n_item=None,
+        index=True,
+        feature=True,
+        context=True,
+        vertical=False,
+    ):
         """Encode an event to an input vector for feature-based recommenders.
 
         Parameters
@@ -175,22 +181,24 @@ class Event(object):
 
         """
 
-        x = self.user.encode(dim=n_user, index=index,
-                             feature=feature, vertical=False)
+        x = self.user.encode(dim=n_user, index=index, feature=feature, vertical=False)
 
         if context:
             x = np.concatenate((x, self.context))
 
-        iv = self.item.encode(dim=n_item, index=index,
-                              feature=feature, vertical=False)
+        iv = self.item.encode(dim=n_item, index=index, feature=feature, vertical=False)
         x = np.concatenate((x, iv))
 
-        assert len(x) > 0, 'feature vector has zero dimension'
+        assert len(x) > 0, "feature vector has zero dimension"
 
         return x if not vertical else np.array([x]).T
 
     def __str__(self):
         if len(self.context) == 0:
-            return 'Event(user={}, item={}, value={})'.format(self.user, self.item, self.value)
+            return "Event(user={}, item={}, value={})".format(
+                self.user, self.item, self.value
+            )
         else:
-            return 'Event(user={}, item={}, value={}, context={})'.format(self.user, self.item, self.value, self.context)
+            return "Event(user={}, item={}, value={}, context={})".format(
+                self.user, self.item, self.value, self.context
+            )

@@ -30,8 +30,8 @@ PACKAGE = "flurs"
 def linkcode_resolve(domain, info):
     """Generate link to GitHub.
     References:
-    - https://github.com/scikit-learn/scikit-learn/blob/f0faaee45762d0a5c75dcf3d487c118b10e1a5a8/doc/conf.py
-    - https://github.com/chainer/chainer/pull/2758/
+    https://github.com/scikit-learn/scikit-learn/blob/f0faaee45762d0a5c75dcf3d487c118b10e1a5a8/doc/conf.py
+    https://github.com/chainer/chainer/pull/2758/
     """
     if domain != "py" or not info["module"]:
         return None
@@ -79,8 +79,8 @@ def linkcode_resolve(domain, info):
 # -- Project information -----------------------------------------------------
 
 project = GH_PROJECT
-copyright = f'2017-{datetime.now().year}, Takuya Kitazawa'
-author = 'Takuya Kitazawa'
+copyright = f"2017-{datetime.now().year}, Takuya Kitazawa"
+author = "Takuya Kitazawa"
 
 # The full version, including alpha/beta/rc tags
 release = pkg_resources.get_distribution(PACKAGE).version
@@ -100,10 +100,7 @@ extensions = [
     "sphinx.ext.napoleon",
 ]
 
-autodoc_default_options = {
-    "members": True,
-    "inherited-members": True
-}
+autodoc_default_options = {"members": True, "inherited-members": True}
 
 autosummary_generate = True
 
@@ -114,7 +111,7 @@ templates_path = ["_templates"]
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -122,10 +119,10 @@ source_suffix = '.rst'
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FluRSdoc'
+htmlhelp_basename = "FluRSdoc"
 
 # -- Options for HTML output -------------------------------------------------
 

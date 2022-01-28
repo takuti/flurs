@@ -6,7 +6,6 @@ from flurs.recommender import BPRMFRecommender
 
 
 class BPRMFRecommenderTestCase(TestCase):
-
     def setUp(self):
         self.k = 40
         self.recommender = BPRMFRecommender(k=self.k)
@@ -33,4 +32,4 @@ class BPRMFRecommenderTestCase(TestCase):
         self.recommender.register(Item(0))
         self.recommender.update(Event(User(0), Item(0), 1))
         score = self.recommender.score(User(0), np.array([0]))
-        self.assertTrue(score >= -1. and score <= 1.)
+        self.assertTrue(score >= -1.0 and score <= 1.0)

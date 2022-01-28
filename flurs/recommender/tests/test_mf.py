@@ -6,7 +6,6 @@ from flurs.recommender import MFRecommender
 
 
 class MFRecommenderTestCase(TestCase):
-
     def setUp(self):
         self.k = 40
         self.recommender = MFRecommender(k=self.k)

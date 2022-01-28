@@ -6,7 +6,6 @@ from flurs.recommender import UserKNNRecommender
 
 
 class UserKNNRecommenderTestCase(TestCase):
-
     def setUp(self):
         self.recommender = UserKNNRecommender()
         self.recommender.initialize()
@@ -32,4 +31,4 @@ class UserKNNRecommenderTestCase(TestCase):
         self.recommender.update(Event(User(0), Item(0), 1))
         score = self.recommender.score(User(0), np.array([0]))
         print(score)
-        self.assertTrue(score >= -1. and score <= 1.)
+        self.assertTrue(score >= -1.0 and score <= 1.0)
