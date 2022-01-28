@@ -57,7 +57,14 @@ def setup_package():
         extras_require={
             'docs': [
                 'sphinx_rtd_theme'
-            ]
+            ],
+            'tests': {
+                'pytest>=5.0.1',
+                'pytest-remotedata==0.3.2',  # https://github.com/pytest-dev/pytest/issues/4608
+                'flake8>=3.8.2',
+                'black>=21.6b0',
+                'pre-commit'
+            }
         })
 
     setup(**metadata)
