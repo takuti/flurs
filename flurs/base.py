@@ -5,8 +5,7 @@ import numpy as np
 
 class RecommenderMixin(object):
 
-    """Mixin injected into a model to make it a recommender.
-    """
+    """Mixin injected into a model to make it a recommender."""
 
     def initialize(self, *args):
         """Initialize a recommender by resetting stored users and items.
@@ -63,7 +62,7 @@ class RecommenderMixin(object):
         user : User
             A `User` instance to register.
         """
-        self.users[user.index] = {'known_items': set()}
+        self.users[user.index] = {"known_items": set()}
         self.n_user += 1
 
     def is_new_item(self, i):
@@ -137,7 +136,8 @@ class RecommenderMixin(object):
             Target user.
 
         candidates : numpy array, (# target items, )
-            Target items indices. Only these items are considered as the recommendation candidates.
+            Target items indices.
+            Only these items are considered as the recommendation candidates.
 
         Returns
         -------
@@ -155,7 +155,8 @@ class RecommenderMixin(object):
             Scores for the target items. Smaller score indicates a promising item.
 
         candidates : numpy array, (# target items, )
-            Target items indices. Only these items are considered as the recommendation candidates.
+            Target items indices.
+            Only these items are considered as the recommendation candidates.
 
         rev : bool, default=False
             If ``True``, sort and return items in an descending order.
@@ -176,8 +177,7 @@ class RecommenderMixin(object):
 
 class FeatureRecommenderMixin(RecommenderMixin):
 
-    """Mixin injected into a model to make it a feature-based recommender.
-    """
+    """Mixin injected into a model to make it a feature-based recommender."""
 
     def score(self, user, candidates, context):
         """Compute scores for the pairs of given user and item candidates.
@@ -212,7 +212,8 @@ class FeatureRecommenderMixin(RecommenderMixin):
             Target user.
 
         candidates : numpy array, (# target items, )
-            Target items indices. Only these items are considered as the recommendation candidates.
+            Target items indices.
+            Only these items are considered as the recommendation candidates.
 
         context : (numpy array)
             Feature vector representing contextual information.

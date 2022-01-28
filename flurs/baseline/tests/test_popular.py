@@ -7,7 +7,6 @@ from flurs.baseline import Popular
 
 
 class PopularTestCase(TestCase):
-
     def setUp(self):
         self.recommender = Popular()
         self.recommender.initialize()

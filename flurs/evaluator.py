@@ -28,7 +28,8 @@ class Evaluator(object):
     References
     ----------
     .. [1] J. Vinagre et al.
-           `Fast Incremental Matrix Factorization for Recommendation with Positive-only Feedback <http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41>`_.
+           `Fast Incremental Matrix Factorization for Recommendation with Positive-only
+           Feedback <http://link.springer.com/chapter/10.1007/978-3-319-08786-3_41>`_.
            In *Proc. of UMAP 2014*, pp. 459-470, July 2014.
     """
 
@@ -48,7 +49,8 @@ class Evaluator(object):
         """Train a model using the first 30% positive events to avoid cold-start.
 
         Evaluation of this batch training is done by using the next 20% positive events.
-        After the batch SGD training, the models are incrementally updated by using the 20% test events.
+        After the batch SGD training, the models are incrementally updated by using
+        the 20% test events.
 
         Parameters
         ----------
@@ -64,7 +66,7 @@ class Evaluator(object):
         # make initial status for batch training
         for e in train_events:
             self.__validate(e)
-            self.rec.users[e.user.index]['known_items'].add(e.item.index)
+            self.rec.users[e.user.index]["known_items"].add(e.item.index)
             self.item_buffer.append(e.item.index)
 
         # for batch evaluation, temporarily save new users info
@@ -75,9 +77,10 @@ class Evaluator(object):
         self.batch_update(train_events, test_events, n_epoch)
 
         # batch test events are considered as a new observations;
-        # the model is incrementally updated based on them before the incremental evaluation step
+        # the model is incrementally updated based on them
+        # before the incremental evaluation step
         for e in test_events:
-            self.rec.users[e.user.index]['known_items'].add(e.item.index)
+            self.rec.users[e.user.index]["known_items"].add(e.item.index)
             self.rec.update(e)
 
     def evaluate(self, test_events):
@@ -99,7 +102,7 @@ class Evaluator(object):
             # target items (all or unobserved depending on a detaset)
             unobserved = set(self.item_buffer)
             if not self.repeat:
-                unobserved -= self.rec.users[e.user.index]['known_items']
+                unobserved -= self.rec.users[e.user.index]["known_items"]
 
             # item i interacted by user u must be in the recommendation candidate
             # even if it is a new item
@@ -110,15 +113,15 @@ class Evaluator(object):
             # make top-{at} recommendation for the 1001 items
             start = time.perf_counter()
             recos, scores = self.__recommend(e, candidates)
-            recommend_time = (time.perf_counter() - start)
+            recommend_time = time.perf_counter() - start
 
             rank = np.where(recos == e.item.index)[0][0]
 
             # Step 2: update the model with the observed event
-            self.rec.users[e.user.index]['known_items'].add(e.item.index)
+            self.rec.users[e.user.index]["known_items"].add(e.item.index)
             start = time.perf_counter()
             self.rec.update(e)
-            update_time = (time.perf_counter() - start)
+            update_time = time.perf_counter() - start
 
             self.item_buffer.append(e.item.index)
 
@@ -142,7 +145,8 @@ class Evaluator(object):
         for epoch in range(n_epoch):
             # SGD requires us to shuffle events in each iteration
             # * if n_epoch == 1
-            #   => shuffle is not required because it is a deterministic training (i.e. matrix sketching)
+            #   => shuffle is not required because it is a deterministic training
+            #      (i.e. matrix sketching)
             if n_epoch != 1:
                 np.random.shuffle(train_events)
 
@@ -153,10 +157,11 @@ class Evaluator(object):
             # test
             MPR = self.batch_evaluate(test_events)
             if self.debug:
-                logger.debug('epoch %2d: MPR = %f' % (epoch + 1, MPR))
+                logger.debug("epoch %2d: MPR = %f" % (epoch + 1, MPR))
 
     def batch_evaluate(self, test_events):
-        """Evaluate the current model in terms of Mean Percentile Rank (MPR), by using the given test events.
+        """Evaluate the current model in terms of Mean Percentile Rank (MPR),
+        by using the given test events.
 
         Parameters
         ----------
@@ -177,7 +182,7 @@ class Evaluator(object):
             unobserved = all_items
             if not self.repeat:
                 # make recommendation for all unobserved items
-                unobserved -= self.rec.users[e.user.index]['known_items']
+                unobserved -= self.rec.users[e.user.index]["known_items"]
                 # true item itself must be in the recommendation candidates
                 unobserved.add(e.item.index)
 

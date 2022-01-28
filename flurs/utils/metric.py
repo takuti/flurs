@@ -48,8 +48,8 @@ def recall(truth, recommend, k=None):
     """
     if len(truth) == 0:
         if len(recommend) == 0:
-            return 1.
-        return 0.
+            return 1.0
+        return 0.0
 
     if k is None:
         k = len(recommend)
@@ -78,8 +78,8 @@ def precision(truth, recommend, k=None):
     """
     if len(recommend) == 0:
         if len(truth) == 0:
-            return 1.
-        return 0.
+            return 1.0
+        return 0.0
 
     if k is None:
         k = len(recommend)
@@ -104,14 +104,14 @@ def average_precision(truth, recommend):
     """
     if len(truth) == 0:
         if len(recommend) == 0:
-            return 1.
-        return 0.
+            return 1.0
+        return 0.0
 
-    tp = accum = 0.
+    tp = accum = 0.0
     for n in range(recommend.size):
         if recommend[n] in truth:
-            tp += 1.
-            accum += (tp / (n + 1.))
+            tp += 1.0
+            accum += tp / (n + 1.0)
     return accum / truth.size
 
 
@@ -131,11 +131,11 @@ def auc(truth, recommend):
     float
         AUC.
     """
-    tp = correct = 0.
+    tp = correct = 0.0
     for r in recommend:
         if r in truth:
             # keep track number of true positives placed before
-            tp += 1.
+            tp += 1.0
         else:
             correct += tp
     # number of all possible tp-fp pairs
@@ -166,8 +166,8 @@ def reciprocal_rank(truth, recommend):
     """
     for n in range(recommend.size):
         if recommend[n] in truth:
-            return 1. / (n + 1)
-    return 0.
+            return 1.0 / (n + 1)
+    return 0.0
 
 
 def mpr(truth, recommend):
@@ -187,16 +187,16 @@ def mpr(truth, recommend):
         Mean Percentile Rank.
     """
     if len(recommend) == 0 and len(truth) == 0:
-        return 0.  # best
+        return 0.0  # best
     elif len(truth) == 0 or len(truth) == 0:
-        return 100.  # worst
+        return 100.0  # worst
 
-    accum = 0.
+    accum = 0.0
     n_recommend = recommend.size
     for t in truth:
         r = np.where(recommend == t)[0][0] / float(n_recommend)
         accum += r
-    return accum * 100. / truth.size
+    return accum * 100.0 / truth.size
 
 
 def ndcg(truth, recommend, k=None):
@@ -223,18 +223,18 @@ def ndcg(truth, recommend, k=None):
         k = len(recommend)
 
     def idcg(n_possible_truth):
-        res = 0.
+        res = 0.0
         for n in range(n_possible_truth):
-            res += 1. / np.log2(n + 2)
+            res += 1.0 / np.log2(n + 2)
         return res
 
-    dcg = 0.
+    dcg = 0.0
     for n, r in enumerate(recommend[:k]):
         if r not in truth:
             continue
-        dcg += 1. / np.log2(n + 2)
+        dcg += 1.0 / np.log2(n + 2)
 
     res_idcg = idcg(np.min([truth.size, k]))
-    if res_idcg == 0.:
-        return 0.
+    if res_idcg == 0.0:
+        return 0.0
     return dcg / res_idcg

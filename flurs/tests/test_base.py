@@ -6,7 +6,6 @@ from flurs.base import RecommenderMixin
 
 
 class RecommenderMixinTestCase(TestCase):
-
     def setUp(self):
         self.recommender = RecommenderMixin()
 
@@ -37,12 +36,14 @@ class RecommenderMixinTestCase(TestCase):
 
     def test_scores2recos(self):
         candidates = np.array([10, 100, 1000])
-        scores = np.array([1., 5., 3.])
+        scores = np.array([1.0, 5.0, 3.0])
 
         candidates_, scores_ = self.recommender.scores2recos(scores, candidates)
-        assert_array_equal(scores_, np.array([1., 3., 5.]))
+        assert_array_equal(scores_, np.array([1.0, 3.0, 5.0]))
         assert_array_equal(candidates_, np.array([10, 1000, 100]))
 
-        candidates_, scores_ = self.recommender.scores2recos(scores, candidates, rev=True)
-        assert_array_equal(scores_, np.array([5., 3., 1.]))
+        candidates_, scores_ = self.recommender.scores2recos(
+            scores, candidates, rev=True
+        )
+        assert_array_equal(scores_, np.array([5.0, 3.0, 1.0]))
         assert_array_equal(candidates_, np.array([100, 1000, 10]))

@@ -28,7 +28,7 @@ def n_feature_hash(feature, dims, seeds):
     offset = 0
 
     for seed, dim in zip(seeds, dims):
-        vec[offset:(offset + dim)] = feature_hash(feature, dim, seed)
+        vec[offset : (offset + dim)] = feature_hash(feature, dim, seed)
         offset += dim
 
     return vec

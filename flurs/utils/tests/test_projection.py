@@ -1,11 +1,15 @@
 from unittest import TestCase
 import numpy as np
 
-from flurs.utils.projection import Raw, RandomProjection, RandomMaclaurinProjection, TensorSketchProjection
+from flurs.utils.projection import (
+    Raw,
+    RandomProjection,
+    RandomMaclaurinProjection,
+    TensorSketchProjection,
+)
 
 
 class ProjectionsTestCase(TestCase):
-
     def setUp(self):
         self.Y = np.arange(100).reshape((50, 2))
         self.p = self.Y.shape[0]

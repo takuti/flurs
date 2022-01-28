@@ -5,7 +5,6 @@ from flurs.utils import metric
 
 
 class MetricTestCase(TestCase):
-
     def setUp(self):
         self.truth = np.array([1, 2, 4])
         self.recommend = np.array([1, 3, 2, 6, 4, 5])

@@ -5,7 +5,6 @@ from flurs.utils.feature_hash import n_feature_hash, feature_hash, multiple_feat
 
 
 class FeatureHashTestCase(TestCase):
-
     def test_feature_hash(self):
         x = feature_hash("Tom", 5, seed=123)
         nnz = np.nonzero(x)[0].size

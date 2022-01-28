@@ -6,8 +6,7 @@ import numpy as np
 
 class Random(BaseEstimator, RecommenderMixin):
 
-    """Random baseline that randomly ranks candidates.
-    """
+    """Random baseline that randomly ranks candidates."""
 
     def __init__(self):
         pass
