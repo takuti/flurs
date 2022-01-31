@@ -1,8 +1,5 @@
-Tutorials
-=========
-
-Quick start
------------
+User Guide
+==========
 
 You first need to convert your data to ``User``, ``Item`` and ``Event``:
 
@@ -53,8 +50,3 @@ To give an example, a matrix-factorization-based recommender can be used as foll
   # specify target user and list of item candidates
   recommender.recommend(user, np.array([0]))
   # => (sorted candidates, scores)
-
-Example: MovieLens 1M
------------------------
-
-See `sample code <https://github.com/takuti/flurs/blob/master/examples/movielens1m.py>`_.

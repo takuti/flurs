@@ -3,5 +3,6 @@
 .. toctree::
    :maxdepth: 2
 
-   tutorial
+   user_guide
+   auto_examples/index
    reference
