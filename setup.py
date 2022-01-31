@@ -66,6 +66,7 @@ def setup_package():
                 "pytest-remotedata==0.3.2",
                 "flake8>=3.8.2",
                 "black>=21.6b0",
+                "mypy>=0.770",
                 "pre-commit",
             },
         },

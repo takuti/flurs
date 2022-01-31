@@ -4,11 +4,12 @@ target_version = ['py37', 'py38', 'py39']
 experimental_string_processing = true
 exclude = '''
 /(
-  | .git
+  | \.git
   | __pycache__
   | dist
   | doc/_build
   | doc/auto_examples
   | build
+  | \.mypy_cache
 )/
 '''

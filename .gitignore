@@ -7,3 +7,4 @@ doc/auto_examples
 doc/modules/generated
 dist/
 flurs.egg-info/
+.mypy_cache/
