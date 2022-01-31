@@ -19,6 +19,7 @@ import os
 import subprocess
 import sys
 from datetime import datetime
+from sphinx_gallery.sorting import ExplicitOrder
 
 import pkg_resources
 
@@ -98,6 +99,7 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    "sphinx_gallery.gen_gallery",
 ]
 
 autodoc_default_options = {"members": True, "inherited-members": True}
@@ -134,3 +136,16 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["images"]
+
+sphinx_gallery_conf = {
+    "doc_module": "flurs",
+    "backreferences_dir": os.path.join("modules", "generated"),
+    "show_memory": False,
+    "reference_url": {"flurs": None},
+    "examples_dirs": ["../examples"],
+    "gallery_dirs": ["auto_examples"],
+    "subsection_order": ExplicitOrder(["../examples/movielens", "../examples/faust"]),
+    # avoid generating too many cross links
+    "inspect_global_variables": False,
+    "remove_config_comments": True,
+}

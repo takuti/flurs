@@ -1,3 +1,11 @@
+"""
+==============
+Faust Consumer
+==============
+
+Consume events and incrementally train a FluRS recommender.
+"""
+
 from flurs.data.entity import User, Item, Event
 from flurs.recommender import MFRecommender
 import json

@@ -3,5 +3,7 @@
 build/
 doc/_build
 doc/generated
+doc/auto_examples
+doc/modules/generated
 dist/
 flurs.egg-info/

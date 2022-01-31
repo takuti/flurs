@@ -1,4 +1,9 @@
-"""USAGE: %(program)s PATH_TO_MOVIELENS_1M_DIR
+"""
+============
+MovieLens 1M
+============
+
+USAGE: %(program)s PATH_TO_MOVIELENS_1M_DIR
 """
 
 from flurs.datasets import fetch_movielens
