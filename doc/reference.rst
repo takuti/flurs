@@ -12,6 +12,7 @@ Data representation
     data.entity.User
     data.entity.Item
     data.entity.Event
+    datasets.movielens
 
 Baseline recommenders
 ---------------------

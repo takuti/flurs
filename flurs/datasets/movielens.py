@@ -1,3 +1,5 @@
+"""MovieLens datasets created by GroupLens."""
+
 from ..data.entity import User, Item, Event
 
 import os
@@ -11,8 +13,19 @@ from sklearn.utils import Bunch
 
 def load_movies(data_home, size):
     """Load movie genres as a context.
-    Returns:
-        dict of movie vectors: item_id -> numpy array (n_genre,)
+
+    Parameters
+    ----------
+    data_home : str
+        Absolute path to MovieLens data folder.
+
+    size : {"100k", "1m"}
+        String notation of MovieLens data size.
+
+    Returns
+    -------
+    dict of movie vectors
+        item_id -> numpy array (n_genre, ).
     """
     all_genres = [
         "Action",
@@ -68,9 +81,20 @@ def load_users(data_home, size):
     """Load user demographics as contexts.
     User ID -> {sex (M/F), age (7 groupd), occupation(0-20; 21)}
 
-    Returns:
-        dict of user vectors: user_id -> numpy array (1+1+21,);
-        (sex_flg + age_group + n_occupation, )
+
+    Parameters
+    ----------
+    data_home : str
+        Absolute path to MovieLens data folder.
+
+    size : {"100k", "1m"}
+        String notation of MovieLens data size.
+
+    Returns
+    -------
+    dict of user vectors
+        user_id -> numpy array (1 + 1 + 21, );
+        (sex_flg + age_group + n_occupation, ).
     """
     ages = [1, 18, 25, 35, 45, 50, 56, 999]
 
@@ -134,7 +158,22 @@ def load_users(data_home, size):
 
 
 def load_ratings(data_home, size):
-    """Load all samples in the dataset."""
+    """Load all samples in the dataset.
+
+    Parameters
+    ----------
+    data_home : str
+        Absolute path to MovieLens data folder.
+
+    size : {"100k", "1m"}
+        String notation of MovieLens data size.
+
+    Returns
+    -------
+    array
+        Single row is ``[user_id, item_id, rating, timestamp]``.
+        Rows are sorted by ``timestamp.
+    """
 
     if size == "100k":
         with open(os.path.join(data_home, "u.data"), encoding="ISO-8859-1") as f:
@@ -162,7 +201,25 @@ def load_ratings(data_home, size):
 
 
 def delta(d1, d2, opt="d"):
-    """Compute difference between given 2 dates in month/day."""
+    """Compute difference between given 2 dates in month/day.
+
+    Parameters
+    ----------
+    d1 : datetime
+        First date.
+
+    d2 : datetime
+        Second date.
+
+    opt : {"d", "m"}, default="d"
+        ``"d"`` if `d1` and `d2` have day-level granularity. If they only tell about
+        month (day is always 1), ``"m"`` interpolates the information.
+
+    Returns
+    -------
+    int
+        Difference between two dates in days.
+    """
     delta = 0
 
     if opt == "m":
@@ -180,6 +237,35 @@ def delta(d1, d2, opt="d"):
 
 
 def fetch_movielens(data_home=None, size="100k"):
+    """Fetch MovieLens data in the form of `User`, `Item`, `Event`.
+
+    Parameters
+    ----------
+    data_home : str
+        Absolute path to MovieLens data folder.
+
+    size : {"100k", "1m"}, default="100k"
+        String notation of MovieLens data size.
+
+    Returns
+    -------
+    sklearn.utils.Bunch
+        Dictionary-like object, with the following attributes.
+
+        samples : list of Event
+            All rating events.
+        can_repeat : bool
+            ``False`` because MovieLens does not contain same user-item interaction
+            more than twice.
+        contexts : dict
+            Contextual feature name -> Number of its dimensions.
+        n_user : int
+            Number of unique users.
+        n_item : int
+            Number of unique items.
+        n_sample : int
+            Number of events.
+    """
     assert data_home is not None
 
     if size not in ("100k", "1m"):

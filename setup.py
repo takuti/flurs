@@ -56,7 +56,10 @@ def setup_package():
             "mmh3>=3.0.0",
         ],
         extras_require={
-            "docs": ["sphinx_rtd_theme"],
+            "docs": [
+                "sphinx_rtd_theme",
+                "sphinx-gallery",
+            ],
             "tests": {
                 "pytest>=5.0.1",
                 # https://github.com/pytest-dev/pytest/issues/4608

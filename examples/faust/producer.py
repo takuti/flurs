@@ -1,3 +1,11 @@
+"""
+==============
+Kafka Producer
+==============
+
+Kafka producer emitting events.
+"""
+
 import sys
 import json
 from kafka import KafkaProducer
