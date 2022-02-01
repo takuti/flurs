@@ -172,7 +172,7 @@ def load_ratings(data_home, size):
     -------
     array
         Single row is ``[user_id, item_id, rating, timestamp]``.
-        Rows are sorted by ``timestamp.
+        Rows are sorted by ``timestamp``.
     """
 
     if size == "100k":

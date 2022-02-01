@@ -16,7 +16,7 @@ class MFRecommender(MatrixFactorization, RecommenderMixin):
         Parameters
         ----------
         static : bool, default=False
-            Disable incremental update if ``True``s.
+            Disable incremental update if ``True``.
         """
         super(MFRecommender, self).initialize()
 
