@@ -15,7 +15,7 @@ from sklearn import preprocessing
 
 class OnlineSketch(BaseEstimator):
 
-    r"""Online matrix sketching.
+    r"""Online matrix sketching using Frequent Directions [1]_.
 
     Parameters
     ----------
@@ -39,7 +39,9 @@ class OnlineSketch(BaseEstimator):
 
     References
     ----------
-    .. [1] T. Kitazawa.
+    .. [1] E. Liberty. Simple and Deterministic Matrix Sketching. In
+           *Proc. of KDD 2013*, pages 581-588, Aug. 2013.
+    .. [2] T. Kitazawa.
            `Sketching Dynamic User-Item Interactions for Online Item Recommendation
            <http://dl.acm.org/citation.cfm?id=3022152>`_.
            In *Proc. of CHIIR 2017*, March 2017.
@@ -112,8 +114,38 @@ class OnlineSketch(BaseEstimator):
 
 class OnlineRandomSketch(OnlineSketch):
 
-    """Inspired by: Streaming Anomaly Detection using Randomized Matrix Sketching
-    [WIP] many matrix multiplications are computational heavy
+    r"""Online matrix sketching based on randomized SVD.
+
+    .. warning::
+        This module is experimental.
+        Matrix multiplications are computationally expensive.
+
+    Parameters
+    ----------
+    p : int
+        Number of dimensions of an input vector.
+
+    k : int, default=40
+        Number of dimensions of a projected vector.
+
+    ell : int, default=-1
+        Upper bound for the number of tracked orthogonal bases :math:`\ell`.
+        Defaults to :math:`\sqrt{k}` if the value is negative.
+
+    r : int, default=-1
+        Number of tracked orthogonal bases. Defaults to :math:`\ell / 2` (ceiled).
+
+    proj : str, default='Raw'
+        Vector projection method for dimensionality reduction. Options are {'Raw',
+        'RandomProjection', 'RandomMaclaurinProjection', 'TensorSketchProjection'}.
+        See `flurs.utils.projection` for the detail.
+
+    References
+    ----------
+    .. [1] H. Huang and S. P. Kasiviswanathan. `Streaming Anomaly
+           Detection Using Randomized Matrix Sketching
+           <https://dl.acm.org/doi/10.14778/2850583.2850593>`_.
+           *PVLDB*, 9(3):192-203, Nov. 2015.
     """
 
     def update_model(self, y):
@@ -160,7 +192,37 @@ class OnlineRandomSketch(OnlineSketch):
 
 class OnlineSparseSketch(OnlineSketch):
 
-    """Inspired by: Efficient Frequent Directions Algorithm for Sparse Matrices"""
+    r"""Online matrix sketching based on Sparse Frequent Directions [1]_.
+
+    .. warning::
+        This module is experimental.
+
+    Parameters
+    ----------
+    p : int
+        Number of dimensions of an input vector.
+
+    k : int, default=40
+        Number of dimensions of a projected vector.
+
+    ell : int, default=-1
+        Upper bound for the number of tracked orthogonal bases :math:`\ell`.
+        Defaults to :math:`\sqrt{k}` if the value is negative.
+
+    r : int, default=-1
+        Number of tracked orthogonal bases. Defaults to :math:`\ell / 2` (ceiled).
+
+    proj : str, default='Raw'
+        Vector projection method for dimensionality reduction. Options are {'Raw',
+        'RandomProjection', 'RandomMaclaurinProjection', 'TensorSketchProjection'}.
+        See `flurs.utils.projection` for the detail.
+
+    References
+    ----------
+    .. [1] H. Huang and S. P. Kasiviswanathan. `Efficient Frequent Directions Algorithm
+           for Sparse Matrices <https://dl.acm.org/doi/10.1145/2939672.2939800>`_.
+           In *Proc. of KDD 2013*, pages 845-854, Aug. 2016.
+    """
 
     def update_model(self, y):
         y = self.proj.reduce(np.array([y]).T)
