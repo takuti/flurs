@@ -57,5 +57,5 @@ Evaluation utilities
 .. autosummary::
     :toctree: generated
 
-    utils.metric
-    evaluator.Evaluator
+    evaluation.metrics
+    evaluation.Evaluator
