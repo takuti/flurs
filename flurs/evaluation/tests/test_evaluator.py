@@ -4,7 +4,7 @@ from numpy.testing import assert_array_equal
 
 from flurs.data.entity import User, Item, Event
 from flurs.baseline import Popular
-from flurs.evaluator import Evaluator
+from flurs.evaluation import Evaluator
 
 
 class EvaluatorTestCase(TestCase):

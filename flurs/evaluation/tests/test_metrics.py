@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from flurs.metrics import (
+from flurs.evaluation.metrics import (
     recall,
     precision,
     average_precision,
