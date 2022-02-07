@@ -11,4 +11,4 @@ logger.addHandler(handler)
 
 __version__ = "0.0.5"
 
-__all__ = ["baseline", "data", "datasets", "recommender", "evaluation", "utils"]
+__all__ = ["baseline", "types", "datasets", "recommender", "evaluation", "utils"]

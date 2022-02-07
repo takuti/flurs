@@ -1,6 +1,6 @@
 """MovieLens datasets created by GroupLens."""
 
-from ..data.entity import User, Item, Event
+from ..types import User, Item, Event
 
 import os
 import time

@@ -5,7 +5,7 @@ You first need to convert your data to ``User``, ``Item`` and ``Event``:
 
 .. testcode::
 
-  from flurs.data.entity import User, Item, Event
+  from flurs.types import User, Item, Event
 
   # define a user with index 0
   user = User(0)
