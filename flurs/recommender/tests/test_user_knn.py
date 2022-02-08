@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from flurs.data.entity import User, Item, Event
+from flurs.types import User, Item, Event
 from flurs.recommender import UserKNNRecommender
 
 

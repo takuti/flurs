@@ -1,10 +1,10 @@
-from .base import FeatureRecommenderMixin
-
 import time
 import numpy as np
 
 from collections import deque
-from . import logger
+
+from ..base import FeatureRecommenderMixin
+from .. import logger
 
 
 class Evaluator(object):

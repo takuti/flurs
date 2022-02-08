@@ -9,9 +9,9 @@ Data representation
 .. autosummary::
     :toctree: generated
 
-    data.entity.User
-    data.entity.Item
-    data.entity.Event
+    types.User
+    types.Item
+    types.Event
     datasets.movielens
 
 Baseline recommenders
@@ -57,5 +57,5 @@ Evaluation utilities
 .. autosummary::
     :toctree: generated
 
-    utils.metric
-    evaluator.Evaluator
+    metrics
+    evaluation.Evaluator

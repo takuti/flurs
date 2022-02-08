@@ -1,4 +1,4 @@
-from .data.entity import User, Item
+from .types import User, Item
 
 import numpy as np
 
